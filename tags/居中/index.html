@@ -1,1 +1,42 @@
-<!doctype html><html lang=en><head><meta charset=UTF-8><meta name=viewport content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1"><meta http-equiv=X-UA-Compatible content="ie=edge"><link rel="shortcut icon" href=/static/favicon.ico><title>Wangx&#39;s blog</title><link href=/static/css/app.c64eadfc8d3abfc9d85514dba4054813.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=/static/js/manifest.992b63bf2abbf3194771.js></script><script type=text/javascript src=/static/js/vendor.e12dc8c9af1f7aa12436.js></script><script type=text/javascript src=/static/js/app.bc036f9167871d39aecf.js></script></body></html>
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="email=no"><meta name="description" content="web developer."><meta name="keywords" content="Vuejs"><title>Wangx's blog - Whatever is worth doing is worth doing well.</title><link rel="stylesheet" href="/css/main_style.min.css"><link rel="icon" href="/favicon.ico"></head><body><input id="navi" type="checkbox"><ul class="main-navication"><li><a href="/"><span>Home</span></a></li><li><a href="https://github.com/reeves7"><span>Github</span></a></li><li><a href="https://www.v2ex.com/"><span>V2EX</span></a></li></ul><div class="wrapper" id="wrap"><div class="page-header"><label class="navi-button" for="navi">MENU</label><div class="background"><img src="/homebg.jpg"></div><div class="author"><div class="head"><img src="/wangx.jpg"></div><h3 class="name">wangx</h3><p class="signature">Whatever is worth doing is worth doing well.</p></div></div><ul class="post-list" style="max-width:800px"><li> <p class="date">2018年5月7日</p><h4 class="title"><a href="/2018/05/07/csscenter/">【CSS】css居中方案</a></h4><div class="excerpt"><p>&emsp;&emsp;先说一下水平居中和垂直居中的一般方案.</p>
+<p>&emsp;&emsp;水平居中设置：</p>
+<blockquote>
+<ol>
+<li><p>行内元素：给父元素设置text-align:center;</p>
+</li>
+<li><p>定宽块状元素：设置左右margin值为auto</p>
+</li>
+<li><p>不定宽块状元素：</p>
+<ol>
+<li><p>在元素外加入table标签(包括table、tbody、tr、td)，在把该元素写在td内，然后设置margin的值为auto，注意是设置table不是该元素。</p>
+</li>
+<li><p>给该元素设置display:inline方法，居中方法和行内一致。</p>
+</li>
+<li><p>父元素设置float:left;position:relative和left:50%，子元素设置position:relative和left:-50%。</p>
+</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<p>&emsp;&emsp;垂直居中设置：</p>
+<blockquote>
+<ol>
+<li><p>父元素高度确定的单行文本：设置height = line-height;</p>
+</li>
+<li><p>父元素高度确定的多行文本：</p>
+<ol>
+<li><p>插入table(和水平居中一致)，设置vertical-align:middle;</p>
+</li>
+<li><p>先设置display:table-cell，在设置vertical-align: middle;  </p>
+</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<p>&emsp;&emsp;下面就提供几种居中的方法：</p>
+<h4 id="1-使用定位：position-absolute-设置left、top、margin-left、margin-top属性。"><a href="#1-使用定位：position-absolute-设置left、top、margin-left、margin-top属性。" class="headerlink" title="1.使用定位：position:absolute;设置left、top、margin-left、margin-top属性。"></a>1.使用定位：position:absolute;设置left、top、margin-left、margin-top属性。</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">margin-top</span>: -<span class="number">50px</span>;</span><br><span class="line">    <span class="attribute">margin-left</span>: -<span class="number">50px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;这种方法好处是浏览器基本都能兼容，不足的地方就是需要我们固定宽高。</p>
+<h4 id="2-使用position-absolute-设置top、bottom、right、left为0，margin-auto"><a href="#2-使用position-absolute-设置top、bottom、right、left为0，margin-auto" class="headerlink" title="2.使用position: absolute;设置top、bottom、right、left为0，margin:auto;"></a>2.使用position: absolute;设置top、bottom、right、left为0，margin:auto;</h4></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>11 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/HTML-CSS/">HTML/CSS</a><span class="category-list-count">2</span></li></ul></li></ul></li></ul><ul class="pagination"><li class="current"><a>1</a></li></ul><div class="page-footer"><div class="top"><ul class="social"><li><a href="https://github.com/reeves7" title="Github" target="_blank"><i class="icon icon-github"></i></a></li><li><a href="i@wangx.me" title="email" target="_blank"><i class="icon icon-email"></i></a></li></ul></div><div class="bottom"><p class="copyright">© 2018 Wangx's blog<br><small>POWER BY <a href="https://hexo.io" target="_blank">HEXO</a></small></p></div></div></div><script>var wrap = document.getElementById('wrap');
+window.onload = function () {
+  wrap.className += ' done';
+}</script></body></html>
