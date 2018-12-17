@@ -14,7 +14,20 @@
 <p>  <strong>1.删除文章或迁移文章会导致hexo出错，无法生成静态文件也无法部署。</strong><br>  &emsp;&emsp;我第一次是删除了原有的一篇helloword文章，然后部署就报错了，当时看是hexo官方一个api库的报错，就以为是自己操作的锅，没办法我就重新来过部署了一遍hexo。然后我将wordpress的文章迁移过来的时候，也报了相同的错误，就觉得这不是偶然，然我去看了主题中引的这个库，防线报错的地方是一个比较低级的错误，一个过滤htmltag的函数，这个函数接收一个字符串，如果字符串非空就过滤htmltag并返回，如果为空返回null，然后在调用这个方法的基础上又使用了substring，顿时就黑人问号脸了…<br>  &emsp;&emsp;substring()是js字符串的一个方法，但前面那个方法为空会返回null，null是一个空对象，这里是解析不了的。所以我就修改了这个地方，测试了一下就解决了这个bug。</p>
 <h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><hr>
 <p>  &emsp;&emsp;还是花了几个晚上的时间来搞这个博客，希望也是一个好的开始。另外还有一些问题可能记不太清楚了。<br>  &emsp;&emsp;看了整篇，怎么没有一张图？？？本来想截图引入的，但是发现好像不是比较好的做法，看到网上建议用七牛云做图床的，准备在搞一搞一起把图片弄上来。</p>
-</div><div class="article-meta" style="max-width:800px"><div class="tags"><i class="icon icon-tag"></i><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/firstblood/">firstblood</a><span class="tag-list-count">1</span></li></ul></div><div class="categories"><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a><span class="category-list-count">1</span></li></ul></div></div><ul class="navication"><li class="home"><a href="/"><i class="icon icon-home"></i></a></li><li><a href="/2018/08/14/tujiehttp/"><i class="icon icon-arror-left"></i></a></li><li><a href="/2018/08/05/vueconponentscommunity/"><i class="icon icon-arror-right"></i></a></li></ul><div class="page-footer"><div class="top"><ul class="social"><li><a href="https://github.com/reeves7" title="Github" target="_blank"><i class="icon icon-github"></i></a></li><li><a href="i@wangx.me" title="email" target="_blank"><i class="icon icon-email"></i></a></li></ul></div><div class="bottom"><p class="copyright">© 2018 Wangx's blog<br><small>POWER BY <a href="https://hexo.io" target="_blank">HEXO</a></small></p></div></div></div><script>var wrap = document.getElementById('wrap');
+</div><div class="article-meta" style="max-width:800px"><div class="tags"><i class="icon icon-tag"></i><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/firstblood/">firstblood</a><span class="tag-list-count">1</span></li></ul></div><div class="categories"><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a><span class="category-list-count">1</span></li></ul></div></div><div class="article-comment" style="max-width:800px"><div class="ds-thread" id="ds-thread" data-thread-key="cjprntivj000adjtgckdnjz6d" data-title="怒提Hexo一血" data-url="http://yoursite.com/2018/08/12/firstblood/" site-name="wangxsblog"></div><script>var siteName = document.getElementById('ds-thread').getAttribute('site-name');
+var duoshuoQuery = {short_name: siteName};
+(function() {
+  if (document.getElementById('ds-thread')) {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//' + duoshuoQuery.short_name + '.disqus.com/embed.js';
+    ds.charset = 'UTF-8';
+    console.log(document.getElementsByTagName('head')[0]);
+    console.log(document.getElementsByTagName('body')[0]);
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  }
+})();</script></div><ul class="navication"><li class="home"><a href="/"><i class="icon icon-home"></i></a></li><li><a href="/2018/08/14/tujiehttp/"><i class="icon icon-arror-left"></i></a></li><li><a href="/2018/08/05/vueconponentscommunity/"><i class="icon icon-arror-right"></i></a></li></ul><div class="page-footer"><div class="top"><ul class="social"><li><a href="https://github.com/reeves7" title="Github" target="_blank"><i class="icon icon-github"></i></a></li><li><a href="i@wangx.me" title="email" target="_blank"><i class="icon icon-email"></i></a></li></ul></div><div class="bottom"><p class="copyright">© 2018 Wangx's blog<br><small>POWER BY <a href="https://hexo.io" target="_blank">HEXO</a></small></p></div></div></div><script>var wrap = document.getElementById('wrap');
 window.onload = function () {
   wrap.className += ' done';
 }</script></body></html>
