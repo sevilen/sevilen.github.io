@@ -15,7 +15,20 @@
 <p>&emsp;&emsp;验证了之后发现直接修改原数据还是会给warning，所以还是需要用到第一种解决方案来处理一下数据，折中，毕竟对于强迫症来说一直给wraning也挺糟的，虽然用户感觉不到，但我们还是得处理一下。</p>
 <p>&emsp;&emsp;主要就是添加自定义事件input-done，然后在父组件中监听该事件，输入完成，焦点离开后，就触发该提交事件，父组件监听到该事件就会将数据修改为newTitle，这样就完成了提交。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>&emsp;&emsp;数据单向流动就是确保数据的安全性，可以向下但不能(是不建议)向上，因为向上可能会涉及一些问题，所以有时候有需求的时候，麻烦还是得麻烦一下。因为这样做虽然麻烦了，但是避免了修改原数据，保证了数据的安全、可靠，值得推荐使用(我当然不是觉得一堆warning看着难受:)。</p>
-</div><div class="article-meta" style="max-width:800px"><div class="tags"><i class="icon icon-tag"></i><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/component/">component</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单向流动/">单向流动</a><span class="tag-list-count">1</span></li></ul></div><div class="categories"><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a><span class="category-list-count">7</span></li></ul></div></div><ul class="navication"><li class="home"><a href="/"><i class="icon icon-home"></i></a></li><li><a href="/2018/09/09/vueslot/"><i class="icon icon-arror-left"></i></a></li><li><a href="/2018/08/26/vuedoublesidedbind/"><i class="icon icon-arror-right"></i></a></li></ul><div class="page-footer"><div class="top"><ul class="social"><li><a href="https://github.com/reeves7" title="Github" target="_blank"><i class="icon icon-github"></i></a></li><li><a href="i@wangx.me" title="email" target="_blank"><i class="icon icon-email"></i></a></li></ul></div><div class="bottom"><p class="copyright">© 2018 Wangx's blog<br><small>POWER BY <a href="https://hexo.io" target="_blank">HEXO</a></small></p></div></div></div><script>var wrap = document.getElementById('wrap');
+</div><div class="article-meta" style="max-width:800px"><div class="tags"><i class="icon icon-tag"></i><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/component/">component</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单向流动/">单向流动</a><span class="tag-list-count">1</span></li></ul></div><div class="categories"><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a><span class="category-list-count">7</span></li></ul></div></div><div class="article-comment" style="max-width:800px"><div class="ds-thread" id="disqus_thread" data-thread-key="cjprntj16002kdjtga183ol8g" data-title="Vue数据单向流动" data-url="http://yoursite.com/2018/09/02/vue-sigleway-flow/" site-name="wangxsblog"></div><script>var siteName = document.getElementById('disqus_thread').getAttribute('site-name');
+var duoshuoQuery = {short_name: siteName};
+(function() {
+  if (document.getElementById('disqus_thread')) {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//' + duoshuoQuery.short_name + '.disqus.com/embed.js';
+    ds.charset = 'UTF-8';
+    console.log(document.getElementsByTagName('head')[0]);
+    console.log(document.getElementsByTagName('body')[0]);
+    (document.getElementsByTagName('html')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  }
+})();</script></div><ul class="navication"><li class="home"><a href="/"><i class="icon icon-home"></i></a></li><li><a href="/2018/09/09/vueslot/"><i class="icon icon-arror-left"></i></a></li><li><a href="/2018/08/26/vuedoublesidedbind/"><i class="icon icon-arror-right"></i></a></li></ul><div class="page-footer"><div class="top"><ul class="social"><li><a href="https://github.com/reeves7" title="Github" target="_blank"><i class="icon icon-github"></i></a></li><li><a href="i@wangx.me" title="email" target="_blank"><i class="icon icon-email"></i></a></li></ul></div><div class="bottom"><p class="copyright">© 2018 Wangx's blog<br><small>POWER BY <a href="https://hexo.io" target="_blank">HEXO</a></small></p></div></div></div><script>var wrap = document.getElementById('wrap');
 window.onload = function () {
   wrap.className += ' done';
 }</script></body></html>
