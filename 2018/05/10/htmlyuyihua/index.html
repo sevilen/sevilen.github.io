@@ -1,4 +1,63 @@
-<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="email=no"><meta name="description" content="web developer."><meta name="keywords" content="Vuejs"><title>HTML语义化&amp;HTML5 - Wangx's blog</title><link rel="stylesheet" href="/css/main_style.min.css"><link rel="icon" href="/favicon.ico"></head><body><input id="navi" type="checkbox"><ul class="main-navication"><li><a href="/"><span>Home</span></a></li><li><a href="https://github.com/reeves7"><span>Github</span></a></li><li><a href="https://www.v2ex.com/"><span>V2EX</span></a></li><li><a href="http://chongzi7.lofter.com/"><span>Chongzi</span></a></li><li><a href="https://isjaakko.github.io/"><span>Jaakko</span></a></li><li><a href="https://zhanl.github.io/"><span>Zhan L</span></a></li><li><a href="https://blog.caojun.xyz/"><span>Cao jun</span></a></li><li><a href="https://blog.return0.top/"><span>Nrehearsal</span></a></li><li><a href="https://blog.ache.fun/"><span>ache</span></a></li></ul><div class="wrapper" id="wrap"><div class="post-header"><label class="navi-button light" for="navi">MENU</label><img class="background" src="/article-bg.jpg"><div class="post-title"><h1 class="title">HTML语义化&amp;HTML5</h1><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>4 Minutes</li><li><i class="icon icon-calendar"></i>2018年5月10日</li></ul></div></div><div class="article-content" style="max-width:800px"><h2 id="1、什么是HTML语义化？"><a href="#1、什么是HTML语义化？" class="headerlink" title="1、什么是HTML语义化？"></a>1、什么是HTML语义化？</h2><p>&emsp;&emsp;就我自己理解来说，HTML是超文本标记语言。语义化就是让我们清楚整个页面的结构，不论是从代码还是文本内容，不仅要我们人清楚，也要让机器清楚。纯HTML不带样式的时候，我们也能通过代码知道标签标记的是什么内容。比如H标签，我们知道这是一个标题，p一个段落，table表格，form表单等等。HTML5更加注重语义化，新增了很多语义化的标签，如header、nav、footer、article等。关于语义化一些更多的内容可以看这个<a href="https://www.zhihu.com/question/20455165" title="如何理解 Web 语义化？" target="_blank" rel="noopener">如何理解 Web 语义化？</a></p>
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="web developer.">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    HTML语义化&amp;HTML5 |
+    
+    Wangx&#39;s blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-htmlyuyihua" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      HTML语义化&amp;HTML5
+    </h1>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/05/10/htmlyuyihua/" class="article-date">
+  <time datetime="2018-05-10T13:05:59.000Z" itemprop="datePublished">2018-05-10</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/HTML-CSS/">HTML/CSS</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <h2 id="1、什么是HTML语义化？"><a href="#1、什么是HTML语义化？" class="headerlink" title="1、什么是HTML语义化？"></a>1、什么是HTML语义化？</h2><p>&emsp;&emsp;就我自己理解来说，HTML是超文本标记语言。语义化就是让我们清楚整个页面的结构，不论是从代码还是文本内容，不仅要我们人清楚，也要让机器清楚。纯HTML不带样式的时候，我们也能通过代码知道标签标记的是什么内容。比如H标签，我们知道这是一个标题，p一个段落，table表格，form表单等等。HTML5更加注重语义化，新增了很多语义化的标签，如header、nav、footer、article等。关于语义化一些更多的内容可以看这个<a href="https://www.zhihu.com/question/20455165" title="如何理解 Web 语义化？" target="_blank" rel="noopener">如何理解 Web 语义化？</a></p>
 <h2 id="2、为什么要语义化？"><a href="#2、为什么要语义化？" class="headerlink" title="2、为什么要语义化？"></a>2、为什么要语义化？</h2><p>&emsp;&emsp;在此之前，我写代码也基本上是全篇用div+css实现整个页面结构的，既然我们使用div+css就可以了，为什么还要使用语义化呢？  </p>
 <p>&emsp;&emsp;从实现的效果上看，使用语义化的代码和div+css的代码并没有区别，但是代码不仅是给人看的，机器也要看。从维护上面来说，语义化标签比满篇div更好维护，在页面出问题时，语义化会更加的友好。  </p>
 <p>&emsp;&emsp;语义化的好处在于建立起好的HTML结构，使搜索引擎更容易建立索引、抓取。另外就是结构清晰，便于开发人员维护。（大厂的做法，比如阿里的淘宝在div+css实现之余，也会用一些语义化的标签进行强调）  </p>
@@ -41,20 +100,126 @@
 </li>
 </ul>
 <h2 id="6、关于HTML5"><a href="#6、关于HTML5" class="headerlink" title="6、关于HTML5"></a>6、关于HTML5</h2><p>&emsp;&emsp;HTML5对于用户来说，提高了用户体验，加强了视觉感受。HTML5技术在移动端，能够让应用程序回归到网页，并对网页的功能进行扩展，用户不需要下载客户端或插件就能够观看视频、玩游戏，操作更加简单，用户体验更好。HTML5的视音频新技术解决了移动端苹果和安卓4.0+，对flash的支持问题。在视音频方面，性能表现比flash要更好。网页表现方面，HTML5中的CSS3特效样式、Canvas、webgl的介入，不仅加强了网页的视觉效果，甚至能够使用户在网页当中看到三维立体特效。<br>&emsp;&emsp;对于开发者来说，HTML5技术跨平台，适配多终端。传统移动终端上的Native App，开发者的研发工作必须针对不同的进行，成本相对较高。Native App对于用户还存在着管理成本、存储成本以及性能消耗成本。HTML/JavaScript/所开发的应用只要一次开发就能进入所有进行分发。即使是走传统的App Store应用商店渠道，只需要再将底层用HTML5开发的应用“封装”为App，从时间和上讲远小于跨系统移植。<br>&emsp;&emsp;对于来说，HTML5新增的标签，使更加容易抓取和索引网页，从而驱动网站获得更多的点击流量。也就是上文提到的语义化。</p>
-</div><div class="article-meta" style="max-width:800px"><div class="categories"><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/HTML-CSS/">HTML/CSS</a><span class="category-list-count">2</span></li></ul></div></div><div class="article-comment" style="max-width:800px"><div class="ds-thread" id="disqus_thread" data-thread-key="cjq0x3jhu000hb01bn6hypvvr" data-title="HTML语义化&amp;HTML5" data-url="https://blog.wangx.com/2018/05/10/htmlyuyihua/" site-name="wangxs-blog"></div><script>var siteName = document.getElementById('disqus_thread').getAttribute('site-name');
-var duoshuoQuery = {short_name: siteName};
-(function() {
-  if (document.getElementById('disqus_thread')) {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//' + duoshuoQuery.short_name + '.disqus.com/embed.js';
-    ds.charset = 'UTF-8';
-    console.log(document.getElementsByTagName('head')[0]);
-    console.log(document.getElementsByTagName('body')[0]);
-    (document.getElementsByTagName('html')[0] 
-    || document.getElementsByTagName('body')[0]).appendChild(ds);
-  }
-})();</script></div><ul class="navication"><li class="home"><a href="/"><i class="icon icon-home"></i></a></li><li><a href="/2018/05/27/eventloop/"><i class="icon icon-arror-left"></i></a></li><li><a href="/2018/05/07/csscenter/"><i class="icon icon-arror-right"></i></a></li></ul><div class="page-footer"><div class="top"><ul class="social"><li><a href="https://github.com/reeves7" title="Github" target="_blank"><i class="icon icon-github"></i></a></li><li><a href="i@wangx.me" title="email" target="_blank"><i class="icon icon-email"></i></a></li></ul></div><div class="bottom"><p class="copyright">© 2018 Wangx's blog<br><small>POWER BY <a href="https://hexo.io" target="_blank">HEXO</a></small></p></div></div></div><script>var wrap = document.getElementById('wrap');
-window.onload = function () {
-  wrap.className += ' done';
-}</script></body></html>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.wangx.com/2018/05/10/htmlyuyihua/" data-id="cjqm70bqv000od91bakefd5jf" class="article-share-link">分享</a>
+      
+    </footer>
+
+  </div>
+
+  
+    
+  <nav class="article-nav">
+    
+      <a href="/2018/05/27/eventloop/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer posts</strong>
+        <div class="article-nav-title">
+          
+            【转载】深入理解JavaScript事件循环(Eventloop)和microtask
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2018/05/07/csscenter/" class="article-nav-link">
+        <strong class="article-nav-caption">Older posts</strong>
+        <div class="article-nav-title">【CSS】css居中方案</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+    
+  
+
+</article>
+
+
+
+</section>
+  <footer class="footer">
+  
+  <div class="outer">
+    <ul class="list-inline">
+      <li>&copy; 2019 Wangx&#39;s blog</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <li>Theme  <a href="https://zhwangart.github.io">zhwangart</a></li> -->
+      <!--
+      <li><a href="/">wangx</a></li>
+      -->
+    </ul>
+  </div>
+</footer>
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/wangx.png" alt="Wangx&#39;s blog"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">文章</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">相册</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/search.js"></script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>

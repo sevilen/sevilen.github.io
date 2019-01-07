@@ -1,33 +1,209 @@
-<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="email=no"><meta name="description" content="web developer."><meta name="keywords" content="Vuejs"><title>Wangx's blog - Whatever is worth doing is worth doing well.</title><link rel="stylesheet" href="/css/main_style.min.css"><link rel="icon" href="/favicon.ico"></head><body><input id="navi" type="checkbox"><ul class="main-navication"><li><a href="/"><span>Home</span></a></li><li><a href="https://github.com/reeves7"><span>Github</span></a></li><li><a href="https://www.v2ex.com/"><span>V2EX</span></a></li><li><a href="http://chongzi7.lofter.com/"><span>Chongzi</span></a></li><li><a href="https://isjaakko.github.io/"><span>Jaakko</span></a></li><li><a href="https://zhanl.github.io/"><span>Zhan L</span></a></li><li><a href="https://blog.caojun.xyz/"><span>Cao jun</span></a></li><li><a href="https://blog.return0.top/"><span>Nrehearsal</span></a></li><li><a href="https://blog.ache.fun/"><span>ache</span></a></li></ul><div class="wrapper" id="wrap"><div class="page-header"><label class="navi-button" for="navi">MENU</label><div class="background"><img src="/home-bg.jpg"></div><div class="author"><div class="head"><img src="/wangx.jpg"></div><h3 class="name">wangx</h3><p class="signature">Whatever is worth doing is worth doing well.</p></div></div><ul class="post-list" style="max-width:800px"><li> <p class="date">2018年12月23日</p><h4 class="title"><a href="/2018/12/23/vue-deep-and-shallow-copy/">关于踩坑的问题</a></h4><div class="excerpt"><p>&emsp;&emsp;这周在完成一个功能之后，回过头去看自己的代码竟然发现自己有点看不懂了，也才完成一周不到的时间。看不懂的原因也很简单，父组件有一个对象数组，传递给其中一个子组件，然后会对组件中的对象修改，而修改的操作是这个子组件的兄弟组件去完成的，修改完成之后会将修改后的结果返回给父组件，然而子组件中的数据也相应的修改了，不明白其原因。想了一会儿才关联到可能是跟浅拷贝有关。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// 父组件</span><br><span class="line">&lt;template lang=&quot;html&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;parent&quot;&gt;</span><br><span class="line">        &lt;eldest-son :arr=&quot;arr&quot;&gt;&lt;/eldest-son&gt;</span><br><span class="line">        &lt;younger-son :arrItem=&quot;arrItem&quot; @data-changed=&quot;dataChanged&quot;&gt;&lt;/younger-son&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script lang=&quot;ts&quot;&gt;</span><br><span class="line">	public arr: Person[] = [</span><br><span class="line">        &#123;</span><br><span class="line">            name: &apos;bob&apos;,</span><br><span class="line">            age: 18,</span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            name: &apos;jack&apos;,</span><br><span class="line">            age: 14,</span><br><span class="line">        &#125;,</span><br><span class="line">    ];</span><br><span class="line">    public arrItem: Person = arr[0];</span><br><span class="line">    </span><br><span class="line">    public dataChanged(newPerson: Person): void &#123;</span><br><span class="line">		this.arrItem = newPerson;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;问题差不多就是这样，更恰好的是当时的功能正好是这样的需求，就是要修改<code>eldest-son</code>中的数据。写完之后去看觉得通过数据渲染的框架，对待数据会严谨很多，第一时间并没有往浅拷贝上去想这个问题，看了一会儿之后发现是对数组进行操作的，才联想到浅拷贝。</p>
-<p>&emsp;&emsp;在JavaScript中，深、浅拷贝问题只针对复杂对象，array和object。关于深浅拷贝之前已经看过一些文章了，也是一个很简单的问题，就不再赘诉深浅拷贝的原理和实现了，有很多优秀的文章。而恰好我这里的需求就是要通过浅拷贝这种方式实现，不然在子组件中修改后的数据还要通过父组件中转一下。</p>
-<p>&emsp;&emsp;通过这个小问题，再次让我意识到注释的重要性，即使是自己一个人开发项目。有时候解决问题的想法可能是在一瞬间得到的灵感，写完之后虽然觉得实现的简单，如果不加上注释，后面再看代码的时候可能很难想到，就要花更多的时间去读。所以，还是得写一篇文章来警示下自己，有些东西对于自己再简单，尽可能的在实现功能后加上注释，方便别人也方便自己阅读。</p>
-<p>&emsp;&emsp;另外联想到的就是，遇到的一些小问题一定要记录一下，特别是自己做过的一些东西，如果不记一下很快就忘掉了，下次遇到的时候还会再犯错，是很不值得的一件事。现在已经有一点习惯，会在自己遇到一些问题的时候，会用网易云笔记记录下来，希望能继续保持这样的态度。</p>
-<p>&emsp;&emsp;最后感觉自己读书和看文档的专注度不够，只看到了皮毛，学会了使用，在使用的过程中还会踩坑。我觉得这样也并不是一件坏事，但这提醒了我，看完一定要尝试一下，及时发现不足，然后弥补。现在感觉好像好些书我都得再读一遍啊…</p>
-</div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>3 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年12月15日</p><h4 class="title"><a href="/2018/12/15/about-dual-channel-memory/">关于安装双通道内存</a></h4><div class="excerpt"><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>&emsp;&emsp;自己之前的主力机(宏碁的V神系列)，上大学的时候买的，在当时算性价比比较高的了，而且杜比音效和屏幕真的秒杀当时同寝室以及隔壁寝室的其他本子。但是买回来用了一段时间发现体验不是很好，就是慢、卡顿，还拿去买笔记本的店让老板给我看下，然后他就重装了个系统(当时还是个萌新)，后面回去用了一段时间之后还是老问题，就攒钱加了个固态，简直是质的飞跃，一直到现在。</p>
-<p>&emsp;&emsp;虽然现在没怎么用那个本子了，但是也不舍得送人或者卖掉，偶尔想打打游戏，电脑又很吃力，CPU和显卡(外接显卡)又没法升级，就内存看来比较小了。听说两个4G的双通道要强于单个8G的，又不太懂内存双通道的东西，就买了一个同型号同频率不同牌的内存条升级。</p>
-<h4 id="关于双通道"><a href="#关于双通道" class="headerlink" title="关于双通道"></a>关于双通道</h4><p>&emsp;&emsp;双通道，就是MCH芯片级里设计两个内存控制器，这两个内存控制器可相互独立工作，每个控制器控制一个内存通道。在这两个内存通道，CPU可分别寻址、读取数据，从而使内存的带宽增加一倍，读取速度也相应增加一倍。</p>
-<h4 id="安装双通道注意事项"><a href="#安装双通道注意事项" class="headerlink" title="安装双通道注意事项"></a>安装双通道注意事项</h4><p>&emsp;&emsp;<strong>主板不支持弹性双通道的情况</strong></p>
-<blockquote>
-<p>&emsp;&emsp;1.相同容量</p>
-<p>&emsp;&emsp;2.相同内存条参数(时序、频率、品牌)</p>
-<p>&emsp;&emsp;3.对称的内存插槽位置</p>
-</blockquote>
-<p>&emsp;&emsp;我买的时候主要考虑容量和频率，感觉品牌对于组双通道并不重要，当然相同的当然更好。一般笔记本都是支持双通道的，特殊的轻薄本、便携本除外。</p>
-<h4 id="弹性双通道"><a href="#弹性双通道" class="headerlink" title="弹性双通道"></a>弹性双通道</h4></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>2 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/computer/">computer</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年12月8日</p><h4 class="title"><a href="/2018/12/08/vue-dynamic-components/">Vue动态组件</a></h4><div class="excerpt"><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>&emsp;&emsp;之前对Vue的了解很局限，感觉上和我实验室老师的Nodom框架很像，也可以说Nodom有一些借鉴Vue的地方，所以当时学习Vue也只是草草的入了个门，然后就从做demo开始学习。最近觉得自己用Vue好像到瓶颈期了，因为觉得Vue的教程是最好的资料，就准备认真的在过一遍Vue的教程。</p>
-<h4 id="动态组件-amp-异步组件"><a href="#动态组件-amp-异步组件" class="headerlink" title="动态组件&amp;异步组件"></a>动态组件&amp;异步组件</h4><p>&emsp;&emsp;由于项目的问题，要解决从服务端获取表单内容，来动态生成表单，这就有点触及我的知识盲区了。难道要一个一个页面写，这也太傻了吧。了解了之后大概可以分为三种可以使用的方法，动态组件、异步组件、JSX。JSX了解不多，就不深入了。异步组件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Vue.component(&apos;async-example&apos;, function (resolve, reject) &#123;</span><br><span class="line">  setTimeout(function () &#123;</span><br><span class="line">    // 向 `resolve` 回调传递组件定义</span><br><span class="line">    resolve(&#123;</span><br><span class="line">      template: &apos;&lt;div&gt;I am async!&lt;/div&gt;&apos;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;, 1000)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;通过定义工厂函数来异步解析组件定义，只有组件在需要被渲染的时候才会触发这个工厂函数，而且Vue会将结果缓存起来供未来使用。不适用动态生成多个不同表单的应用场景。</p>
-<p>&emsp;&emsp;动态组件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;component v-bind:is=&quot;currentTabComponent&quot;&gt;&lt;/component&gt;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;使用Vue的is特性来决定要加载的组件，针对使用element-ui、iview等ui框架的话生成表单、验证等要方便的多。这样一来就可以定义一套格式规范，从服务端拿到这些数据然后根据type选择相应组件生成表单，只要把统一的样式定好，就基本可以实现动态生成组件了。以iview为例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- html --&gt;</span><br><span class="line">&lt;Form&gt;</span><br><span class="line">   &lt;FormItem&gt;</span><br><span class="line">      &lt;component :is=&quot;componentName&quot;&gt;&lt;/component&gt;</span><br><span class="line">   &lt;/FormItem&gt;</span><br><span class="line">&lt;/Form&gt;</span><br><span class="line"></span><br><span class="line">// ts</span><br><span class="line">public componentName: string = &apos;Input&apos;;</span><br></pre></td></tr></table></figure></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>6 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年12月1日</p><h4 class="title"><a href="/2018/12/01/dive-into-webpack-note/">深入浅出webpack读后感</a></h4><div class="excerpt"><p>&emsp;&emsp;《深入浅出webpack》这本书是我在5.6月份的时候买的，现在想来真是太傻*了。这么说吧看了下这本书的印刷版次是2018年1月，作者在序中写到写书的时候是v3.8.1，书印刷出版之后，2月份v4.0就正式发布了。自从有了这次教训我发誓再也不会买这类工具书了，或者说前端相关的书也少买了，因为更新速度实在太快了，不过像《JavaScript语言精粹》、《CSS揭秘》这些书还是蛮推荐购买支持一下的，至少读起来不会过时。</p>
-<p>&emsp;&emsp;先回到书中，这本书作为入门webpack翻阅一下还是有一定的好处，毕竟作者将其踩过的坑告诉了你，让你避免踩同样的坑。第一章入门就大概讲了一下前端的发展和使用的技术，然后简单的提了webpack的核心loader、plugin，做了一个简单的入门的教程。第二章花了很大的篇幅介绍了webpack的entry、output、loader、plugin等具体配置，最后给出了一个总结性的配置。第三章实战就给出了一些实际的应用比如使用ES6、TypeScript、Vue框架、加载图片以及SourceMap等。在第四章优化给出了一些优化的相关内容，第五章最后给出了一些原理，如编写loader、plugin等。</p>
-<p>&emsp;&emsp;最后来总结下这本书，整体的结构设计还可以，但第二章介绍了大量的配置我觉得不太合理，东西太多了，说不定看着看着就放弃了。然后还介绍了如何应用，还介绍了如何编写loader和plugin，我觉得都是比较实在的，符合工具书的实用性。</p>
-<p>&emsp;&emsp;然后再来吐槽一下，首先作者后来把书开源了，但是第一章过后，一翻页就会弹出modal无法翻页页没法关闭，上面写着大大的几个字请购买本书纸质版，我觉得这样的方式和开源思想是有悖的。另外就是书的定价79，一本工具书是否太贵了些，就一《javascript设计模式与实践》这本书来说，写的还可以，评价也很高，书还厚的多，纸张质量也好一些，都能良心的定价59，一本工具书怎么能卖这个价的，还好我买的时候京东有优惠。另外书中那些使用实例我觉得还是以博客的方式呈现要好的多。</p>
-<p>&emsp;&emsp;对于我来说确实让我对webpack的了解更多了一些，不会像刚开始上手vue cli的时候那么手足无措了，很多东西都不知道怎么弄。另外书中还有几处是因为webpack版本的问题的错误，导致运行处问题，希望其他的读者发现配置跑着有问题,检查一两次配置之后，去搜搜是不是相关用法的版本问题可能会少走弯路。</p>
-</div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>1 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/webpack/">webpack</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul><ul class="pagination"><li class="current"><a>1</a></li></ul><div class="page-footer"><div class="top"><ul class="social"><li><a href="https://github.com/reeves7" title="Github" target="_blank"><i class="icon icon-github"></i></a></li><li><a href="i@wangx.me" title="email" target="_blank"><i class="icon icon-email"></i></a></li></ul></div><div class="bottom"><p class="copyright">© 2018 Wangx's blog<br><small>POWER BY <a href="https://hexo.io" target="_blank">HEXO</a></small></p></div></div></div><script>var wrap = document.getElementById('wrap');
-window.onload = function () {
-  wrap.className += ' done';
-}</script></body></html>
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="web developer.">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    归档: 2018/12 |
+    
+    Wangx&#39;s blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article class="articles">
+    
+    <h1 class="page-type-title">2018/12</h1>
+
+    
+    
+    
+      
+      
+        
+        
+    <div class="archives-wrap">
+      <div class="archive-year-wrap">
+        <a href="/archives/2018" class="archive-year">2018</a>
+      </div>
+      <div class="archives">
+        
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/12/23/vue-deep-and-shallow-copy/" class="archive-article-date">
+  <time datetime="2018-12-23T07:28:07.000Z" itemprop="datePublished">12/23</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/12/23/vue-deep-and-shallow-copy/">关于踩坑的问题</a>
+    </h2>
+  
+
+    </header>
+    
+  </div>
+</article>
+        
+      
+      
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/12/15/about-dual-channel-memory/" class="archive-article-date">
+  <time datetime="2018-12-15T13:40:35.000Z" itemprop="datePublished">12/15</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/12/15/about-dual-channel-memory/">关于安装双通道内存</a>
+    </h2>
+  
+
+    </header>
+    
+  </div>
+</article>
+        
+      
+      
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/12/08/vue-dynamic-components/" class="archive-article-date">
+  <time datetime="2018-12-08T10:43:21.000Z" itemprop="datePublished">12/08</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/12/08/vue-dynamic-components/">Vue动态组件</a>
+    </h2>
+  
+
+    </header>
+    
+  </div>
+</article>
+        
+      
+      
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/12/01/dive-into-webpack-note/" class="archive-article-date">
+  <time datetime="2018-12-01T12:22:38.000Z" itemprop="datePublished">12/01</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/12/01/dive-into-webpack-note/">深入浅出webpack读后感</a>
+    </h2>
+  
+
+    </header>
+    
+  </div>
+</article>
+        
+        
+      </div>
+    </div>
+    
+  
+  
+</article></section>
+  <footer class="footer">
+  
+  <div class="outer">
+    <ul class="list-inline">
+      <li>&copy; 2019 Wangx&#39;s blog</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <li>Theme  <a href="https://zhwangart.github.io">zhwangart</a></li> -->
+      <!--
+      <li><a href="/">wangx</a></li>
+      -->
+    </ul>
+  </div>
+</footer>
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/wangx.png" alt="Wangx&#39;s blog"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">文章</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">相册</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/search.js"></script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>

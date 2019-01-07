@@ -1,4 +1,63 @@
-<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="email=no"><meta name="description" content="web developer."><meta name="keywords" content="Vuejs"><title>快速生成项目结构图-tree命令的使用 - Wangx's blog</title><link rel="stylesheet" href="/css/main_style.min.css"><link rel="icon" href="/favicon.ico"></head><body><input id="navi" type="checkbox"><ul class="main-navication"><li><a href="/"><span>Home</span></a></li><li><a href="https://github.com/reeves7"><span>Github</span></a></li><li><a href="https://www.v2ex.com/"><span>V2EX</span></a></li><li><a href="http://chongzi7.lofter.com/"><span>Chongzi</span></a></li><li><a href="https://isjaakko.github.io/"><span>Jaakko</span></a></li><li><a href="https://zhanl.github.io/"><span>Zhan L</span></a></li><li><a href="https://blog.caojun.xyz/"><span>Cao jun</span></a></li><li><a href="https://blog.return0.top/"><span>Nrehearsal</span></a></li><li><a href="https://blog.ache.fun/"><span>ache</span></a></li></ul><div class="wrapper" id="wrap"><div class="post-header"><label class="navi-button light" for="navi">MENU</label><img class="background" src="/article-bg.jpg"><div class="post-title"><h1 class="title">快速生成项目结构图-tree命令的使用</h1><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>11 Minutes</li><li><i class="icon icon-calendar"></i>2018年11月11日</li></ul></div></div><div class="article-content" style="max-width:800px"><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── app.js               # 入口文件</span><br><span class="line">├── bin					 # 可执行文件</span><br><span class="line">│   └── www</span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json         # 项目信息及模块依赖</span><br><span class="line">├── public				 # 存放image、css、js等静态资源</span><br><span class="line">│   ├── images</span><br><span class="line">│   ├── javascripts</span><br><span class="line">│   └── stylesheets</span><br><span class="line">│       └── style.css</span><br><span class="line">├── routes				 # 路由文件</span><br><span class="line">│   ├── index.js</span><br><span class="line">│   └── users.js</span><br><span class="line">└── views				 # 视图/模版文件</span><br><span class="line">    ├── error.ejs</span><br><span class="line">    └── index.ejs</span><br></pre></td></tr></table></figure>
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="web developer.">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    快速生成项目结构图-tree命令的使用 |
+    
+    Wangx&#39;s blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-generate-project-structure-diagram" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      快速生成项目结构图-tree命令的使用
+    </h1>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/11/11/generate-project-structure-diagram/" class="article-date">
+  <time datetime="2018-11-11T03:23:25.000Z" itemprop="datePublished">2018-11-11</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── app.js               # 入口文件</span><br><span class="line">├── bin					 # 可执行文件</span><br><span class="line">│   └── www</span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json         # 项目信息及模块依赖</span><br><span class="line">├── public				 # 存放image、css、js等静态资源</span><br><span class="line">│   ├── images</span><br><span class="line">│   ├── javascripts</span><br><span class="line">│   └── stylesheets</span><br><span class="line">│       └── style.css</span><br><span class="line">├── routes				 # 路由文件</span><br><span class="line">│   ├── index.js</span><br><span class="line">│   └── users.js</span><br><span class="line">└── views				 # 视图/模版文件</span><br><span class="line">    ├── error.ejs</span><br><span class="line">    └── index.ejs</span><br></pre></td></tr></table></figure>
 <p>&emsp;&emsp;上面这种树形项目结构图在前端项目介绍中非常常见，之前都以为是通过生成器生成或是手敲的，今天才发现linux下使用tree命令就可以直接生成上面的项目结构图。mark一下。</p>
 <h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>&emsp;&emsp;这里就介绍mac的安装方法，通过homebrew安装就可以了。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">brew install tree</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装完成之后查看安装成功与否</span></span><br><span class="line">tree --version</span><br><span class="line"><span class="meta">#</span><span class="bash"> tree v1.7.0 (c) 1996 - 2014 by Steve Baker, Thomas Moore, Francesc Rocher, Florian Sesser, Kyosuke Tokoro</span></span><br><span class="line">tree --help # 查看帮助</span><br></pre></td></tr></table></figure>
@@ -7,20 +66,128 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-d # 只显示目录</span><br><span class="line">-I # 忽略目录或文件</span><br><span class="line">tree -I "node_modules|*.png"</span><br><span class="line">-f # 显示完整路径和文件</span><br></pre></td></tr></table></figure>
 <p>&emsp;&emsp;上面的项目结构图我是用以下命令生成的：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tree -I "node_modules"</span><br></pre></td></tr></table></figure>
-</div><div class="article-meta" style="max-width:800px"><div class="tags"><i class="icon icon-tag"></i><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tree/">tree</a><span class="tag-list-count">1</span></li></ul></div><div class="categories"><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li></ul></div></div><div class="article-comment" style="max-width:800px"><div class="ds-thread" id="disqus_thread" data-thread-key="cjq0x3jhy000nb01byc6qup15" data-title="快速生成项目结构图-tree命令的使用" data-url="https://blog.wangx.com/2018/11/11/generate-project-structure-diagram/" site-name="wangxs-blog"></div><script>var siteName = document.getElementById('disqus_thread').getAttribute('site-name');
-var duoshuoQuery = {short_name: siteName};
-(function() {
-  if (document.getElementById('disqus_thread')) {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//' + duoshuoQuery.short_name + '.disqus.com/embed.js';
-    ds.charset = 'UTF-8';
-    console.log(document.getElementsByTagName('head')[0]);
-    console.log(document.getElementsByTagName('body')[0]);
-    (document.getElementsByTagName('html')[0] 
-    || document.getElementsByTagName('body')[0]).appendChild(ds);
-  }
-})();</script></div><ul class="navication"><li class="home"><a href="/"><i class="icon icon-home"></i></a></li><li><a href="/2018/11/11/node-express-http-server/"><i class="icon icon-arror-left"></i></a></li><li><a href="/2018/11/04/typescript-generics/"><i class="icon icon-arror-right"></i></a></li></ul><div class="page-footer"><div class="top"><ul class="social"><li><a href="https://github.com/reeves7" title="Github" target="_blank"><i class="icon icon-github"></i></a></li><li><a href="i@wangx.me" title="email" target="_blank"><i class="icon icon-email"></i></a></li></ul></div><div class="bottom"><p class="copyright">© 2018 Wangx's blog<br><small>POWER BY <a href="https://hexo.io" target="_blank">HEXO</a></small></p></div></div></div><script>var wrap = document.getElementById('wrap');
-window.onload = function () {
-  wrap.className += ' done';
-}</script></body></html>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.wangx.com/2018/11/11/generate-project-structure-diagram/" data-id="cjqm70bqs000id91bimd6l5sw" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tree/">tree</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+    
+  <nav class="article-nav">
+    
+      <a href="/2018/11/11/node-express-http-server/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer posts</strong>
+        <div class="article-nav-title">
+          
+            node.js+express搭建简单的web服务器
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2018/11/04/typescript-generics/" class="article-nav-link">
+        <strong class="article-nav-caption">Older posts</strong>
+        <div class="article-nav-title">TypeScript泛型</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+    
+  
+
+</article>
+
+
+
+</section>
+  <footer class="footer">
+  
+  <div class="outer">
+    <ul class="list-inline">
+      <li>&copy; 2019 Wangx&#39;s blog</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <li>Theme  <a href="https://zhwangart.github.io">zhwangart</a></li> -->
+      <!--
+      <li><a href="/">wangx</a></li>
+      -->
+    </ul>
+  </div>
+</footer>
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/wangx.png" alt="Wangx&#39;s blog"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">文章</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">相册</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/search.js"></script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>

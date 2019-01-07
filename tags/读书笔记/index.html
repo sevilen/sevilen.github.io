@@ -1,21 +1,201 @@
-<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="email=no"><meta name="description" content="web developer."><meta name="keywords" content="Vuejs"><title>Wangx's blog - Whatever is worth doing is worth doing well.</title><link rel="stylesheet" href="/css/main_style.min.css"><link rel="icon" href="/favicon.ico"></head><body><input id="navi" type="checkbox"><ul class="main-navication"><li><a href="/"><span>Home</span></a></li><li><a href="https://github.com/reeves7"><span>Github</span></a></li><li><a href="https://www.v2ex.com/"><span>V2EX</span></a></li><li><a href="http://chongzi7.lofter.com/"><span>Chongzi</span></a></li><li><a href="https://isjaakko.github.io/"><span>Jaakko</span></a></li><li><a href="https://zhanl.github.io/"><span>Zhan L</span></a></li><li><a href="https://blog.caojun.xyz/"><span>Cao jun</span></a></li><li><a href="https://blog.return0.top/"><span>Nrehearsal</span></a></li><li><a href="https://blog.ache.fun/"><span>ache</span></a></li></ul><div class="wrapper" id="wrap"><div class="page-header"><label class="navi-button" for="navi">MENU</label><div class="background"><img src="/home-bg.jpg"></div><div class="author"><div class="head"><img src="/wangx.jpg"></div><h3 class="name">wangx</h3><p class="signature">Whatever is worth doing is worth doing well.</p></div></div><ul class="post-list" style="max-width:800px"><li> <p class="date">2018年12月1日</p><h4 class="title"><a href="/2018/12/01/dive-into-webpack-note/">深入浅出webpack读后感</a></h4><div class="excerpt"><p>&emsp;&emsp;《深入浅出webpack》这本书是我在5.6月份的时候买的，现在想来真是太傻*了。这么说吧看了下这本书的印刷版次是2018年1月，作者在序中写到写书的时候是v3.8.1，书印刷出版之后，2月份v4.0就正式发布了。自从有了这次教训我发誓再也不会买这类工具书了，或者说前端相关的书也少买了，因为更新速度实在太快了，不过像《JavaScript语言精粹》、《CSS揭秘》这些书还是蛮推荐购买支持一下的，至少读起来不会过时。</p>
-<p>&emsp;&emsp;先回到书中，这本书作为入门webpack翻阅一下还是有一定的好处，毕竟作者将其踩过的坑告诉了你，让你避免踩同样的坑。第一章入门就大概讲了一下前端的发展和使用的技术，然后简单的提了webpack的核心loader、plugin，做了一个简单的入门的教程。第二章花了很大的篇幅介绍了webpack的entry、output、loader、plugin等具体配置，最后给出了一个总结性的配置。第三章实战就给出了一些实际的应用比如使用ES6、TypeScript、Vue框架、加载图片以及SourceMap等。在第四章优化给出了一些优化的相关内容，第五章最后给出了一些原理，如编写loader、plugin等。</p>
-<p>&emsp;&emsp;最后来总结下这本书，整体的结构设计还可以，但第二章介绍了大量的配置我觉得不太合理，东西太多了，说不定看着看着就放弃了。然后还介绍了如何应用，还介绍了如何编写loader和plugin，我觉得都是比较实在的，符合工具书的实用性。</p>
-<p>&emsp;&emsp;然后再来吐槽一下，首先作者后来把书开源了，但是第一章过后，一翻页就会弹出modal无法翻页页没法关闭，上面写着大大的几个字请购买本书纸质版，我觉得这样的方式和开源思想是有悖的。另外就是书的定价79，一本工具书是否太贵了些，就一《javascript设计模式与实践》这本书来说，写的还可以，评价也很高，书还厚的多，纸张质量也好一些，都能良心的定价59，一本工具书怎么能卖这个价的，还好我买的时候京东有优惠。另外书中那些使用实例我觉得还是以博客的方式呈现要好的多。</p>
-<p>&emsp;&emsp;对于我来说确实让我对webpack的了解更多了一些，不会像刚开始上手vue cli的时候那么手足无措了，很多东西都不知道怎么弄。另外书中还有几处是因为webpack版本的问题的错误，导致运行处问题，希望其他的读者发现配置跑着有问题,检查一两次配置之后，去搜搜是不是相关用法的版本问题可能会少走弯路。</p>
-</div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>1 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/webpack/">webpack</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年11月4日</p><h4 class="title"><a href="/2018/11/04/css-world-note/">css世界读书笔记</a></h4><div class="excerpt"><p>&emsp;&emsp;一直以来都觉得前端CSS可能是最难学的，emm..最难学好学精的。直到现在写CSS，有时候遇到一些小问题都不知道怎么回事，甚至有时候还会写一些无用的的属性，是在我用了语法检测才发现以前写的部分CSS其实是不正确的。有时候不明白一些属性的原理，你加很多CSS是完全不会生效的。</p>
-<p>&emsp;&emsp;遇到CSS问题的时候特别是比较棘手的问题，张鑫旭的博客中几乎都能找到。所以对于张鑫旭在CSS方面的造诣还是比较佩服的，希望能从《CSS世界》这本书中学习到不一样的东西。但是首先先就要吐槽一下，蹩脚的比喻和美式幽默的腔调确实不适合我，如果少一点废话，这本书至少可以省去1/3的篇幅。</p>
-<p>&emsp;&emsp;内容上设计上这本书着重于CSS2，比较贴近实际，CSS3新增了很多内容，也纠正了一些之前设计上的问题。如box-sizing等，但更多的则是CSS动画，使用CSS3动画相较于之前的JS动画，可以大大减少页面的重排和重绘，从而提高网页性能。但在实际开发中更注重于实现而不是动画，个人感觉动画只是点缀，提升用户体验。在实现层CSS2更为重要，学习CSS背后的技术内幕。</p>
-<p>&emsp;&emsp;相较于其他编程语言，CSS毫无逻辑可言，所有的东西都像堆叠起来的一样，所以叫层叠样式表?对于每一条CSS属性都有其作用，如一个span是属于内联元素(inline)，是不能设置width和height的，如果使用的display属性设为block、inline-block或其它块元素，就可以为其设置宽高了。例如书中在块级元素提到的清除浮动方法：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.clear</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">	<span class="attribute">display</span>: block;</span><br><span class="line">	<span class="attribute">clear</span>: both;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在很长的一段时间里我都是使用clear:both，而且并不是使用伪类的方式。除了block还可以使用table、list-item.</p>
-<p>&emsp;&emsp;还有height的问题，经常会遇到设置height: 100%，实际高度永远是0，如果不明白计算方式那么永远都是0。就之前做项目的时候实现一个footer沉底，内容不足铺满一页沉底，超出页面就往下堆叠。其实思路很简单，就是footer绝对定位，bottom为0。但是代码这么写了却永远不生效。因为高度计算不正确，绝对定位就不能成功定位。vue项目中：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#app</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.footer</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">60px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在vue项目中一般footer的父元素大都不是app，可能还会有，所以这样做不ok，那么给app和footer之间的元素都加上height: 100%就可以了吗，也不行，其实实际动手试一下，调试选中app如果页面内容不足铺满屏幕，那么app的高度也不是窗口的高度，因为还少了一部分：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span>, <span class="selector-tag">body</span> &#123;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>4 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年10月7日</p><h4 class="title"><a href="/2018/10/07/definitity-guide-of-git/">Git权威指南读书笔记</a></h4><div class="excerpt"><p>&emsp;&emsp;对于git的接触我也算较晚的，应该是到了大二会有一些团队项目，才开始使用git。也仅仅局限于简单的了解，对于很多原理都不了解，出了问题，就只有找百度。在实验室老师也只推崇svn，当时也是一个接近10人的团队提交代码。大家也都是用的GUI，记得当时三天两头就会出问题。后来因为要找实习就转到git上来了，而且大部分开源项目都发布在github等社区。后来在工作中又出过事故，觉得还是得好好了解下git。在推荐下看了git权威指南这本书。</p>
-<p>&emsp;&emsp;这本书怎么说呢？有亮点也有缺点，这是必然的。先说亮点，文章条理和章节设计非常合理，而且在前言里还推荐了不同人群的阅读重点。根据阅读重点，我基本上第一篇就是简单阅读掠过，第二篇就也粗略的过了一下，相比第一篇投入时间的更多一些，第三篇是作者推荐的重点阅读篇，花的时间较多，但是很多东西接触的不多或者甚至没有接触，所以读起来有些晦涩的感觉。结合作者的例子读起来稍好一些，然后作者讲了一些git背后的原理，对于想知其然，知其所以然还是比较好。然后缺点的话，确实有点太啰嗦了，有点影响阅读，比如花了30多页的篇幅去讲在不同操作系统下git的安装，我觉得是没那么必要的。再有就是从“权威指南”这四个字，我觉得定位不那么合理，我认为的权威指南是类似犀牛书那种的，什么操作、命令之类的忘记了，我可以查权威指南解决问题的。总之就是涵盖的东西确实很广，但是定位不够明确，针对的读者用户群较广，就感觉被捆绑消费了，感觉大多数人可能会抱着如何用好git或者了解如果搭建git、迁移到git这两方面或者更多。另外介绍cvs、svn以及其他版本控制系统，个人觉得没什么必要，要么别人是受够了svn转git对svn已经很了解了，要么是没有接触过svn想直接入门git的，所以介绍了只是徒增阅读时间罢了。</p>
-<p>&emsp;&emsp;再来说我读了之后感觉提升还是蛮大的，至少不会再像之前不知道stash，在一个分支下改了一些东西，要切到另一个分支，自己傻傻的将修改的内容全部还原再切换分支，然后又从头来过，简直被自己蠢哭。然后对git的基本操作了解的更多了，对于解决冲突、分支有了进一步的了解。提升的话可能较之前好得多，但还是有些地方理解的不深刻，对本书有了一定了解之后，感觉有些地方还需要花时间精读，另外在使用git中碰到问题回来查印象肯定也会更深刻一些。</p>
-</div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>1 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul><ul class="pagination"><li class="current"><a>1</a></li></ul><div class="page-footer"><div class="top"><ul class="social"><li><a href="https://github.com/reeves7" title="Github" target="_blank"><i class="icon icon-github"></i></a></li><li><a href="i@wangx.me" title="email" target="_blank"><i class="icon icon-email"></i></a></li></ul></div><div class="bottom"><p class="copyright">© 2018 Wangx's blog<br><small>POWER BY <a href="https://hexo.io" target="_blank">HEXO</a></small></p></div></div></div><script>var wrap = document.getElementById('wrap');
-window.onload = function () {
-  wrap.className += ' done';
-}</script></body></html>
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="web developer.">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    Tag: 读书笔记 |
+    
+    Wangx&#39;s blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article class="articles">
+    
+    <h1 class="page-type-title">#&nbsp读书笔记</h1>
+
+    
+    
+    
+      
+      
+        
+        
+    <div class="archives-wrap">
+      <div class="archive-year-wrap">
+        <a href="/archives/2018" class="archive-year">2018</a>
+      </div>
+      <div class="archives">
+        
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/12/01/dive-into-webpack-note/" class="archive-article-date">
+  <time datetime="2018-12-01T12:22:38.000Z" itemprop="datePublished">12/01</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/12/01/dive-into-webpack-note/">深入浅出webpack读后感</a>
+    </h2>
+  
+
+    </header>
+    
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    
+  </div>
+</article>
+        
+      
+      
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/11/04/css-world-note/" class="archive-article-date">
+  <time datetime="2018-11-04T02:09:15.000Z" itemprop="datePublished">11/04</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/11/04/css-world-note/">css世界读书笔记</a>
+    </h2>
+  
+
+    </header>
+    
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    
+  </div>
+</article>
+        
+      
+      
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/10/07/definitity-guide-of-git/" class="archive-article-date">
+  <time datetime="2018-10-07T04:21:04.000Z" itemprop="datePublished">10/07</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/10/07/definitity-guide-of-git/">Git权威指南读书笔记</a>
+    </h2>
+  
+
+    </header>
+    
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    
+  </div>
+</article>
+        
+        
+      </div>
+    </div>
+    
+  
+  
+</article></section>
+  <footer class="footer">
+  
+  <div class="outer">
+    <ul class="list-inline">
+      <li>&copy; 2019 Wangx&#39;s blog</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <li>Theme  <a href="https://zhwangart.github.io">zhwangart</a></li> -->
+      <!--
+      <li><a href="/">wangx</a></li>
+      -->
+    </ul>
+  </div>
+</footer>
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/wangx.png" alt="Wangx&#39;s blog"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">文章</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">相册</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/search.js"></script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>

@@ -1,133 +1,722 @@
-<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="email=no"><meta name="description" content="web developer."><meta name="keywords" content="Vuejs"><title>Wangx's blog - Whatever is worth doing is worth doing well.</title><link rel="stylesheet" href="/css/main_style.min.css"><link rel="icon" href="/favicon.ico"></head><body><input id="navi" type="checkbox"><ul class="main-navication"><li><a href="/"><span>Home</span></a></li><li><a href="https://github.com/reeves7"><span>Github</span></a></li><li><a href="https://www.v2ex.com/"><span>V2EX</span></a></li><li><a href="http://chongzi7.lofter.com/"><span>Chongzi</span></a></li><li><a href="https://isjaakko.github.io/"><span>Jaakko</span></a></li><li><a href="https://zhanl.github.io/"><span>Zhan L</span></a></li><li><a href="https://blog.caojun.xyz/"><span>Cao jun</span></a></li><li><a href="https://blog.return0.top/"><span>Nrehearsal</span></a></li><li><a href="https://blog.ache.fun/"><span>ache</span></a></li></ul><div class="wrapper" id="wrap"><div class="page-header"><label class="navi-button" for="navi">MENU</label><div class="background"><img src="/home-bg.jpg"></div><div class="author"><div class="head"><img src="/wangx.jpg"></div><h3 class="name">wangx</h3><p class="signature">Whatever is worth doing is worth doing well.</p></div></div><ul class="post-list" style="max-width:800px"><li> <p class="date">2018年8月19日</p><h4 class="title"><a href="/2018/08/19/vuex/">Vuex</a></h4><div class="excerpt"><h2 id="Vuex"><a href="#Vuex" class="headerlink" title="Vuex"></a>Vuex</h2><p>&emsp;&emsp;官方说vuex是一个专为vue.js应用程序开发的<strong>状态管理模式</strong>。它采用<strong>集中式</strong>存储管理应用的<strong>所有组件的状态</strong>，并以相应的规则保证状态以一种可预测的方式发生变化。</p>
-<p>&emsp;&emsp;按我的理解就是，Vuex也是用来管理组建之间通信的。组件之间都是独立的，组件之间想实现通信，就要用到之前的文章提到的props选项，自定义事件，以及eventbus，前两种只适用于父子关系，eventbus可以适用所有的组件通信。但是据说不是很推荐，我想可能的原因是在大型项目中，到处引用一个eventbus代码可读性差、可能会命名冲突等，以及数据并不好进行管理。而Vuex就是解决这样的问题的，将组件需要共享的数据提出来，在一定的规则下管理这些数据，在大型项目中看起来就会仅仅有条。当然我也说了，是<strong>大型项目</strong>，一般的小项目还是用前三种方式去做吧，不要为了用vuex而用。</p>
-<h2 id="使用Vuex"><a href="#使用Vuex" class="headerlink" title="使用Vuex"></a>使用Vuex</h2><p>&emsp;&emsp;先创建一个实例，了解一下vuex：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"ie=edge"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>vuex<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.bootcss.com/vuex/3.0.1/vuex.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">    Vue.use(Vuex);</span></span><br><span class="line"><span class="javascript">    <span class="keyword">let</span> store = <span class="keyword">new</span> Vuex.Store(&#123;</span></span><br><span class="line"><span class="actionscript">        <span class="comment">// 存放组件之间共享的数据</span></span></span><br><span class="line"><span class="undefined">        state: &#123;</span></span><br><span class="line"><span class="actionscript">            name: <span class="string">'myName'</span></span></span><br><span class="line"><span class="undefined">        &#125;,</span></span><br><span class="line"><span class="actionscript">        <span class="comment">// 显示更改state里的数据</span></span></span><br><span class="line"><span class="undefined">        mutations: &#123;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">        &#125;,</span></span><br><span class="line"><span class="actionscript">        <span class="comment">// 获取数据的方法</span></span></span><br><span class="line"><span class="undefined">        getters: &#123;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">        &#125;,</span></span><br><span class="line"><span class="actionscript">        <span class="comment">// 类似mutation，不是直接变更状态，而是提交mutation，还可以包含异步操作</span></span></span><br><span class="line"><span class="undefined">        actions: &#123;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined">    &#125;);</span></span><br><span class="line"><span class="actionscript">    <span class="keyword">new</span> Vue (&#123;</span></span><br><span class="line"><span class="actionscript">        el: <span class="string">'#app'</span>,</span></span><br><span class="line"><span class="undefined">        data() &#123;</span></span><br><span class="line"><span class="actionscript">            <span class="keyword">return</span> &#123;</span></span><br><span class="line"><span class="actionscript">                name: <span class="string">'null'</span></span></span><br><span class="line"><span class="undefined">            &#125;;</span></span><br><span class="line"><span class="undefined">        &#125;,</span></span><br><span class="line"><span class="undefined">        store,</span></span><br><span class="line"><span class="undefined">        mounted() &#123;</span></span><br><span class="line"><span class="javascript">            <span class="built_in">console</span>.log(<span class="keyword">this</span>.$store);</span></span><br><span class="line"><span class="undefined">        &#125; </span></span><br><span class="line"><span class="undefined">    &#125;);</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;在创建vue实例前需使用vuex，也就是Vue.use(Vuex)，使用Vuex.Store({})方法创建一个仓库，当Vue组件从store中读取state选项也就是状态，如果store中状态发生更新时，它会及时响应将数据发给其它组件，如果要直接改变store的状态，就使用使用mutations进行显式的更改。另外四个核心选项在代码中已经注释说明了。我们在控制台中打印了$store，来看看有哪些东西：</p>
-<p><img src="https://i.loli.net/2018/08/19/5b797da78e02d.png" alt="store"></p>
-<p>&emsp;&emsp;一般情况下会在组件的计算属性中来获取state的数据，原因是计算属性会监控数据变化，数据改变就会响应。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在上面代码的html中加一个helloword的标签，在注册一个helloword的组件。就可以到浏览器中看到效果了。</span></span><br><span class="line">Vue.component(<span class="string">'helloword'</span>,&#123;</span><br><span class="line">        template:<span class="string">"&lt;div&gt;&#123;&#123; name &#125;&#125;&lt;/div&gt;"</span>,</span><br><span class="line">        computed: &#123;</span><br><span class="line">            name() &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">this</span>.$store.state.name</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">         mounted() &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>51 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a><span class="category-list-count">7</span></li></ul></li></ul></li><li> <p class="date">2018年8月14日</p><h4 class="title"><a href="/2018/08/14/tujiehttp/">图解http读后感</a></h4><div class="excerpt"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>  &emsp;&emsp;去年上计算机网络的时候，没有好好学，很多东西都是懵懵懂懂的，最后草草复习了一下，考过了这门课。但是网络这块的知识在开发中还是蛮重要的，所以就在推荐下买了这本图解http，在这里总结下这本书的内容以及来一篇读后感。</p>
-<h2 id="内容整理"><a href="#内容整理" class="headerlink" title="内容整理"></a>内容整理</h2><p>  <strong>1.了解web及网络基础</strong><br>  &emsp;&emsp;web使用HTTP(HyperText Transfer Protocol,超文本传输协议)作为规范，完成客户端到服务端等一系列运作。web是建立在HTTP协议上通信的。<br>  &emsp;&emsp;1989.03，http诞生。1990.11，CERN成功研发世界上第一台Web服务器和Web浏览器。1994.12，网景发布Netscape Nacigator 1.0，1995年微软发布IE1.0/2.0。95年起，两家公司爆发浏览器大战，各自拓展HTML，对Web标准视而不见，还多次新增功能而不出文档说明(web开发兼容性的坑就是从这来的T.T)。2000年后，网景没落，Firefox、chrome、opera、Safari于IE抢占市场份额。1996年5月HTTP标准正式公布，至今广泛应用于服务器端。1997年HTTP/1.1公布，作为目前主流的HTTP协议版本。HTTP/2.0正在制定中。</p>
-<p>&emsp;&emsp;TCP/IP是互联网相关的各类协议族的总称。TCP/IP协议族里重要的一点就是分层，按层次分为以下4层：应用层、传输层、网络层和数据链路层。</p>
-<p>&emsp;&emsp;应用层：应用层决定了向用户提供应用服务时通信的活动，协议族内预存了各类通用应用服务，如FTP、DNS，HTTP也处于这一层。</p>
-<p>&emsp;&emsp;传输层：对上层应用层提供处于网络连接中的两台计算机之间的数据传输。传输层有两个协议TCP和UDP。</p>
-<p>&emsp;&emsp;网络层：处理在网络上流动的数据包，数据包是网络传输的最小数据单位，这一层规定了通过怎样的路径到达对方计算机，并把数据包给对方。与对方计算机之间通过多台计算机或网络设备进行传输时，网络层所起的作用就是在众多的选项中选择一条传输路线。</p>
-<p>&emsp;&emsp;数据链路层：处理连接网络的硬件部分，包括操作系统、硬件的设备驱动及光线等物理可见的部分。硬件上的范畴均在链路层的作用范围之内。</p>
-<p>&emsp;&emsp;TCP/IP传输流，通过分层与对方进行通信，发送端应用层自上而下，接收端自下而上，如图：</p></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>5 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年8月12日</p><h4 class="title"><a href="/2018/08/12/firstblood/">怒提Hexo一血</a></h4><div class="excerpt"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
-<p>  &emsp;&emsp;之前弄了个腾讯云的学生机，顺带利用学生优惠申请了个域名，不知道干嘛就搭了一个wordpress。当时用wordpress还是蛮流行的，有很多丰富的插件，会一些html也可以自己定制一些东西。wordpress很臃肿，又受限于学生机，首次加载贼慢，还有学生机的内存，之前课程的时候弄ubuntu图形界面，主机崩掉了，丢失了一些数据。最近不知怎么wordpress站点被黑了，每天会发几篇文章。也没有其他恶意行为，找了原因，发现也没完全解决掉。然后就被安利了hexo，了解了下，hexo全部生成静态文件，加载很快而且没有数据库，迁移也方便，也很安全。</p>
-<p>  &emsp;&emsp;hexo的搭建还是蛮简单的，但是在这个过程中还是踩了很多坑，就来分享一下遇到的坑。</p>
-<h2 id="hexo搭建"><a href="#hexo搭建" class="headerlink" title="hexo搭建"></a>hexo搭建</h2><hr>
-<p>  &emsp;&emsp;这个过程还是蛮简单的，按照网上普通的配置教程进行配置就行了。就来说我这个过程遇到的坑。</p>
-<p>  <strong>1.windows下cmd和gitbash，都无法成功登陆github。</strong><br>  &emsp;&emsp;本地搭建好hexo之后往github上部署的时候，我使用的https，这种情况要输入github账号和密码，部署的时候会弹出登陆，确认了很多遍账号密码确实没输错，才觉得可能这里有问题，有很多人都遇到了问题。最后使用ssh成功登陆并部署成功，所以建议是从git拉代码还是使用ssh比较稳妥，当然其他os好像不会存在这个问题。</p>
-<h2 id="使用自己的域名"><a href="#使用自己的域名" class="headerlink" title="使用自己的域名"></a>使用自己的域名</h2><hr></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>3 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年8月5日</p><h4 class="title"><a href="/2018/08/05/vueconponentscommunity/">Vue组件之间通信</a></h4><div class="excerpt"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>&emsp;&emsp;之前在学校一直在用nodom框架进行开发，对vue的了解也仅仅局限于对比二者的区别，并没有很深入的去了解。而且nodom的用法和vue的比较相似，所以上手vue是比较快的，但是其中很多原理并不熟悉，所以想总结并分享一下学到的东西。  </p>
-<p>&emsp;&emsp;组件化是vue.js或者说现在的mvvm框架中一个重要的思想，也是前端发展的趋势，这其中组件间的通信又是vue数据驱动的灵魂所在。所以在这谈谈Vue2.x的组件通信，这一篇主要聊聊非Vuex的做法，下一篇文章再讲Vuex。Vue2.x已经废弃了$dispatch和$broadcast，nodom中还保留着broadcast的方法…  </p>
-<h3 id="父子组件通信"><a href="#父子组件通信" class="headerlink" title="父子组件通信"></a>父子组件通信</h3><h4 id="1-父子组件，父组件向子组件传递数据"><a href="#1-父子组件，父组件向子组件传递数据" class="headerlink" title="1.父子组件，父组件向子组件传递数据"></a>1.父子组件，父组件向子组件传递数据</h4><p>&emsp;&emsp;父组件向子组件传递数据时，这是比较简单也是比较常见的一种方式，我们首先看看props，prop的值有两种一种是使用数组和对象，静态数据比较简单，作为理解就使用数组为例了，先看下代码：  </p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">      父组件</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">child</span> <span class="attr">message</span>=<span class="string">"父亲给儿子说的话：xxxxx"</span>&gt;</span><span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="actionscript">    Vue.component(<span class="string">'child'</span>,&#123;</span></span><br><span class="line"><span class="actionscript">      props: [<span class="string">'message'</span>],</span></span><br><span class="line"><span class="handlebars"><span class="xml">      template: '<span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123; &#123; message &#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span>'</span></span></span><br><span class="line"><span class="undefined">    &#125;);</span></span><br><span class="line"><span class="actionscript">    <span class="keyword">const</span> app = <span class="keyword">new</span> Vue(&#123;</span></span><br><span class="line"><span class="actionscript">      el: <span class="string">'#app'</span></span></span><br><span class="line"><span class="undefined">    &#125;);</span></span><br><span class="line"><span class="undefined">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;通过在props中声明数据，在子组件中添加message并赋值进行传递，需要注意的是HTML不区分大小写，在dom模板中，驼峰命名的props名称要转为短横线分隔命名。  </p>
-<p>&emsp;&emsp;另外在实际开发中，很少会传递死的数据，大部分都是使用动态数据，此时我们需要使用v-bind指令来绑定父组件数据，当父组件数据发生变化时，也会传递给子组件，代码：  </p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">      父组件数据</span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">v-model</span>=<span class="string">"parentMessage"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    child :message="parentMessage"<span class="tag">&lt;/<span class="name">child</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="actionscript">    Vue.component(<span class="string">'child'</span>,&#123;</span></span><br><span class="line"><span class="actionscript">      props: [<span class="string">'message'</span>],</span></span><br><span class="line"><span class="handlebars"><span class="xml">      template: '<span class="tag">&lt;<span class="name">div</span>&gt;</span>子组件收到的消息：&#123; &#123; message &#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span>'</span></span></span><br><span class="line"><span class="undefined">    &#125;);</span></span><br><span class="line"><span class="actionscript">    <span class="keyword">const</span> app = <span class="keyword">new</span> Vue(&#123;</span></span><br><span class="line"><span class="actionscript">      el: <span class="string">'#app'</span>,</span></span><br><span class="line"><span class="undefined">      data: &#123;</span></span><br><span class="line"><span class="actionscript">        parentMessage: <span class="string">''</span></span></span><br><span class="line"><span class="undefined">      &#125;</span></span><br><span class="line"><span class="undefined">    &#125;);</span></span><br><span class="line"><span class="undefined">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>24 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a><span class="category-list-count">7</span></li></ul></li></ul></li><li> <p class="date">2018年7月7日</p><h4 class="title"><a href="/2018/07/07/vuelifecyle/">Vue实例生命周期</a></h4><div class="excerpt"><h2 id="Vue实例生命周期"><a href="#Vue实例生命周期" class="headerlink" title="Vue实例生命周期"></a>Vue实例生命周期</h2><p>&emsp;&emsp;先来上一张vue官网的生命周期图：  </p>
-<p><img src="https://i.loli.net/2018/09/08/5b9380089a9dc.png" alt="生命周期"></p>
-<p>一个vue实例在创建的时候会调用上面的钩子函数，vue的生命周期钩子函数有：  </p>
-<ul>
-<li><p>beforeCreate</p>
-</li>
-<li><p>created</p>
-</li>
-<li><p>beforeMount</p>
-</li>
-<li><p>mounted</p>
-</li>
-<li><p>beforeUpdate</p>
-</li>
-<li><p>updated</p>
-</li>
-<li><p>beforeDestroy</p>
-</li>
-<li><p>destroyed</p>
-</li>
-</ul>
-<p>&emsp;&emsp;下面来一一讲解vue的生命周期钩子函数：  </p>
-<p><strong>beforeCreate：</strong></p>
-<p>&emsp;&emsp;vue实例创建前，el、data、methods都还未生成。  </p>
-<p><strong>created：</strong></p>
-<p>&emsp;&emsp;vue实例创建完成，这一阶段进行<strong>事件初始化，同时观测数据</strong>。注意：此时el还是读不到。  </p></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>1 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a><span class="category-list-count">7</span></li></ul></li></ul></li><li> <p class="date">2018年7月7日</p><h4 class="title"><a href="/2018/07/07/javascriptsingleton/">JavaScript-单例模式</a></h4><div class="excerpt"><p>JavaScript单例模式  </p>
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="web developer.">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    
+    Wangx&#39;s blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="jumbotron">
+  <div class="video">
+    
+      <div class="video-frame">
+        <img src="/images/ocean/overlay-hero.png" alt="Decorative image frame">
+      </div>
+    
+    <div class="video-media">
+      <video playsinline="" autoplay loop muted data-autoplay="" poster="/images/ocean/ocean.png" x5-video-player-type="h5">
+        <source src="/images/ocean/ocean.mp4" type="video/mp4">
+        <source src="/images/ocean/ocean.ogv" type="video/ogg">
+        <source src="/images/ocean/ocean.webm" type="video/webm">
+        <p>Your user agent does not support the HTML5 Video element.</p>
+      </video>
+      <div class="video-overlay"></div>
+    </div>
+    <div class="video-inner text-center text-white">
+      <h1><a href="/">Wangx&#39;s blog</a></h1>
+      <p>Whatever is worth doing is worth doing well.</p>
+      <div><img src="/images/wangx.png" class="brand" alt="Wangx&#39;s blog"></div>
+    </div>
+    <div class="video-learn-more">
+      <a class="anchor" href="#landingpage"><i class="fe fe-mouse"></i></a>
+    </div>
+  </div>
+</section>
+
+<div id="landingpage">
+  <section class="outer">
+  <article class="articles">
+    
+    <h1 class="page-type-title"></h1>
+
+    
+      
+        <article id="post-javascript-canvas-verify-code" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2018/10/14/javascript-canvas-verify-code/">原生javascript实现canvas图形验证码</a>
+    </h2>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/10/14/javascript-canvas-verify-code/" class="article-date">
+  <time datetime="2018-10-14T12:24:50.000Z" itemprop="datePublished">2018-10-14</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <p>&emsp;&emsp;感觉自己最近好像很少拿原生js写东西了，自己的js水平也还有待提高。上周做原型设计的时候设计了一个图形验证码，感觉这么小一个东西也没必要去找个库，就打算自己造个小轮子来用了。</p>
+<p>&emsp;&emsp;图形验证码的作用是一种人机识别的手段，目的是为了区分正常人和机器人，所以没必要设计的太麻烦(12306之前的验证码简直!!)，所以就采用数字+大小写字母共4个字符进行验证，用canvas进行绘制，如果只是简单这样也太简单了，像接触到的其他网站使用的验证码还有背景色和干扰的线条，基本上这就是实现的思路了。</p>
 <hr>
-<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><p>&emsp;&emsp;单例模式时一种较为简单的设计模式，传统的单例模式是指保证一个类只有一个实例，并提供一个访问它的全局访问点。  </p>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>&emsp;&emsp;实现的思路是定义一个变量标志是否已经创建过实例，如果已经有实例，则返回该实例对象，否则创建一个实例并返回。用一个创建登录框的例子来说明单例模式在JavaScript中如何实现：  </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> loginHtml = <span class="string">"账号：&lt;input type=\"text\" /&gt;&lt;br/&gt;密码：&lt;input type=\"password\" /&gt;"</span>;</span><br><span class="line"><span class="keyword">var</span> createLoginDiv = <span class="function"><span class="keyword">function</span>(<span class="params">html</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.html = html;</span><br><span class="line">  <span class="keyword">this</span>.init();</span><br><span class="line">&#125;;</span><br><span class="line">createLoginDiv.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> div = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>);</span><br><span class="line">  div.innerHTML = <span class="keyword">this</span>.html;</span><br><span class="line">  <span class="built_in">document</span>.body.appendChild(div);</span><br><span class="line">&#125;;</span><br><span class="line">createLoginDiv.getInstance = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> instance = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">html</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (instance === <span class="literal">null</span>) &#123;</span><br><span class="line">      instance = <span class="keyword">new</span> createLoginDiv(html);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> instance;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="keyword">var</span> div1 = createLoginDiv.getInstance(loginHtml);</span><br><span class="line"><span class="keyword">var</span> div2 = createLoginDiv.getInstance(<span class="string">"账号密码"</span>);</span><br><span class="line"><span class="built_in">console</span>.log(div1 === div2); <span class="comment">// true 并且页面只有一个登录框，为第一次创建的。</span></span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;这样实现的单例模式耦合度较低，init只负责创建登录框对象，对于返回现有对象还是创建新对象交给getInstance去做，代码也很清晰。通过这样的方式我们想要在页面上只想要一个登录框时可以得到保证，只有一个登录框，不会重复创建，节约性能。</p>
-<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><h3 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h3></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>5 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">4</span></li></ul></li></ul></li><li> <p class="date">2018年5月27日</p><h4 class="title"><a href="/2018/05/27/eventloop/">【转载】深入理解JavaScript事件循环(Eventloop)和microtask</a></h4><div class="excerpt"><p><strong>在做javascript练习题或者面试的时候，总会遇到下面这样的题目：</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> <span class="built_in">console</span>.log(<span class="string">"1"</span>);</span><br><span class="line"></span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"2"</span>);</span><br><span class="line">  &#125;,<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"3"</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"4"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 控制台输出1 4 3 2</span></span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;想知道为什么是这样的结果，就必须理解javascript的eventloop机制，推荐这位博主DongXu的两篇文章，这里就不转载全文了，推荐大家去他的博客看，还有生动的demo，很容易懂。</p>
-<blockquote>
-<p><a href="http://www.cnblogs.com/dong-xu/p/7000163.html" target="_blank" rel="noopener">深入理解 JavaScript 事件循环（一）— event loop</a> </p>
-<p><a href="http://www.cnblogs.com/dong-xu/p/7000139.html" target="_blank" rel="noopener">[译]深入理解 JavaScript 事件循环（二）— task and microtask</a></p>
-</blockquote>
-</div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>2 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">4</span></li></ul></li></ul></li><li> <p class="date">2018年5月10日</p><h4 class="title"><a href="/2018/05/10/htmlyuyihua/">HTML语义化&amp;HTML5</a></h4><div class="excerpt"><h2 id="1、什么是HTML语义化？"><a href="#1、什么是HTML语义化？" class="headerlink" title="1、什么是HTML语义化？"></a>1、什么是HTML语义化？</h2><p>&emsp;&emsp;就我自己理解来说，HTML是超文本标记语言。语义化就是让我们清楚整个页面的结构，不论是从代码还是文本内容，不仅要我们人清楚，也要让机器清楚。纯HTML不带样式的时候，我们也能通过代码知道标签标记的是什么内容。比如H标签，我们知道这是一个标题，p一个段落，table表格，form表单等等。HTML5更加注重语义化，新增了很多语义化的标签，如header、nav、footer、article等。关于语义化一些更多的内容可以看这个<a href="https://www.zhihu.com/question/20455165" title="如何理解 Web 语义化？" target="_blank" rel="noopener">如何理解 Web 语义化？</a></p>
-<h2 id="2、为什么要语义化？"><a href="#2、为什么要语义化？" class="headerlink" title="2、为什么要语义化？"></a>2、为什么要语义化？</h2><p>&emsp;&emsp;在此之前，我写代码也基本上是全篇用div+css实现整个页面结构的，既然我们使用div+css就可以了，为什么还要使用语义化呢？  </p>
-<p>&emsp;&emsp;从实现的效果上看，使用语义化的代码和div+css的代码并没有区别，但是代码不仅是给人看的，机器也要看。从维护上面来说，语义化标签比满篇div更好维护，在页面出问题时，语义化会更加的友好。  </p>
-<p>&emsp;&emsp;语义化的好处在于建立起好的HTML结构，使搜索引擎更容易建立索引、抓取。另外就是结构清晰，便于开发人员维护。（大厂的做法，比如阿里的淘宝在div+css实现之余，也会用一些语义化的标签进行强调）  </p>
-<h2 id="3、语义化代码应该注意些什么？"><a href="#3、语义化代码应该注意些什么？" class="headerlink" title="3、语义化代码应该注意些什么？"></a>3、语义化代码应该注意些什么？</h2><ul>
-<li><p>尽可能少的使用无语义的标签div和span；在语义不明显时，既可以使用div或者p时，尽量用p, 因为p在默认情况下有上下间距，对兼容特殊终端有利；</p>
-</li>
-<li><p>不要使用纯样式标签，如：b、font、u等，改用css设置。需要强调的文本，可以包含在strong或者em标签中（浏览器预设样式，能用CSS指定就不用他们），strong默认样式是加粗（不要用b），em是斜体（不用i）；</p>
-</li>
-<li><p>使用表格时，标题要用caption，表头用thead，主体部分用tbody包围，尾部用tfoot包围。表头和一般单元格要区分开，表头用th，单元格用td；</p>
-</li>
-<li><p>表单域要用fieldset标签包起来，并用legend标签说明表单的用途；每个input标签对应的说明文本都需要使用label标签，并且通过为input设置id属性，在lable标签中设置for=someld来让说明文本和相对应的input关联起来。</p>
-</li>
+<p>&emsp;&emsp;根据实现的思路，随机颜色的方法、生成随机数的方法肯定是需要的。</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 生成一个随机数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">function randomNum(<span class="built_in">min</span>, <span class="built_in">max</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> Math.<span class="built_in">floor</span>(Math.<span class="built_in">random</span>() * (<span class="built_in">max</span> - <span class="built_in">min</span>) + <span class="built_in">min</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 生成随机颜色rgb值</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">function randomColor(<span class="built_in">min</span>, <span class="built_in">max</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> r = randomNum(<span class="built_in">min</span>, <span class="built_in">max</span>);</span><br><span class="line">    <span class="keyword">const</span> g = randomNum(<span class="built_in">min</span>, <span class="built_in">max</span>);</span><br><span class="line">    <span class="keyword">const</span> b = randomNum(<span class="built_in">min</span>, <span class="built_in">max</span>);</span><br><span class="line">    <span class="keyword">return</span> `rgb($&#123;r&#125;, $&#123;g&#125;, $&#123;b&#125;)`;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>&emsp;&emsp;在html我们只要需要提供一个容器就可以了，调用时传容器id，以及图形验证码的size就可以了。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"verifyContainer"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;获取到容器和size之后，我们得先添加一个canvas，参考了下网上其他验证码的背景色大概都在160-240左右可能这个区间的颜色会偏浅一点。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 向html添加canvas</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">appendCanvas</span>(<span class="params">id, width, height</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> container = <span class="built_in">document</span>.getElementById(id);</span><br><span class="line">    <span class="keyword">const</span> canvas = <span class="built_in">document</span>.createElement(<span class="string">'canvas'</span>);</span><br><span class="line">    canvas.width = width;</span><br><span class="line">    canvas.height = height;</span><br><span class="line">    canvas.style.backgroundColor = randomColor(<span class="number">160</span>, <span class="number">240</span>);</span><br><span class="line">    container.appendChild(canvas);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;然后再定义两个常量及大小写字符数组和数字数组</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> numberArr = <span class="string">"0,1,2,3,4,5,6,7,8,9"</span>.split(<span class="string">','</span>);</span><br><span class="line"><span class="keyword">const</span> characterArr = <span class="string">"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z"</span>.split(<span class="string">','</span>);</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;然后就可以开始绘制验证码了</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 绘制验证码</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">drawCharacter</span>(<span class="params">id, width, height</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> canvas = <span class="built_in">document</span>.getElementById(id).getElementsByTagName(<span class="string">'canvas'</span>)[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">if</span> (canvas.getContext) &#123;</span><br><span class="line">        <span class="keyword">var</span> ctx = canvas.getContext(<span class="string">'2d'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    ctx.textBaseline = <span class="string">'middle'</span>;</span><br><span class="line">    ctx.font = <span class="string">'20px SimHei'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 开始绘制</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt;= <span class="number">4</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">var</span> character = textArr[randomNum(<span class="number">0</span>, textArr.length)];</span><br><span class="line">        <span class="comment">// 随机字体颜色</span></span><br><span class="line">        ctx.fillStyle = randomColor(<span class="number">50</span>, <span class="number">160</span>);</span><br><span class="line">        ctx.shadowBlur = randomNum(<span class="number">-3</span>, <span class="number">3</span>);</span><br><span class="line">        ctx.shadowColor = <span class="string">"rgba(0, 0, 0, 0.3)"</span>;</span><br><span class="line">        <span class="keyword">var</span> x = width / <span class="number">5</span> * i;</span><br><span class="line">        <span class="keyword">var</span> y = height / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">var</span> deg = randomNum(<span class="number">-30</span>, <span class="number">30</span>);</span><br><span class="line">        <span class="comment">// 设置旋转角度和坐标原点</span></span><br><span class="line">        ctx.translate(x, y);</span><br><span class="line">        ctx.rotate(deg * <span class="built_in">Math</span>.PI / <span class="number">180</span>);</span><br><span class="line">        ctx.fillText(character, <span class="number">0</span> , <span class="number">0</span>);</span><br><span class="line">        <span class="comment">// 恢复旋转角度和原点</span></span><br><span class="line">        ctx.rotate(-deg * <span class="built_in">Math</span>.PI / <span class="number">180</span>);</span><br><span class="line">        ctx.translate(-x, -y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;这样验证码就绘制出来了，但是确实太简单了一点，需要在加一点难度，加一些干扰线和干扰点。干扰线的话影响会较大一点，所以要少一点字符数量为宜，干扰点可以多一些，大概在canvas宽度1/5的样子。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 绘制干扰线</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">interferenceLine</span>(<span class="params">ctx, width, height</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">let</span> i= <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">        ctx.strokeStyle = randomColor(<span class="number">40</span>, <span class="number">180</span>);</span><br><span class="line">        ctx.beginPath();</span><br><span class="line">        ctx.moveTo(randomNum(<span class="number">0</span>, width / <span class="number">2</span>), randomNum(<span class="number">0</span>, height / <span class="number">2</span>));</span><br><span class="line">        ctx.lineTo(randomNum(<span class="number">0</span>, width / <span class="number">2</span>), randomNum(<span class="number">0</span>, height / <span class="number">2</span>));</span><br><span class="line">        ctx.stroke();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 绘制干扰点</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">interferenceDot</span>(<span class="params">ctx, width, height</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; width / <span class="number">5</span>; i++) &#123;</span><br><span class="line">        ctx.fillStyle = randomColor(<span class="number">0</span>, <span class="number">255</span>);</span><br><span class="line">        ctx.beginPath();</span><br><span class="line">        ctx.arc(randomNum(<span class="number">0</span>, width), randomNum(<span class="number">0</span>, height), <span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span> * <span class="built_in">Math</span>.PI);</span><br><span class="line">        ctx.fill();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>&emsp;&emsp;总的说来实现的比较粗糙，代码也没有去优化，本来还可以添加一些比较人性化的定制功能的，因为忙着到处看房子去了，没来得及弄，打算后面花时间优化一下。</p>
+<p>&emsp;&emsp;代码和在线演示分享在jsfiddle上，<a href="https://jsfiddle.net/5ws1Lcjf/" target="_blank" rel="noopener">check</a>.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.wangx.com/2018/10/14/javascript-canvas-verify-code/" data-id="cjqm70bqw000sd91b1a6vmf9t" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/验证码/">验证码</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+
+
+
+      
+        <article id="post-use-charles" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2018/10/07/use-charles/">使用charles进行APP抓包简单教程</a>
+    </h2>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/10/07/use-charles/" class="article-date">
+  <time datetime="2018-10-07T07:32:04.000Z" itemprop="datePublished">2018-10-07</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/抓包/">抓包</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&emsp;&emsp;本来想趁国庆写个小工具来自动预约单车，手动确实太麻烦了，时间掌握不好，车就被别人骑走了。做这个小工具最重要的步骤就是抓到摩拜和哈罗的api，选择了charles这款抓包工具，是挺好用的，不够也需要付费。</p>
+<p>&emsp;&emsp;之前定好的计划一点点被打乱，高速一日游这种就不说了t.t，结果用charles抓包才发现好像别人也不傻，api都是加密的，导致小工具就暂时搁置了。那么就先来记录下如何使用charles抓取app的api吧。</p>
+<h2 id="PC设置"><a href="#PC设置" class="headerlink" title="PC设置"></a>PC设置</h2><p>&emsp;&emsp;开始之前得保证你下载并安装了charles，有关如何安装就不赘述了，另外得保证wifi环境下。</p>
+<p><img src="https://i.loli.net/2018/10/07/5bba1be006793.png" alt="proxy设置"></p>
+<p>&emsp;&emsp;Step1: 点击proxy settings进行代理设置，填上代理端口号默认是8888，激活http代理。</p>
+<p><img src="https://i.loli.net/2018/10/07/5bba1be032586.png" alt="proxy mobile"></p>
+<p>&emsp;&emsp;Step2: 因为只需要抓手机APP，所以不需要代理pc，将macOS Proxy勾选去掉。</p>
+<h2 id="手机设置"><a href="#手机设置" class="headerlink" title="手机设置"></a>手机设置</h2><p>&emsp;&emsp;手机连上wifi，选择手动代理，然后填上设置信息。</p>
+<p><img src="https://i.loli.net/2018/10/07/5bba1be0639f0.png" alt="mobile setting"></p>
+<p>&emsp;&emsp;服务器主机名填上自己PC的地址，不知道的可以用ifconfig查看，填上端口保存就可以了。记得抓包完过后，将这里的设置还原，否则无法使用wifi正常上网。</p>
+<p>&emsp;&emsp;保存成功连接wifi的时候，电脑就会弹出是否允许代理，点击allow就可以了。</p>
+<h2 id="抓包"><a href="#抓包" class="headerlink" title="抓包"></a>抓包</h2><p>&emsp;&emsp;电脑和手机都配置好后就可以开始抓包了，使用录制或者直接查看记录都是可以的，看个人选择。</p>
+<p>&emsp;&emsp;使用手机打开摩拜或者哈罗，charles就会出现网络请求的数据了。</p>
+<p><img src="https://i.loli.net/2018/10/07/5bba1be0ef44b.png" alt="api"></p>
+<p>&emsp;&emsp;可以点击你想要查看的网络请求，charles会默认把同一域名下的api归到一起，查看比较方便。可以看到摩拜的api都是加密的，哈罗也是，就看不到具体的api信息了。另外如果觉得网络请求太多的话可以使用过滤功能进行过滤。</p>
+<p>&emsp;&emsp;这差不多就是charles简单的抓取一个手机app的api的过程了，更多有关charles的使用还是推荐<a href="https://blog.devtang.com/2015/11/14/charles-introduction/" target="_blank" rel="noopener">charles从入门到精通</a>.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.wangx.com/2018/10/07/use-charles/" data-id="cjqm70br3001ed91byo4ngub1" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/charles/">charles</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/抓包/">抓包</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+
+
+
+      
+        <article id="post-definitity-guide-of-git" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2018/10/07/definitity-guide-of-git/">Git权威指南读书笔记</a>
+    </h2>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/10/07/definitity-guide-of-git/" class="article-date">
+  <time datetime="2018-10-07T04:21:04.000Z" itemprop="datePublished">2018-10-07</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/git/">git</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <p>&emsp;&emsp;对于git的接触我也算较晚的，应该是到了大二会有一些团队项目，才开始使用git。也仅仅局限于简单的了解，对于很多原理都不了解，出了问题，就只有找百度。在实验室老师也只推崇svn，当时也是一个接近10人的团队提交代码。大家也都是用的GUI，记得当时三天两头就会出问题。后来因为要找实习就转到git上来了，而且大部分开源项目都发布在github等社区。后来在工作中又出过事故，觉得还是得好好了解下git。在推荐下看了git权威指南这本书。</p>
+<p>&emsp;&emsp;这本书怎么说呢？有亮点也有缺点，这是必然的。先说亮点，文章条理和章节设计非常合理，而且在前言里还推荐了不同人群的阅读重点。根据阅读重点，我基本上第一篇就是简单阅读掠过，第二篇就也粗略的过了一下，相比第一篇投入时间的更多一些，第三篇是作者推荐的重点阅读篇，花的时间较多，但是很多东西接触的不多或者甚至没有接触，所以读起来有些晦涩的感觉。结合作者的例子读起来稍好一些，然后作者讲了一些git背后的原理，对于想知其然，知其所以然还是比较好。然后缺点的话，确实有点太啰嗦了，有点影响阅读，比如花了30多页的篇幅去讲在不同操作系统下git的安装，我觉得是没那么必要的。再有就是从“权威指南”这四个字，我觉得定位不那么合理，我认为的权威指南是类似犀牛书那种的，什么操作、命令之类的忘记了，我可以查权威指南解决问题的。总之就是涵盖的东西确实很广，但是定位不够明确，针对的读者用户群较广，就感觉被捆绑消费了，感觉大多数人可能会抱着如何用好git或者了解如果搭建git、迁移到git这两方面或者更多。另外介绍cvs、svn以及其他版本控制系统，个人觉得没什么必要，要么别人是受够了svn转git对svn已经很了解了，要么是没有接触过svn想直接入门git的，所以介绍了只是徒增阅读时间罢了。</p>
+<p>&emsp;&emsp;再来说我读了之后感觉提升还是蛮大的，至少不会再像之前不知道stash，在一个分支下改了一些东西，要切到另一个分支，自己傻傻的将修改的内容全部还原再切换分支，然后又从头来过，简直被自己蠢哭。然后对git的基本操作了解的更多了，对于解决冲突、分支有了进一步的了解。提升的话可能较之前好得多，但还是有些地方理解的不深刻，对本书有了一定了解之后，感觉有些地方还需要花时间精读，另外在使用git中碰到问题回来查印象肯定也会更深刻一些。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.wangx.com/2018/10/07/definitity-guide-of-git/" data-id="cjqm70bqm0008d91b2jplhqsf" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+
+
+
+      
+        <article id="post-unity-cache-server-cache-modules" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2018/09/28/unity-cache-server-cache-modules/">unity-cache-server-cache-modules</a>
+    </h2>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/09/28/unity-cache-server-cache-modules/" class="article-date">
+  <time datetime="2018-09-28T02:43:06.000Z" itemprop="datePublished">2018-09-28</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/unity/">unity</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <h2 id="Cache-Modules"><a href="#Cache-Modules" class="headerlink" title="Cache Modules"></a>Cache Modules</h2><p>&emsp;&emsp;Unity-cache-server v6的缓存服务器支持两种缓存机制：</p>
+<ul>
+<li>cache_fs，基于文件系统的缓存</li>
+<li>完全内存（RAM）支持的缓存</li>
 </ul>
-<h2 id="4、常用的一些HTML语义标签"><a href="#4、常用的一些HTML语义标签" class="headerlink" title="4、常用的一些HTML语义标签"></a>4、常用的一些HTML语义标签</h2><ul>
-<li><p><code>&lt;h1&gt;</code>~<code>&lt;h6&gt;</code> ，作为标题使用，并且依据重要性递减，<code>&lt;h1&gt;</code> 是最高的等级。</p>
-</li>
-<li><p><code>&lt;p&gt;</code>段落标记，知道了 <code>&lt;p&gt;</code> 作为段落，你就不会再使用 <code>&lt;br /&gt;</code> 来换行了，而且不需要 <code>&lt;br /&gt;</code> 来区分段落与段落。<code>&lt;p&gt;</code> 中的文字会自动换行，而且换行的效果优于 <code>&lt;br /&gt;</code>。段落与段落之间的空隙也可以利用 CSS 来控制，很容易而且清晰的区分出段落与段落。</p>
-</li>
-<li><p><code>&lt;ul&gt;</code>、<code>&lt;ol&gt;</code>、<code>&lt;li&gt;</code>，<code>&lt;ul&gt;</code> 无序列表，这个被大家广泛的使用，<code>&lt;ol&gt;</code> 有序列表不常用。在 Web 标准化过程中，<code>&lt;ul&gt;</code> 还被更多的用于导航条，本来导航条就是个列表，这样做是完全正确的，而且当你的浏览器不支持 CSS 的时候，导航链接仍然很好使，只是美观方面差了一点而已。</p>
-</li>
-<li><p><code>&lt;dl&gt;</code>、<code>&lt;dt&gt;</code>、<code>&lt;dd&gt;</code>，<code>&lt;dl&gt;</code> 就是“定义列表”。比如说词典里面的词的解释、定义就可以用这种列表。dl不单独使用，它通常与dt和dd一起使用。dl开启一个定义列表，dt表示要定义的项目名称，dd表示对dt的项目的描述。</p>
-</li>
-<li><p><code>&lt;em&gt;</code>、<code>&lt;strong&gt;</code>，<code>&lt;em&gt;</code> 是用作强调，<code>&lt;strong&gt;</code> 是用作重点强调。</p>
-</li>
-<li><p><code>&lt;table&gt;</code>、<code>&lt;thead&gt;</code>、<code>&lt;tbody&gt;</code>、<code>&lt;td&gt;</code>、<code>&lt;th&gt;</code>、<code>&lt;caption&gt;</code>， 就是用来做表格不要用来布局</p>
-</li>
-</ul></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>4 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/HTML-CSS/">HTML/CSS</a><span class="category-list-count">2</span></li></ul></li></ul></li><li> <p class="date">2018年5月7日</p><h4 class="title"><a href="/2018/05/07/csscenter/">【CSS】css居中方案</a></h4><div class="excerpt"><p>&emsp;&emsp;先说一下水平居中和垂直居中的一般方案.</p>
-<p>&emsp;&emsp;水平居中设置：</p>
+<p>&emsp;&emsp;cache server默认使用cache_fs即文件系统缓存模式，适用于大多数的应用程序。RAM缓存模式提供最佳性能，但Server需要足够的物理RAM用于缓存，通常需要的内存大小至少为项目Library文件夹的2-3倍。</p>
+<p>&emsp;&emsp;两个模式的配置文件信息都在config/defalult.yml中进行配置。</p>
+<h2 id="cache-fs"><a href="#cache-fs" class="headerlink" title="cache_fs"></a>cache_fs</h2><p>&emsp;&emsp;一个简单且高效的文件系统缓存模式。</p>
+<p><strong>用法</strong></p>
+<p><code>--cache-module cache_fs</code></p>
+<p><strong>命令</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">命令</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">cachePath</td>
+<td style="text-align:center"><code>.cache_fs</code></td>
+<td style="text-align:center">缓存路径</td>
+</tr>
+<tr>
+<td style="text-align:center">cleanupOptions.expireTimeSpan</td>
+<td style="text-align:center"><code>P30D</code></td>
+<td style="text-align:center"><a href="https://msdn.microsoft.com/en-us/library/se73z7b9(v=vs.110" target="_blank" rel="noopener">ASP.NET</a>.aspx)或<a href="https://en.wikipedia.org/wiki/ISO_8601#Time_intervals" target="_blank" rel="noopener">IOS 8601</a>格式时间跨度。在此时间范围内没有访问过的缓存文件会被清理。相关次序时间语法的更多信息，请参阅<a href="https://momentjs.com/docs/#/durations/" target="_blank" rel="noopener">Moment.js</a>文档。</td>
+</tr>
+<tr>
+<td style="text-align:center">cleanupOptions.maxCacheSize</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">磁盘缓存的最大size(以字节为单位)。使磁盘利用率低于该阈值，清理脚本会考虑要删除的文件，这些文件是最近最少使用的顺序。将值设置为0来禁用清除功能。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注意</strong></p>
+<ul>
+<li>cache_fs向后兼容v5.x Cache Server目录</li>
+<li>支持工作线程，使用<code>--workers</code>命令</li>
+<li>运行清理脚本时，<code>expireTimeSpan</code>的值用来确定要删除的文件。如果<code>maxCacheSize</code>指定，则脚本会检查惠存是否超过该值。超过该值脚本将清理最近最少使用的文件，直到缓存不再超过maxCacheSize。</li>
+</ul>
+<h2 id="cache-ram"><a href="#cache-ram" class="headerlink" title="cache_ram"></a>cache_ram</h2><p>&emsp;&emsp;高性能，完全内存的LRU缓存。</p>
+<p><strong>用法</strong></p>
+<p><code>--cache-module cache_ram</code></p>
+<p><strong>命令</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">命令</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">pageSize</td>
+<td style="text-align:center">100000000</td>
+<td style="text-align:center">缓存页面大小(以字节为单位)</td>
+</tr>
+<tr>
+<td style="text-align:center">maxPageCount</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">在缓存中分配的最大页面数。</td>
+</tr>
+<tr>
+<td style="text-align:center">minFreeBlockSize</td>
+<td style="text-align:center">1024</td>
+<td style="text-align:center">页面内最小分配单元(以字节为单位)。可以给较小的项目指定较低的值。</td>
+</tr>
+<tr>
+<td style="text-align:center">cachePath</td>
+<td style="text-align:center"><code>.cache_ram</code></td>
+<td style="text-align:center">缓存目录的路径，脏内存页面会定期保存到磁盘的此目录下，并在启动时加载。</td>
+</tr>
+<tr>
+<td style="text-align:center">persistence</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">将页面文件保存和加载到磁盘。如果为false，缓存会在退出时被清理。</td>
+</tr>
+<tr>
+<td style="text-align:center">persistenceOptions.autosave</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">设置为true时将自动保存更改，false为禁用。</td>
+</tr>
+<tr>
+<td style="text-align:center">persistenceOptions.autosaveInterval</td>
+<td style="text-align:center">10000</td>
+<td style="text-align:center">保存页面更改的频率(以毫秒为单位)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注意</strong></p>
+<ul>
+<li>不支持工作线程</li>
+</ul>
+<h2 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h2><p>&emsp;&emsp;cache_ram是高性能缓存模式，但是需要内存要大于项目Library文件夹的2-3倍，对于大一点的项目就需要很大的物理内存。而cache_fs在实际测试中，并不逊色于cache_ram模式，当然仅仅是针对我的机器。并且用作server的mac mini还是一块1T的机械硬盘，如果更换上SSD可能会更快一些。所以两种模式，个人更推荐使用cache_fs。</p>
+<p>&emsp;&emsp;作为测试的资源Assets文件夹3.86G，Library文件夹2.65G，机器Server是mac mini，i5、8G内存、1T机械硬盘。客户端是mac mini，i5、16G内存、240GSSD。测试结果仅供参考，因为客户端mini 12年的比较老，跑unity还是有点卡，所以部分记录时间只能用大概范围，因为有时候导入的时候会卡死。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">比较项目</th>
+<th style="text-align:center">cache_fs</th>
+<th style="text-align:center">cache_ram</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">导入缓存结果(从客户端导本地缓存结果)</td>
+<td style="text-align:center">3min+</td>
+<td style="text-align:center">2min+</td>
+</tr>
+<tr>
+<td style="text-align:center">重新压缩贴图导入server</td>
+<td style="text-align:center">26min+</td>
+<td style="text-align:center">26min+</td>
+</tr>
+<tr>
+<td style="text-align:center">不适用cache server压缩贴图</td>
+<td style="text-align:center">21min+</td>
+<td style="text-align:center">21min+</td>
+</tr>
+<tr>
+<td style="text-align:center">客户端导入server缓存结果</td>
+<td style="text-align:center">117s</td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>&emsp;&emsp;测试结果可能会因为机器的缘故略有不同，但是在对比下，cache_fs是server比较好的选择，虽然两种模式都不需要多好的cpu，但是cache_fs模式只需要一块够大的ssd，通常情况240G的SSD已经完全够用了，价格也不贵。但是使用cache_ram在我测试的情况下并没有好多少，首先门槛就要内存至少是project下library大小的2-3倍。</p>
+<p>&emsp;&emsp;综上，使用cache_fs已经能达到很好的效果了。比不适用cache server快了几乎10倍，而且还是在server使用的是机械硬盘的情况，换上ssd应该会更快一点。</p>
+<p>&emsp;&emsp;另外，关于cache的清理、镜像、高可靠性的相关内容，参考<a href="https://github.com/Unity-Technologies/unity-cache-server" target="_blank" rel="noopener">unity-cache-server</a>官方文档。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.wangx.com/2018/09/28/unity-cache-server-cache-modules/" data-id="cjqm70br2001ad91bzamn8ten" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cacheserver/">cacheserver</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+
+
+
+      
+        <article id="post-unity-cache-server" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2018/09/26/unity-cache-server/">Unity-Cache-Server</a>
+    </h2>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/09/26/unity-cache-server/" class="article-date">
+  <time datetime="2018-09-26T01:38:21.000Z" itemprop="datePublished">2018-09-26</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/unity/">unity</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <p><em>注：由于没有做过游戏开发，也没有使用过unity，所以有问题的地方欢迎在评论指正</em></p>
+<h2 id="缓存服务器"><a href="#缓存服务器" class="headerlink" title="缓存服务器"></a>缓存服务器</h2><p>&emsp;&emsp;Unity的打包流程中最慢的环节就是贴图的压缩。不同的平台，需要把原始贴图压缩成对应平台的压缩贴图格式。iOS和Android平台对应的格式不同。针对这个问题，Unity官方给出了一个CacheServer的解决方案。CacheServer只是一个文件cache服务器，记录了贴图源文件和转换参数(meta文件)以及转换器版本等信息构成的字符串的md5值作为文件索引。第一个做转换的人，在本地进行压缩后，会把结果传到CacheServer，其他人使用时，就会优先去看有没有人做过同样的工作，如果有就从cache服务器下载资源，没有就会进行压缩，并上传结果到CacheServer。如果源文件、转换参数都完全一样，结果会被缓存。在日常所有贴图都会被压缩过，可以节约压缩贴图的时间，从而减少打包时间。</p>
+<p>&emsp;&emsp;Unity官方在3月发布了Cache Server v6.0.0版本，官方宣称6.0带来了更高的可靠性和性能，以及一系列的新功能。包括新模块化，实现最大的I/O性能，支持高性能的缓存模式等等。</p>
+<p>&emsp;&emsp;Unity用户手册中也有关于Cache Server介绍和使用，但截至9.26日，官网的用户手册还停留在2月份的，没有做更新。关于文件更改请仔细阅读官网手册英文原文说明或下方翻译：</p>
+<blockquote>
+<p>关于缓存服务器，Unity具有一个全自动的资源管道。当修改了类似于<code>.psd</code>或<code>.fbx</code>文件的资源后，Unity将检测到更改并自动重新导入更改后的文件。从文件导入的数据之后将由Unity按其内部格式存储。资源管道最重要的部分是“热重载”功能和保证您的所有资源始终同步为所见即所得模式。此功能的实现也是要付出代价的。任何修改的资源必须重新导入。在一个大团队中工作时，获得了最新的管理源代码(Source Control)后，您通常需要等很长一段时间才可将所有其他成员修改或创建的资源重新导入完成。另外，在PC和移动平台之间来回切换工程平台，也将引发重新导入大部分资源的操作。</p>
+<p>在<strong>缓存服务器(Cache Server)</strong>上缓存导入的资源数据可大幅缩短导入资源占用的时间。</p>
+<p>缓存每个导入的资源基于：</p>
+<p>&emsp;&emsp;<em>资源文件本身</em></p>
+<p>&emsp;&emsp;<em>导入设置</em></p>
+<p>&emsp;&emsp;<em>资源导入器版本</em></p>
+<p>&emsp;&emsp;<em>当前平台</em></p>
+<p>如果上述四项任意一项发生变化，资源将重新导入，否则，会从缓存服务器(Cache Server)下载更新后的资源。启用偏好设置(Preferences)中的缓存服务器后，您可以共享多个工程的导入资源。</p>
+<p><strong><em>注意：将缓存服务器设置好后，这个过程将是完全自动的，这意味着无需其他工作流程。它只是缩短了导入工程的时间，无需您进行操作。</em></strong></p>
+</blockquote>
+<h2 id="配置要求"><a href="#配置要求" class="headerlink" title="配置要求"></a>配置要求</h2><p>&emsp;&emsp;只考虑将CacheServer搭在本地环境，cache服务器不同于版本控制，其缓存数据可以随时在本地重建，没必要使用远程服务器。如果存在开发团队分布在各地的情况，选择在每个地方配置一台独立缓存服务器比较好。</p>
+<p>&emsp;&emsp;因为CacheServer只相当于一个文件cache服务器，所以配置并不需要太高。但是为了最佳性能，机器必须要有足够的RAM来存储整个导入的工程文件夹。机器最好使用SSD，保证读写速度。另外CacheServer的CPU使用率非常低。最好使用Linux或Mac OS X系统。Windows 文件系统未对资源缓存服务器 (Asset Cache Server) 存储数据的方式进行特别理想的优化，Windows 上的文件锁定问题可引发问题，但 Linux 或 Mac OS X 上不会出现此类问题。</p>
+<h2 id="用户使用"><a href="#用户使用" class="headerlink" title="用户使用"></a>用户使用</h2><p>&emsp;&emsp;Unity Cache Server 用户配置使用非常简单：</p>
+<p>&emsp;&emsp;1. 在编辑器中选择偏好设置(Preferences)</p>
+<p>&emsp;&emsp;2. 选择Cache Server，Mode选择Remote，输入缓存服务器的IP地址即可</p>
+<p><img src="https://i.loli.net/2018/09/26/5bab3ffe7a483.png" alt="cache server本地配置"></p>
+<p>&emsp;&emsp;如果缓存服务器配置正确，不存在网络问题的话，Check Connection之后就会出现如图所示连接成功。如果失败的话，可能是缓存服务器配置问题。</p>
+<h2 id="管理员配置"><a href="#管理员配置" class="headerlink" title="管理员配置"></a>管理员配置</h2><p>&emsp;&emsp;Cache Server升级到v6版本之后只支持npm方式安装，所以机器需要先安装LTS版本(长期支持版本)，目前官方推荐的版本是v8.10.0. 下载地址：<a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">https://nodejs.org/en/download/</a></p>
+<p>&emsp;&emsp;node环境配置好之后，使用npm安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install unity-cache-server -g</span><br><span class="line">或</span><br><span class="line">npm install github:Unity-Technologies/unity-cache-server -g</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;安装完成之后，命令行输入下面的指令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unity-cache-server</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2018/09/26/5bab4fe1e0d17.png" alt="cache server location"></p>
+<p>&emsp;&emsp;然后unity-cache-server就启动起来了，可以看到默认的缓存路径位于unity-cache-server安装目录下，我们也可以指定缓存路径和端口，缓存模式等。用法附带常用命令表：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">用法：</span><br><span class="line">unity-cache-server [arguments]</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">-V, –version</td>
+<td style="text-align:left">查看缓存服务器的版本号</td>
+</tr>
+<tr>
+<td style="text-align:left">-p, –port</td>
+<td style="text-align:left">缓存服务器监听的端口，默认端口是8126。</td>
+</tr>
+<tr>
+<td style="text-align:left">-c, –chache-module [path]</td>
+<td style="text-align:left">缓存模块路径，默认值是’cache’</td>
+</tr>
+<tr>
+<td style="text-align:left">-P, –cache-path [path]</td>
+<td style="text-align:left">缓存路径</td>
+</tr>
+<tr>
+<td style="text-align:left">-l, –log-level \<n></n></td>
+<td style="text-align:left">日志详细程度，等级0(没有提示) - 5(调试模式)，默认值为3</td>
+</tr>
+<tr>
+<td style="text-align:left">-w, –workers \<n></n></td>
+<td style="text-align:left">要生成的工作线程数，默认值为0。</td>
+</tr>
+<tr>
+<td style="text-align:left">-h, –help</td>
+<td style="text-align:left">显示使用帮助&emsp;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>配置文件</strong></p>
+<p>&emsp;&emsp;配置文件位于unity-cache-server安装目录下config/default.yml，配置系统基于node-config模块，关于如何管理特定环境的配置文件的其他信息，可以参阅node-config配置文档。</p>
+<p>&emsp;&emsp;默认情况，run <code>unity-cache-server</code>使用的是内置的配置文件，当然我们可以修改内置的配置文件。另外也可以将配置信息写入新文件，使用–NODE_CONFIG_DIR命令使用该配置文件。</p>
+<p><strong>配置文件常用命令</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">命令</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Cache.options.processor.putWhitelist</td>
+<td style="text-align:center">[]</td>
+<td style="text-align:center">允许上传更改的IP地址数组，类型为字符串</td>
+</tr>
+<tr>
+<td style="text-align:center">Server.options.allowIPv6</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">在IPv4和IPv6上监听客户端连接</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// cd到unity-cache-server安装目录,如果不清楚安装位置,可以先运行 unity-cache-server,查看path</span><br><span class="line">cd /Users/wangx/.nvm/versions/node/v8.11.3/lib/node_modules/unity-cache-server/</span><br><span class="line">vi config/default.yml</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2018/09/27/5bac39daebbd4.png" alt="default.yml"></p>
+<p>&emsp;&emsp;常用只需要修改这两个配置，因为放在本地网络环境，可以不需要修改allowIpv6，只修改putWhitelist即可，注意yml语法，以及putWhitelist值为字符串值，这个是一定要注意的，不然会导致cache server启动成功却不能使用缓存服务。建议修改完之后做一下YAML语法检测，<a href="http://www.yamllint.com/" target="_blank" rel="noopener">YAML在线检测网址</a>。</p>
+<p>&emsp;&emsp;至此，server的配置就基本完成了。然后在启动server，测试是否成功。端口可以使用默认端口，但最好指定一个cache结果缓存目录，方便查看和清理。本文先使用cache_fs，高性能文件系统缓存模式，下一篇文章将对比说明cache_ram模式。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 我这里使用的mac OS X作为server，缓存目录放在用户目录下 unity-cache/</span><br><span class="line">unity-cache-server -P /Users/wangx/unity-cache/</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;注意unity-cache-server命令区分大小写，-p和-P代表的命令不一样。</p>
+<p><img src="https://i.loli.net/2018/09/27/5bac4ba3a101c.png" alt="unity-cache-server -P"></p>
+<h2 id="测试使用"><a href="#测试使用" class="headerlink" title="测试使用"></a>测试使用</h2><p>&emsp;&emsp;客户端配置参考上文的用户使用，第一遍导入时，就会压缩一次贴图，并将结果缓存到cache-server。因此第一次压缩贴图的时间并不会缩短。第一次压缩完成后server上指定的缓存目录下就会有缓存结果。</p>
+<p><img src="https://i.loli.net/2018/09/27/5bac4d10c16cf.png" alt="缓存结果"></p>
+<p><img src="https://i.loli.net/2018/09/27/5bac4d10ceba0.png" alt="缓存结果"></p>
+<p>&emsp;&emsp;然后我们再次切换到相同平台的时候，速度会加快很多倍。当然仅限于相同平台，如果不同平台，本机又可以提交修改，然后缓存结果就会被体会，再次切相同平台同样会重新压缩贴图。如前文中的Unity哪些更改会导致资源重新导入。例如：</p>
+<blockquote>
+<p>游戏项目是android平台的，但是unity初次导入项目会默认在PC平台，所以压缩贴图的时候会压缩成PC支持的格式。切到Adroid平台的时候会重新压缩一遍贴图，就会重新导入。所以建议putWhitelist在第一次导入的时候只填写第一个上传项目压缩贴图的IP地址，待所有人都切到相同平台的时候，再加入能提交更改的IP。</p>
+</blockquote>
+<blockquote>
+<p>还有另外一种比较好的方式：</p>
+<p>&emsp;&emsp;在Server上缓存的是Android平台的缓存结果，导入项目如果能直接是在Android平台就会直接下载缓存结果，避免因平台的切换导致部分资源被重新导入。有关如何通过命令行启动Unity并完成平台的切换，请百度或google，“unity如何直接在打开时完成开发平台的切换”。当启动Unity就处于Android平台，就会直接下载Cache Server的缓存结果。</p>
+</blockquote>
+<p>&emsp;&emsp;结果缓存成功，再次切平台的就会从cache server下载缓存，整个过程基本能在1-2分钟内完成，速度提升很多倍。在server的log中可以看到发送缓存记录：</p>
+<p><img src="https://i.loli.net/2018/09/27/5bac52a1d7b30.png" alt="download from cache server"></p>
+<p><img src="https://i.loli.net/2018/09/27/5bac5291133f3.png" alt="log"></p>
+<h2 id="现有项目导入"><a href="#现有项目导入" class="headerlink" title="现有项目导入"></a>现有项目导入</h2><p>&emsp;&emsp;上面的导入缓存配置较为简单，但是如果是已有Unity项目又不想重新做一次导入，可以使用Unity官方提供的这种方式进行导入。前提是进行导入的客户端IP地址需要包含在白名单中，并且项目要具有Library文件夹。</p>
 <blockquote>
 <ol>
-<li><p>行内元素：给父元素设置text-align:center;</p>
+<li><p>将安装目录下Unity文件夹的<code>CacheServerTransactionImporter.cs</code>脚本添加到Unity项目下。对于这部分的工作我不是太清楚，具体如何设置，请参考unity-cache-server官方的说明。<a href="https://github.com/Unity-Technologies/unity-cache-server" target="_blank" rel="noopener">https://github.com/Unity-Technologies/unity-cache-server</a>, Unity project Library Importer.</p>
 </li>
-<li><p>定宽块状元素：设置左右margin值为auto</p>
+<li><p>添加成功之后，等待刷新一下，Unity的菜单栏就会出现Cache Server Utilities选项，然后选择导出，Export Transactions.选择导出json文件的路径，保存。</p>
 </li>
-<li><p>不定宽块状元素：</p>
-<ol>
-<li><p>在元素外加入table标签(包括table、tbody、tr、td)，在把该元素写在td内，然后设置margin的值为auto，注意是设置table不是该元素。</p>
-</li>
-<li><p>给该元素设置display:inline方法，居中方法和行内一致。</p>
-</li>
-<li><p>父元素设置float:left;position:relative和left:50%，子元素设置position:relative和left:-50%。</p>
-</li>
-</ol>
+<li><p>在导出结果的客户端执行下面的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">    unity-cache-server-import &lt;path to json file&gt; [server:port]</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 </blockquote>
-<p>&emsp;&emsp;垂直居中设置：</p>
 <blockquote>
-<ol>
-<li><p>父元素高度确定的单行文本：设置height = line-height;</p>
-</li>
-<li><p>父元素高度确定的多行文本：</p>
-<ol>
-<li><p>插入table(和水平居中一致)，设置vertical-align:middle;</p>
-</li>
-<li><p>先设置display:table-cell，在设置vertical-align: middle;  </p>
-</li>
-</ol>
-</li>
-</ol>
+<p>   <em>注：这一步需要导入客户端的地址在配置文件的putWhitelist中，否则会导致写入失败。</em></p>
+<p>   如果配置没有问题的话就会看到server log会有资源文件的上传记录，此阶段可以将log-level 设置为4，就能看到上传记录。</p>
 </blockquote>
-<p>&emsp;&emsp;下面就提供几种居中的方法：</p>
-<h4 id="1-使用定位：position-absolute-设置left、top、margin-left、margin-top属性。"><a href="#1-使用定位：position-absolute-设置left、top、margin-left、margin-top属性。" class="headerlink" title="1.使用定位：position:absolute;设置left、top、margin-left、margin-top属性。"></a>1.使用定位：position:absolute;设置left、top、margin-left、margin-top属性。</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">margin-top</span>: -<span class="number">50px</span>;</span><br><span class="line">    <span class="attribute">margin-left</span>: -<span class="number">50px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;这种方法好处是浏览器基本都能兼容，不足的地方就是需要我们固定宽高。</p>
-<h4 id="2-使用position-absolute-设置top、bottom、right、left为0，margin-auto"><a href="#2-使用position-absolute-设置top、bottom、right、left为0，margin-auto" class="headerlink" title="2.使用position: absolute;设置top、bottom、right、left为0，margin:auto;"></a>2.使用position: absolute;设置top、bottom、right、left为0，margin:auto;</h4></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>11 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/HTML-CSS/">HTML/CSS</a><span class="category-list-count">2</span></li></ul></li></ul></li></ul><ul class="pagination"><li class="link"><a href="/page/2/"><i class="icon icon-arror-left"></i></a></li><li class="current"><a>3</a></li></ul><div class="page-footer"><div class="top"><ul class="social"><li><a href="https://github.com/reeves7" title="Github" target="_blank"><i class="icon icon-github"></i></a></li><li><a href="i@wangx.me" title="email" target="_blank"><i class="icon icon-email"></i></a></li></ul></div><div class="bottom"><p class="copyright">© 2018 Wangx's blog<br><small>POWER BY <a href="https://hexo.io" target="_blank">HEXO</a></small></p></div></div></div><script>var wrap = document.getElementById('wrap');
-window.onload = function () {
-  wrap.className += ' done';
-}</script></body></html>
+<p><img src="https://i.loli.net/2018/09/27/5bac898fbf382.png" alt="unity menu"></p>
+<p><img src="https://i.loli.net/2018/09/27/5bac898f72602.png" alt="import shell"></p>
+<p><img src="https://i.loli.net/2018/09/27/5bac899abcda0.png" alt="server import"></p>
+<p>&emsp;&emsp;等待上传完成，server就缓存了客户端已经有的缓存结果了。其他客户端就可以从cache server导入资源。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>&emsp;&emsp;至此，关于unity-cache-server最新版本v6的使用及配置就差不多了。其中可能有一些地方是可以改进，或者可以详细说明的，但我是个门外汉，对很多unity相关的内容都不太清楚。所以还是欢迎指正，另外在使用时有疑问也可以评论或邮件联系。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.wangx.com/2018/09/26/unity-cache-server/" data-id="cjqm70br5001md91b6spabi45" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cacheserver/">cacheserver</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+
+
+
+      
+  </article>
+  
+  
+    <nav class="page-nav">
+      
+      <a class="extend prev" rel="prev" href="/page/2/">Newer posts</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/">Older posts</a>
+    </nav>
+  
+</section>
+</div>
+
+  <footer class="footer">
+  
+  <div class="outer">
+    <ul class="list-inline">
+      <li>&copy; 2019 Wangx&#39;s blog</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <li>Theme  <a href="https://zhwangart.github.io">zhwangart</a></li> -->
+      <!--
+      <li><a href="/">wangx</a></li>
+      -->
+    </ul>
+  </div>
+</footer>
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/wangx.png" alt="Wangx&#39;s blog"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">文章</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">相册</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/search.js"></script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>

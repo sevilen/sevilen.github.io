@@ -1,51 +1,177 @@
-<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="email=no"><meta name="description" content="web developer."><meta name="keywords" content="Vuejs"><title>Wangx's blog - Whatever is worth doing is worth doing well.</title><link rel="stylesheet" href="/css/main_style.min.css"><link rel="icon" href="/favicon.ico"></head><body><input id="navi" type="checkbox"><ul class="main-navication"><li><a href="/"><span>Home</span></a></li><li><a href="https://github.com/reeves7"><span>Github</span></a></li><li><a href="https://www.v2ex.com/"><span>V2EX</span></a></li><li><a href="http://chongzi7.lofter.com/"><span>Chongzi</span></a></li><li><a href="https://isjaakko.github.io/"><span>Jaakko</span></a></li><li><a href="https://zhanl.github.io/"><span>Zhan L</span></a></li><li><a href="https://blog.caojun.xyz/"><span>Cao jun</span></a></li><li><a href="https://blog.return0.top/"><span>Nrehearsal</span></a></li><li><a href="https://blog.ache.fun/"><span>ache</span></a></li></ul><div class="wrapper" id="wrap"><div class="page-header"><label class="navi-button" for="navi">MENU</label><div class="background"><img src="/home-bg.jpg"></div><div class="author"><div class="head"><img src="/wangx.jpg"></div><h3 class="name">wangx</h3><p class="signature">Whatever is worth doing is worth doing well.</p></div></div><ul class="post-list" style="max-width:800px"><li> <p class="date">2018年11月4日</p><h4 class="title"><a href="/2018/11/04/css-world-note/">css世界读书笔记</a></h4><div class="excerpt"><p>&emsp;&emsp;一直以来都觉得前端CSS可能是最难学的，emm..最难学好学精的。直到现在写CSS，有时候遇到一些小问题都不知道怎么回事，甚至有时候还会写一些无用的的属性，是在我用了语法检测才发现以前写的部分CSS其实是不正确的。有时候不明白一些属性的原理，你加很多CSS是完全不会生效的。</p>
-<p>&emsp;&emsp;遇到CSS问题的时候特别是比较棘手的问题，张鑫旭的博客中几乎都能找到。所以对于张鑫旭在CSS方面的造诣还是比较佩服的，希望能从《CSS世界》这本书中学习到不一样的东西。但是首先先就要吐槽一下，蹩脚的比喻和美式幽默的腔调确实不适合我，如果少一点废话，这本书至少可以省去1/3的篇幅。</p>
-<p>&emsp;&emsp;内容上设计上这本书着重于CSS2，比较贴近实际，CSS3新增了很多内容，也纠正了一些之前设计上的问题。如box-sizing等，但更多的则是CSS动画，使用CSS3动画相较于之前的JS动画，可以大大减少页面的重排和重绘，从而提高网页性能。但在实际开发中更注重于实现而不是动画，个人感觉动画只是点缀，提升用户体验。在实现层CSS2更为重要，学习CSS背后的技术内幕。</p>
-<p>&emsp;&emsp;相较于其他编程语言，CSS毫无逻辑可言，所有的东西都像堆叠起来的一样，所以叫层叠样式表?对于每一条CSS属性都有其作用，如一个span是属于内联元素(inline)，是不能设置width和height的，如果使用的display属性设为block、inline-block或其它块元素，就可以为其设置宽高了。例如书中在块级元素提到的清除浮动方法：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.clear</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">	<span class="attribute">display</span>: block;</span><br><span class="line">	<span class="attribute">clear</span>: both;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在很长的一段时间里我都是使用clear:both，而且并不是使用伪类的方式。除了block还可以使用table、list-item.</p>
-<p>&emsp;&emsp;还有height的问题，经常会遇到设置height: 100%，实际高度永远是0，如果不明白计算方式那么永远都是0。就之前做项目的时候实现一个footer沉底，内容不足铺满一页沉底，超出页面就往下堆叠。其实思路很简单，就是footer绝对定位，bottom为0。但是代码这么写了却永远不生效。因为高度计算不正确，绝对定位就不能成功定位。vue项目中：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#app</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.footer</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">60px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在vue项目中一般footer的父元素大都不是app，可能还会有，所以这样做不ok，那么给app和footer之间的元素都加上height: 100%就可以了吗，也不行，其实实际动手试一下，调试选中app如果页面内容不足铺满屏幕，那么app的高度也不是窗口的高度，因为还少了一部分：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span>, <span class="selector-tag">body</span> &#123;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>4 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年5月7日</p><h4 class="title"><a href="/2018/05/07/csscenter/">【CSS】css居中方案</a></h4><div class="excerpt"><p>&emsp;&emsp;先说一下水平居中和垂直居中的一般方案.</p>
-<p>&emsp;&emsp;水平居中设置：</p>
-<blockquote>
-<ol>
-<li><p>行内元素：给父元素设置text-align:center;</p>
-</li>
-<li><p>定宽块状元素：设置左右margin值为auto</p>
-</li>
-<li><p>不定宽块状元素：</p>
-<ol>
-<li><p>在元素外加入table标签(包括table、tbody、tr、td)，在把该元素写在td内，然后设置margin的值为auto，注意是设置table不是该元素。</p>
-</li>
-<li><p>给该元素设置display:inline方法，居中方法和行内一致。</p>
-</li>
-<li><p>父元素设置float:left;position:relative和left:50%，子元素设置position:relative和left:-50%。</p>
-</li>
-</ol>
-</li>
-</ol>
-</blockquote>
-<p>&emsp;&emsp;垂直居中设置：</p>
-<blockquote>
-<ol>
-<li><p>父元素高度确定的单行文本：设置height = line-height;</p>
-</li>
-<li><p>父元素高度确定的多行文本：</p>
-<ol>
-<li><p>插入table(和水平居中一致)，设置vertical-align:middle;</p>
-</li>
-<li><p>先设置display:table-cell，在设置vertical-align: middle;  </p>
-</li>
-</ol>
-</li>
-</ol>
-</blockquote>
-<p>&emsp;&emsp;下面就提供几种居中的方法：</p>
-<h4 id="1-使用定位：position-absolute-设置left、top、margin-left、margin-top属性。"><a href="#1-使用定位：position-absolute-设置left、top、margin-left、margin-top属性。" class="headerlink" title="1.使用定位：position:absolute;设置left、top、margin-left、margin-top属性。"></a>1.使用定位：position:absolute;设置left、top、margin-left、margin-top属性。</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">margin-top</span>: -<span class="number">50px</span>;</span><br><span class="line">    <span class="attribute">margin-left</span>: -<span class="number">50px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;这种方法好处是浏览器基本都能兼容，不足的地方就是需要我们固定宽高。</p>
-<h4 id="2-使用position-absolute-设置top、bottom、right、left为0，margin-auto"><a href="#2-使用position-absolute-设置top、bottom、right、left为0，margin-auto" class="headerlink" title="2.使用position: absolute;设置top、bottom、right、left为0，margin:auto;"></a>2.使用position: absolute;设置top、bottom、right、left为0，margin:auto;</h4></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>11 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/HTML-CSS/">HTML/CSS</a><span class="category-list-count">2</span></li></ul></li></ul></li></ul><ul class="pagination"><li class="current"><a>1</a></li></ul><div class="page-footer"><div class="top"><ul class="social"><li><a href="https://github.com/reeves7" title="Github" target="_blank"><i class="icon icon-github"></i></a></li><li><a href="i@wangx.me" title="email" target="_blank"><i class="icon icon-email"></i></a></li></ul></div><div class="bottom"><p class="copyright">© 2018 Wangx's blog<br><small>POWER BY <a href="https://hexo.io" target="_blank">HEXO</a></small></p></div></div></div><script>var wrap = document.getElementById('wrap');
-window.onload = function () {
-  wrap.className += ' done';
-}</script></body></html>
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="web developer.">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    Tag: css |
+    
+    Wangx&#39;s blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article class="articles">
+    
+    <h1 class="page-type-title">#&nbspcss</h1>
+
+    
+    
+    
+      
+      
+        
+        
+    <div class="archives-wrap">
+      <div class="archive-year-wrap">
+        <a href="/archives/2018" class="archive-year">2018</a>
+      </div>
+      <div class="archives">
+        
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/11/04/css-world-note/" class="archive-article-date">
+  <time datetime="2018-11-04T02:09:15.000Z" itemprop="datePublished">11/04</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/11/04/css-world-note/">css世界读书笔记</a>
+    </h2>
+  
+
+    </header>
+    
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    
+  </div>
+</article>
+        
+      
+      
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/05/07/csscenter/" class="archive-article-date">
+  <time datetime="2018-05-07T14:54:57.000Z" itemprop="datePublished">05/07</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/05/07/csscenter/">【CSS】css居中方案</a>
+    </h2>
+  
+
+    </header>
+    
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/居中/">居中</a></li></ul>
+
+    
+  </div>
+</article>
+        
+        
+      </div>
+    </div>
+    
+  
+  
+</article></section>
+  <footer class="footer">
+  
+  <div class="outer">
+    <ul class="list-inline">
+      <li>&copy; 2019 Wangx&#39;s blog</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <li>Theme  <a href="https://zhwangart.github.io">zhwangart</a></li> -->
+      <!--
+      <li><a href="/">wangx</a></li>
+      -->
+    </ul>
+  </div>
+</footer>
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/wangx.png" alt="Wangx&#39;s blog"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">文章</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">相册</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/search.js"></script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>

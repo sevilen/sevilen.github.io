@@ -1,88 +1,334 @@
-<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="email=no"><meta name="description" content="web developer."><meta name="keywords" content="Vuejs"><title>Wangx's blog - Whatever is worth doing is worth doing well.</title><link rel="stylesheet" href="/css/main_style.min.css"><link rel="icon" href="/favicon.ico"></head><body><input id="navi" type="checkbox"><ul class="main-navication"><li><a href="/"><span>Home</span></a></li><li><a href="https://github.com/reeves7"><span>Github</span></a></li><li><a href="https://www.v2ex.com/"><span>V2EX</span></a></li><li><a href="http://chongzi7.lofter.com/"><span>Chongzi</span></a></li><li><a href="https://isjaakko.github.io/"><span>Jaakko</span></a></li><li><a href="https://zhanl.github.io/"><span>Zhan L</span></a></li><li><a href="https://blog.caojun.xyz/"><span>Cao jun</span></a></li><li><a href="https://blog.return0.top/"><span>Nrehearsal</span></a></li><li><a href="https://blog.ache.fun/"><span>ache</span></a></li></ul><div class="wrapper" id="wrap"><div class="page-header"><label class="navi-button" for="navi">MENU</label><div class="background"><img src="/home-bg.jpg"></div><div class="author"><div class="head"><img src="/wangx.jpg"></div><h3 class="name">wangx</h3><p class="signature">Whatever is worth doing is worth doing well.</p></div></div><ul class="post-list" style="max-width:800px"><li> <p class="date">2018年12月23日</p><h4 class="title"><a href="/2018/12/23/vue-deep-and-shallow-copy/">关于踩坑的问题</a></h4><div class="excerpt"><p>&emsp;&emsp;这周在完成一个功能之后，回过头去看自己的代码竟然发现自己有点看不懂了，也才完成一周不到的时间。看不懂的原因也很简单，父组件有一个对象数组，传递给其中一个子组件，然后会对组件中的对象修改，而修改的操作是这个子组件的兄弟组件去完成的，修改完成之后会将修改后的结果返回给父组件，然而子组件中的数据也相应的修改了，不明白其原因。想了一会儿才关联到可能是跟浅拷贝有关。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// 父组件</span><br><span class="line">&lt;template lang=&quot;html&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;parent&quot;&gt;</span><br><span class="line">        &lt;eldest-son :arr=&quot;arr&quot;&gt;&lt;/eldest-son&gt;</span><br><span class="line">        &lt;younger-son :arrItem=&quot;arrItem&quot; @data-changed=&quot;dataChanged&quot;&gt;&lt;/younger-son&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script lang=&quot;ts&quot;&gt;</span><br><span class="line">	public arr: Person[] = [</span><br><span class="line">        &#123;</span><br><span class="line">            name: &apos;bob&apos;,</span><br><span class="line">            age: 18,</span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            name: &apos;jack&apos;,</span><br><span class="line">            age: 14,</span><br><span class="line">        &#125;,</span><br><span class="line">    ];</span><br><span class="line">    public arrItem: Person = arr[0];</span><br><span class="line">    </span><br><span class="line">    public dataChanged(newPerson: Person): void &#123;</span><br><span class="line">		this.arrItem = newPerson;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;问题差不多就是这样，更恰好的是当时的功能正好是这样的需求，就是要修改<code>eldest-son</code>中的数据。写完之后去看觉得通过数据渲染的框架，对待数据会严谨很多，第一时间并没有往浅拷贝上去想这个问题，看了一会儿之后发现是对数组进行操作的，才联想到浅拷贝。</p>
-<p>&emsp;&emsp;在JavaScript中，深、浅拷贝问题只针对复杂对象，array和object。关于深浅拷贝之前已经看过一些文章了，也是一个很简单的问题，就不再赘诉深浅拷贝的原理和实现了，有很多优秀的文章。而恰好我这里的需求就是要通过浅拷贝这种方式实现，不然在子组件中修改后的数据还要通过父组件中转一下。</p>
-<p>&emsp;&emsp;通过这个小问题，再次让我意识到注释的重要性，即使是自己一个人开发项目。有时候解决问题的想法可能是在一瞬间得到的灵感，写完之后虽然觉得实现的简单，如果不加上注释，后面再看代码的时候可能很难想到，就要花更多的时间去读。所以，还是得写一篇文章来警示下自己，有些东西对于自己再简单，尽可能的在实现功能后加上注释，方便别人也方便自己阅读。</p>
-<p>&emsp;&emsp;另外联想到的就是，遇到的一些小问题一定要记录一下，特别是自己做过的一些东西，如果不记一下很快就忘掉了，下次遇到的时候还会再犯错，是很不值得的一件事。现在已经有一点习惯，会在自己遇到一些问题的时候，会用网易云笔记记录下来，希望能继续保持这样的态度。</p>
-<p>&emsp;&emsp;最后感觉自己读书和看文档的专注度不够，只看到了皮毛，学会了使用，在使用的过程中还会踩坑。我觉得这样也并不是一件坏事，但这提醒了我，看完一定要尝试一下，及时发现不足，然后弥补。现在感觉好像好些书我都得再读一遍啊…</p>
-</div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>3 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年12月15日</p><h4 class="title"><a href="/2018/12/15/about-dual-channel-memory/">关于安装双通道内存</a></h4><div class="excerpt"><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>&emsp;&emsp;自己之前的主力机(宏碁的V神系列)，上大学的时候买的，在当时算性价比比较高的了，而且杜比音效和屏幕真的秒杀当时同寝室以及隔壁寝室的其他本子。但是买回来用了一段时间发现体验不是很好，就是慢、卡顿，还拿去买笔记本的店让老板给我看下，然后他就重装了个系统(当时还是个萌新)，后面回去用了一段时间之后还是老问题，就攒钱加了个固态，简直是质的飞跃，一直到现在。</p>
-<p>&emsp;&emsp;虽然现在没怎么用那个本子了，但是也不舍得送人或者卖掉，偶尔想打打游戏，电脑又很吃力，CPU和显卡(外接显卡)又没法升级，就内存看来比较小了。听说两个4G的双通道要强于单个8G的，又不太懂内存双通道的东西，就买了一个同型号同频率不同牌的内存条升级。</p>
-<h4 id="关于双通道"><a href="#关于双通道" class="headerlink" title="关于双通道"></a>关于双通道</h4><p>&emsp;&emsp;双通道，就是MCH芯片级里设计两个内存控制器，这两个内存控制器可相互独立工作，每个控制器控制一个内存通道。在这两个内存通道，CPU可分别寻址、读取数据，从而使内存的带宽增加一倍，读取速度也相应增加一倍。</p>
-<h4 id="安装双通道注意事项"><a href="#安装双通道注意事项" class="headerlink" title="安装双通道注意事项"></a>安装双通道注意事项</h4><p>&emsp;&emsp;<strong>主板不支持弹性双通道的情况</strong></p>
-<blockquote>
-<p>&emsp;&emsp;1.相同容量</p>
-<p>&emsp;&emsp;2.相同内存条参数(时序、频率、品牌)</p>
-<p>&emsp;&emsp;3.对称的内存插槽位置</p>
-</blockquote>
-<p>&emsp;&emsp;我买的时候主要考虑容量和频率，感觉品牌对于组双通道并不重要，当然相同的当然更好。一般笔记本都是支持双通道的，特殊的轻薄本、便携本除外。</p>
-<h4 id="弹性双通道"><a href="#弹性双通道" class="headerlink" title="弹性双通道"></a>弹性双通道</h4></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>2 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/computer/">computer</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年12月8日</p><h4 class="title"><a href="/2018/12/08/vue-dynamic-components/">Vue动态组件</a></h4><div class="excerpt"><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>&emsp;&emsp;之前对Vue的了解很局限，感觉上和我实验室老师的Nodom框架很像，也可以说Nodom有一些借鉴Vue的地方，所以当时学习Vue也只是草草的入了个门，然后就从做demo开始学习。最近觉得自己用Vue好像到瓶颈期了，因为觉得Vue的教程是最好的资料，就准备认真的在过一遍Vue的教程。</p>
-<h4 id="动态组件-amp-异步组件"><a href="#动态组件-amp-异步组件" class="headerlink" title="动态组件&amp;异步组件"></a>动态组件&amp;异步组件</h4><p>&emsp;&emsp;由于项目的问题，要解决从服务端获取表单内容，来动态生成表单，这就有点触及我的知识盲区了。难道要一个一个页面写，这也太傻了吧。了解了之后大概可以分为三种可以使用的方法，动态组件、异步组件、JSX。JSX了解不多，就不深入了。异步组件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Vue.component(&apos;async-example&apos;, function (resolve, reject) &#123;</span><br><span class="line">  setTimeout(function () &#123;</span><br><span class="line">    // 向 `resolve` 回调传递组件定义</span><br><span class="line">    resolve(&#123;</span><br><span class="line">      template: &apos;&lt;div&gt;I am async!&lt;/div&gt;&apos;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;, 1000)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;通过定义工厂函数来异步解析组件定义，只有组件在需要被渲染的时候才会触发这个工厂函数，而且Vue会将结果缓存起来供未来使用。不适用动态生成多个不同表单的应用场景。</p>
-<p>&emsp;&emsp;动态组件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;component v-bind:is=&quot;currentTabComponent&quot;&gt;&lt;/component&gt;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;使用Vue的is特性来决定要加载的组件，针对使用element-ui、iview等ui框架的话生成表单、验证等要方便的多。这样一来就可以定义一套格式规范，从服务端拿到这些数据然后根据type选择相应组件生成表单，只要把统一的样式定好，就基本可以实现动态生成组件了。以iview为例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- html --&gt;</span><br><span class="line">&lt;Form&gt;</span><br><span class="line">   &lt;FormItem&gt;</span><br><span class="line">      &lt;component :is=&quot;componentName&quot;&gt;&lt;/component&gt;</span><br><span class="line">   &lt;/FormItem&gt;</span><br><span class="line">&lt;/Form&gt;</span><br><span class="line"></span><br><span class="line">// ts</span><br><span class="line">public componentName: string = &apos;Input&apos;;</span><br></pre></td></tr></table></figure></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>6 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年12月1日</p><h4 class="title"><a href="/2018/12/01/dive-into-webpack-note/">深入浅出webpack读后感</a></h4><div class="excerpt"><p>&emsp;&emsp;《深入浅出webpack》这本书是我在5.6月份的时候买的，现在想来真是太傻*了。这么说吧看了下这本书的印刷版次是2018年1月，作者在序中写到写书的时候是v3.8.1，书印刷出版之后，2月份v4.0就正式发布了。自从有了这次教训我发誓再也不会买这类工具书了，或者说前端相关的书也少买了，因为更新速度实在太快了，不过像《JavaScript语言精粹》、《CSS揭秘》这些书还是蛮推荐购买支持一下的，至少读起来不会过时。</p>
-<p>&emsp;&emsp;先回到书中，这本书作为入门webpack翻阅一下还是有一定的好处，毕竟作者将其踩过的坑告诉了你，让你避免踩同样的坑。第一章入门就大概讲了一下前端的发展和使用的技术，然后简单的提了webpack的核心loader、plugin，做了一个简单的入门的教程。第二章花了很大的篇幅介绍了webpack的entry、output、loader、plugin等具体配置，最后给出了一个总结性的配置。第三章实战就给出了一些实际的应用比如使用ES6、TypeScript、Vue框架、加载图片以及SourceMap等。在第四章优化给出了一些优化的相关内容，第五章最后给出了一些原理，如编写loader、plugin等。</p>
-<p>&emsp;&emsp;最后来总结下这本书，整体的结构设计还可以，但第二章介绍了大量的配置我觉得不太合理，东西太多了，说不定看着看着就放弃了。然后还介绍了如何应用，还介绍了如何编写loader和plugin，我觉得都是比较实在的，符合工具书的实用性。</p>
-<p>&emsp;&emsp;然后再来吐槽一下，首先作者后来把书开源了，但是第一章过后，一翻页就会弹出modal无法翻页页没法关闭，上面写着大大的几个字请购买本书纸质版，我觉得这样的方式和开源思想是有悖的。另外就是书的定价79，一本工具书是否太贵了些，就一《javascript设计模式与实践》这本书来说，写的还可以，评价也很高，书还厚的多，纸张质量也好一些，都能良心的定价59，一本工具书怎么能卖这个价的，还好我买的时候京东有优惠。另外书中那些使用实例我觉得还是以博客的方式呈现要好的多。</p>
-<p>&emsp;&emsp;对于我来说确实让我对webpack的了解更多了一些，不会像刚开始上手vue cli的时候那么手足无措了，很多东西都不知道怎么弄。另外书中还有几处是因为webpack版本的问题的错误，导致运行处问题，希望其他的读者发现配置跑着有问题,检查一两次配置之后，去搜搜是不是相关用法的版本问题可能会少走弯路。</p>
-</div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>1 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/webpack/">webpack</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年11月25日</p><h4 class="title"><a href="/2018/11/25/front-end-modular/">前端模块化</a></h4><div class="excerpt"><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>&emsp;&emsp;模块化是前端开发的一个重要理念/思想，随着web的发展，嵌入网页的代码js代码越来越来，web开发变得越来越复杂，大型的web应用的复杂程度可能超过了桌面程序，所以模块化的思想因此而发展起来。模块就是实现特定功能的相互独立的一组方法。有了模块，就可以更好的管理web应用的逻辑，使用这种方式在不仅能提高代码复用率、可维护性，还能作为开源项目提供给开发者使用。</p>
-<p>&emsp;&emsp;模块化的发展经历了几个阶段，现在逐渐发展成熟，特别是ES6的模块化，引用前端圈的话可以说是王者归来。有了模块，为了开发者能够方便的加载模块，就需要一套编写模块的规范了，比较流行的有CommonJS、AMD、以及ES6模块化规范。我觉得学习的重点主要还是ES6模块化规范，毕竟被誉为终极解决方案、王者归来等等。目前nodejs还在使用CommonJS，但相信不久的将来nodejs也会转而使用ES6模块化规范。</p>
-<h4 id="CommonJS"><a href="#CommonJS" class="headerlink" title="CommonJS"></a>CommonJS</h4><p>&emsp;&emsp;CommonJS核心思想是通过<code>require</code>方法<strong>同步</strong>加载依赖的其他模块，通过<code>module.exports</code>导出需要暴露的接口和变量。如上面所说，CommonJS的流行是因为nodejs采用了这种方式，CommonJS也被用于web开发中。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 采用ES5语法</span></span><br><span class="line"><span class="comment">// 定义一个math模块</span></span><br><span class="line"><span class="keyword">var</span> baseCount = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 暴露需要导出的接口和变量</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">	add: add,</span><br><span class="line">    baseCount: baseCount</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 引入自定义模块</span></span><br><span class="line"><span class="keyword">var</span> math = <span class="built_in">require</span>(<span class="string">'./math'</span>)</span><br><span class="line"><span class="comment">// 引入核心模块不需要带路径</span></span><br><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>)</span><br></pre></td></tr></table></figure>
-<p>优点：</p>
-<p>&emsp;&emsp;代码可复用于nodejs环境下，通过npm发布的第三方模块大多都采用CommonJS规范(现在更多的则是ES6模块规范)</p>
-<p>缺点：</p>
-<p>&emsp;&emsp;采用同步加载模块的方式，在服务端很适用，因为模块文件都存在本地，加载快。浏览器就会受限于网络原因，更好的方式是使用异步加载。</p></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>7 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/模块化/">模块化</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年11月11日</p><h4 class="title"><a href="/2018/11/11/node-express-http-server/">node.js+express搭建简单的web服务器</a></h4><div class="excerpt"><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>&emsp;&emsp;有朋友问我关于nodejs搭建web服务器的问题，我对node的了解也不多，所以简单的学习了解一下，帮朋友解决了一些问题。</p>
-<p>&emsp;&emsp;首先，很多人都在问nodejs适不适合web服务器开发。这个问题知乎上面已经有很多解答了，比较详细点赞较多的一条：<a href="https://www.zhihu.com/question/19653241/answer/15993549" target="_blank" rel="noopener">使用 Node.js 的优势和劣势都有哪些？ - FengqiAsia的回答 - 知乎</a>，年代久远不知道是否适用。看了相关的介绍之后，我觉得nodejs是非常适合做web服务器的，网上大多的评价都是可靠性低，单进程、单线程，一个崩掉整个进程就崩掉之类的，异常难以定位。还有可能是从传统语言转过来写js的话，可能在一段时间内很难适应吧。</p>
-<p>&emsp;&emsp;看了下，linkedin、yahoo的服务器就是用node写的，还有之前去了解的unity-cache-server，说明node的优点是毋庸置疑的。可靠性低进程崩掉等缺点其实是都可以通过代码的健壮性来避免的(说着轻巧)，另外异常处理相关的也有很多库和进程管理程序监控node的运行。</p>
-<blockquote>
-<p>作者：尤雨溪</p>
-<p>链接：<a href="https://www.zhihu.com/question/20069184/answer/14385915" target="_blank" rel="noopener">https://www.zhihu.com/question/20069184/answer/14385915</a></p>
-<p>来源：知乎</p>
-<p>异步的思维是js的特点，也是node高并发性能优势的原因之一，你从传统的同步语言过来可能不习惯，但是像我们这种从前端写js过来的人就自然得像说话一样，关键还是适应。熟悉之后可以用async，Promise系 (q, bluebird) 或者 eventproxy 之类的库来改善代码嵌套的问题。</p>
-<p>异常的问题 - Node 核心库的 API 抛异常大致有三种常见情况：<br>\1. 异步回调。按惯例，接收的回调函数第一个参数都是可能出现的异常，没有特殊情况的话你应该把异常按照同样的参数位置一层层传下去，直到最顶层的回调里进行统一处理。<br>\2. 同步版本的api会直接抛异常。所以如果确实无法避免抛错的可能，直接 try catch，要么就避免用同步版本。<br>\3. Stream形态的API，必须在stream对象上添加 error 的侦听函数，不然异常会直接抛出。</p>
-<p>如果出现导致进程中断的异常，说明你的代码有逻辑层面的问题（以上几点没有完全做好），你应该在开发的时候发现并处理这些异常，而不是让它们在部署环境中发生。</p>
-<p>如果你实在避免不了问题发生，你可以用 Node 的 Domain API 来对整块代码的异常进行捕捉。<br>另外可以用进程管理工具比如 forever, pm2 或是 monit 监视应用进程，崩溃后自动重启。</p>
-<p>最后回到你的问题，node是否适合做web开发 - node的独特优势是高并发，高实时性，或者单页富前端的web应用，比如实时聊天，游戏，另外node也是写JSON API的最好选择。</p>
-</blockquote>
-<p>&emsp;&emsp;另外看到了一条关于node的应用场景的回答，比较赞同，找不到链接了。大概是说node的适合 io 密集型的应用，能发挥出很好的性能，而 cpu 密集型的应用可能性能就不是最佳选择。估计这就是unity官方选择nodejs来写cacheserver的原因吧。</p>
-<h4 id="一个简单的web服务器"><a href="#一个简单的web服务器" class="headerlink" title="一个简单的web服务器"></a>一个简单的web服务器</h4><p>&emsp;&emsp;这里用了nodejs的第三方库express，express也有自己的脚手架。新建一个文件夹<code>http-server</code>，cd到该目录下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">touch app.js # 新建app.js文件</span><br><span class="line"><span class="meta">#</span><span class="bash"> 然后一顿回车，使用默认就ok，不过author可以填上自己的名字。</span></span><br><span class="line">package name: (http-server)</span><br><span class="line">version: (1.0.0)</span><br><span class="line">description:</span><br><span class="line">entry point: (app.js)</span><br><span class="line">test command:</span><br><span class="line">git repository:</span><br><span class="line">keywords:</span><br><span class="line">author: wangx</span><br><span class="line">license: (ISC)</span><br><span class="line">About to write to /Users/wangx/work/nodejs/http-server/package.json:</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  "name": "http-server",</span><br><span class="line">  "version": "1.0.0",</span><br><span class="line">  "description": "",</span><br><span class="line">  "main": "app.js",</span><br><span class="line">  "scripts": &#123;</span><br><span class="line">    "test": "echo \"Error: no test specified\" &amp;&amp; exit 1"</span><br><span class="line">  &#125;,</span><br><span class="line">  "author": "wangx",</span><br><span class="line">  "license": "ISC"</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 初始化</span></span><br><span class="line">npm init</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装express</span></span><br><span class="line">npm install express --save</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;然后就可以在app.js写相关逻辑：</p></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>18 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/nodejs/">nodejs</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年11月11日</p><h4 class="title"><a href="/2018/11/11/generate-project-structure-diagram/">快速生成项目结构图-tree命令的使用</a></h4><div class="excerpt"><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── app.js               # 入口文件</span><br><span class="line">├── bin					 # 可执行文件</span><br><span class="line">│   └── www</span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json         # 项目信息及模块依赖</span><br><span class="line">├── public				 # 存放image、css、js等静态资源</span><br><span class="line">│   ├── images</span><br><span class="line">│   ├── javascripts</span><br><span class="line">│   └── stylesheets</span><br><span class="line">│       └── style.css</span><br><span class="line">├── routes				 # 路由文件</span><br><span class="line">│   ├── index.js</span><br><span class="line">│   └── users.js</span><br><span class="line">└── views				 # 视图/模版文件</span><br><span class="line">    ├── error.ejs</span><br><span class="line">    └── index.ejs</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;上面这种树形项目结构图在前端项目介绍中非常常见，之前都以为是通过生成器生成或是手敲的，今天才发现linux下使用tree命令就可以直接生成上面的项目结构图。mark一下。</p>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>&emsp;&emsp;这里就介绍mac的安装方法，通过homebrew安装就可以了。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">brew install tree</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装完成之后查看安装成功与否</span></span><br><span class="line">tree --version</span><br><span class="line"><span class="meta">#</span><span class="bash"> tree v1.7.0 (c) 1996 - 2014 by Steve Baker, Thomas Moore, Francesc Rocher, Florian Sesser, Kyosuke Tokoro</span></span><br><span class="line">tree --help # 查看帮助</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">usage: tree [-acdfghilnpqrstuvxACDFJQNSUX] [-H baseHREF] [-T title ]</span><br><span class="line">	[-L level [-R]] [-P pattern] [-I pattern] [-o filename] [--version]</span><br><span class="line">	[--help] [--inodes] [--device] [--noreport] [--nolinks] [--dirsfirst]</span><br><span class="line">	[--charset charset] [--filelimit[=]#] [--si] [--timefmt[=]&lt;f&gt;]</span><br><span class="line">	[--sort[=]&lt;name&gt;] [--matchdirs] [--ignore-case] [--] [&lt;directory list&gt;]</span><br><span class="line">  ------- Listing options -------</span><br><span class="line">  -a            All files are listed.</span><br><span class="line">  -d            List directories only.</span><br><span class="line">  -l            Follow symbolic links like directories.</span><br><span class="line">  -f            Print the full path prefix for each file.</span><br><span class="line">  -x            Stay on current filesystem only.</span><br><span class="line">  -L level      Descend only level directories deep.</span><br><span class="line">  -R            Rerun tree when max dir level reached.</span><br><span class="line">  -P pattern    List only those files that match the pattern given.</span><br><span class="line">  -I pattern    Do not list files that match the given pattern.</span><br><span class="line">  --ignore-case Ignore case when pattern matching.</span><br><span class="line">  --matchdirs   Include directory names in -P pattern matching.</span><br><span class="line">  --noreport    Turn off file/directory count at end of tree listing.</span><br><span class="line">  --charset X   Use charset X for terminal/HTML and indentation line output.</span><br><span class="line">  --filelimit # Do not descend dirs with more than # files in them.</span><br><span class="line">  --timefmt &lt;f&gt; Print and format time according to the format &lt;f&gt;.</span><br><span class="line">  -o filename   Output to file instead of stdout.</span><br><span class="line">  -------- File options ---------</span><br><span class="line">  -q            Print non-printable characters as '?'.</span><br><span class="line">  -N            Print non-printable characters as is.</span><br><span class="line">  -Q            Quote filenames with double quotes.</span><br><span class="line">  -p            Print the protections for each file.</span><br><span class="line">  -u            Displays file owner or UID number.</span><br><span class="line">  -g            Displays file group owner or GID number.</span><br><span class="line">  -s            Print the size in bytes of each file.</span><br><span class="line">  -h            Print the size in a more human readable way.</span><br><span class="line">  --si          Like -h, but use in SI units (powers of 1000).</span><br><span class="line">  -D            Print the date of last modification or (-c) status change.</span><br><span class="line">  -F            Appends '/', '=', '*', '@', '|' or '&gt;' as per ls -F.</span><br><span class="line">  --inodes      Print inode number of each file.</span><br><span class="line">  --device      Print device ID number to which each file belongs.</span><br><span class="line">  ------- Sorting options -------</span><br><span class="line">  -v            Sort files alphanumerically by version.</span><br><span class="line">  -t            Sort files by last modification time.</span><br><span class="line">  -c            Sort files by last status change time.</span><br><span class="line">  -U            Leave files unsorted.</span><br><span class="line">  -r            Reverse the order of the sort.</span><br><span class="line">  --dirsfirst   List directories before files (-U disables).</span><br><span class="line">  --sort X      Select sort: name,version,size,mtime,ctime.</span><br><span class="line">  ------- Graphics options ------</span><br><span class="line">  -i            Don't print indentation lines.</span><br><span class="line">  -A            Print ANSI lines graphic indentation lines.</span><br><span class="line">  -S            Print with CP437 (console) graphics indentation lines.</span><br><span class="line">  -n            Turn colorization off always (-C overrides).</span><br><span class="line">  -C            Turn colorization on always.</span><br><span class="line">  ------- XML/HTML/JSON options -------</span><br><span class="line">  -X            Prints out an XML representation of the tree.</span><br><span class="line">  -J            Prints out an JSON representation of the tree.</span><br><span class="line">  -H baseHREF   Prints out HTML format with baseHREF as top directory.</span><br><span class="line">  -T string     Replace the default HTML title and H1 header with string.</span><br><span class="line">  --nolinks     Turn off hyperlinks in HTML output.</span><br><span class="line">  ---- Miscellaneous options ----</span><br><span class="line">  --version     Print version and exit.</span><br><span class="line">  --help        Print usage and this help message and exit.</span><br><span class="line">  --            Options processing terminator.</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;命令太多？了解了一下其实常用的只有下面着三个：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-d # 只显示目录</span><br><span class="line">-I # 忽略目录或文件</span><br><span class="line">tree -I "node_modules|*.png"</span><br><span class="line">-f # 显示完整路径和文件</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;上面的项目结构图我是用以下命令生成的：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tree -I "node_modules"</span><br></pre></td></tr></table></figure></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>11 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年11月4日</p><h4 class="title"><a href="/2018/11/04/typescript-generics/">TypeScript泛型</a></h4><div class="excerpt"><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>&emsp;&emsp;之前上手typescript+vue的时候，vue也没有完全支持typescript，当时看typescript的文档的时候，就大概的过了一遍。当时也不是很清楚如何在vue中使用typescript，更别说泛型了。</p>
-<p>&emsp;&emsp;<em>软件工程中，我们不仅要创建一致的定义良好的API，同时也要考虑可重用性。 组件不仅能够支持当前的数据类型，同时也能支持未来的数据类型，这在创建大型系统时为你提供了十分灵活的功能。</em></p>
-<p>&emsp;&emsp;这是typescript官方文档的介绍，个人感觉不是太好理解，个人理解这里的组件更多的是指方法，官方的泛型示例也都是跟方法相关的。</p>
-<h4 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 无返回值</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doSomething</span>(<span class="params">obj: <span class="built_in">any</span></span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">	<span class="comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 有返回值</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getSomething</span>(<span class="params">obj: <span class="built_in">any</span></span>): <span class="title">any</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;我在vue中就只使用了这两种，说起来也是尴尬，typescript的真正功力都没发挥出来，把typescript写成了javascript，还多堆了两个关键词的代码。其实之前在写的时候就有发现所有具有返回值的方法都指定any有何意义呢。</p>
-<p>&emsp;&emsp;typescript的基础类型也很多，如果一个方法接受一个参数直接进行返回，如果要用上强类型，是否需要写多个方法，仅仅是指定类型的不同，答案是否定的。一个方法能够接受任意类型的参数并返回相应类型的参数，就是泛型。泛型方法：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">identity</span>&lt;<span class="title">T</span>&gt;(<span class="params">arg: T</span>): <span class="title">T</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> T;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>identity</code>方法就是泛型，它接受任意类型的参数，并可以对参数类型进行捕获，并将捕获的类型返回。这样的<code>identity</code>可以适用多个类型。定义了泛型方法之后，有两种方法可以进行使用，一种是传入参数和类型，第二种是使用类型推论：</p></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>11 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年11月4日</p><h4 class="title"><a href="/2018/11/04/css-world-note/">css世界读书笔记</a></h4><div class="excerpt"><p>&emsp;&emsp;一直以来都觉得前端CSS可能是最难学的，emm..最难学好学精的。直到现在写CSS，有时候遇到一些小问题都不知道怎么回事，甚至有时候还会写一些无用的的属性，是在我用了语法检测才发现以前写的部分CSS其实是不正确的。有时候不明白一些属性的原理，你加很多CSS是完全不会生效的。</p>
-<p>&emsp;&emsp;遇到CSS问题的时候特别是比较棘手的问题，张鑫旭的博客中几乎都能找到。所以对于张鑫旭在CSS方面的造诣还是比较佩服的，希望能从《CSS世界》这本书中学习到不一样的东西。但是首先先就要吐槽一下，蹩脚的比喻和美式幽默的腔调确实不适合我，如果少一点废话，这本书至少可以省去1/3的篇幅。</p>
-<p>&emsp;&emsp;内容上设计上这本书着重于CSS2，比较贴近实际，CSS3新增了很多内容，也纠正了一些之前设计上的问题。如box-sizing等，但更多的则是CSS动画，使用CSS3动画相较于之前的JS动画，可以大大减少页面的重排和重绘，从而提高网页性能。但在实际开发中更注重于实现而不是动画，个人感觉动画只是点缀，提升用户体验。在实现层CSS2更为重要，学习CSS背后的技术内幕。</p>
-<p>&emsp;&emsp;相较于其他编程语言，CSS毫无逻辑可言，所有的东西都像堆叠起来的一样，所以叫层叠样式表?对于每一条CSS属性都有其作用，如一个span是属于内联元素(inline)，是不能设置width和height的，如果使用的display属性设为block、inline-block或其它块元素，就可以为其设置宽高了。例如书中在块级元素提到的清除浮动方法：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.clear</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">	<span class="attribute">display</span>: block;</span><br><span class="line">	<span class="attribute">clear</span>: both;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在很长的一段时间里我都是使用clear:both，而且并不是使用伪类的方式。除了block还可以使用table、list-item.</p>
-<p>&emsp;&emsp;还有height的问题，经常会遇到设置height: 100%，实际高度永远是0，如果不明白计算方式那么永远都是0。就之前做项目的时候实现一个footer沉底，内容不足铺满一页沉底，超出页面就往下堆叠。其实思路很简单，就是footer绝对定位，bottom为0。但是代码这么写了却永远不生效。因为高度计算不正确，绝对定位就不能成功定位。vue项目中：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#app</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.footer</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">60px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在vue项目中一般footer的父元素大都不是app，可能还会有，所以这样做不ok，那么给app和footer之间的元素都加上height: 100%就可以了吗，也不行，其实实际动手试一下，调试选中app如果页面内容不足铺满屏幕，那么app的高度也不是窗口的高度，因为还少了一部分：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span>, <span class="selector-tag">body</span> &#123;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>4 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a><span class="category-list-count">1</span></li></ul></li></ul></li><li> <p class="date">2018年10月16日</p><h4 class="title"><a href="/2018/10/16/vue-cli3-typescript-project-structure/">基于vue-cli3.x和typescript构建前端项目结构设计</a></h4><div class="excerpt"><p>&emsp;&emsp;之前在vue-cli3正式版还没有发布的时候就已经在安利下尝过鲜了，但之前对于vue-cli的设计和typescript等知识了解不多，项目结构设计的不太好。借着做另外一个项目的机会学习了vue-cli3的相关知识，根据自己的理解设计了一个前端项目结构。</p>
-<p>&emsp;&emsp;项目的技术选型用vue+typescript，脚手架使用vue-cli3，UI框架主要在ElementUI和iView之间选择。因为项目是PC中后台类型的，作为对比的就是活跃度、组件库这些，确实ElementUI是饿了么团队做的，然后活跃star这些iView也不少，明显的bug的话ELementUI比iView要多很多，也可能是使用iView的人少一点。但是iView的组件库要优于饿了么，iView是基于ant-design，个人觉得iView的UI优于饿了么。所以最后选择了iView作为UI框架，iView是基于less开发的，所以我也选用了less。这就是大概的技术选型。包管理工具这些根据个人喜好选择，我用的是yarn。</p>
-<h5 id="创建vue-cli3项目"><a href="#创建vue-cli3项目" class="headerlink" title="创建vue-cli3项目"></a>创建vue-cli3项目</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 没有安装的@vue-cli3的使用下面命令安装</span></span><br><span class="line">npm install -g @vue/cli</span><br><span class="line"><span class="meta">#</span><span class="bash"> OR</span></span><br><span class="line">yarn global add @vue/cli</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装完之后使用下面的命令检查是否安装正确,出版本号即正确安装</span></span><br><span class="line">vue --version</span><br><span class="line"><span class="meta">#</span><span class="bash"> 使用vue create &lt;project_name&gt;</span></span><br><span class="line">vue create my-project</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;会提示你使用默认配置还是手动设置，通过上下键切换回车选择。接着使用空格进行选择，选上Babel、TypeScript、Router、Vuex、CSS Pr-processors、Linter/Formatter，测试可以不选，回车下一步。</p>
-<p><img src="https://i.loli.net/2018/10/17/5bc69dc6dbf6d.png" alt="step1"></p>
-<p><img src="https://i.loli.net/2018/10/17/5bc69dc73dbb0.png" alt="step2"></p>
-<p><img src="https://i.loli.net/2018/10/17/5bc69dc79e4a8.png" alt="step3"></p>
-<p>&emsp;&emsp;创建好的项目结构：</p>
-<p><img src="https://i.loli.net/2018/10/17/5bc6a69993d88.png" alt="项目结构"></p></div><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>30 Minutes</li><li><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a><span class="category-list-count">7</span></li></ul></li></ul></li></ul><ul class="pagination"><li class="current"><a>1</a></li><li class="link"><a href="/archives/page/2/"><i class="icon icon-arror-right"></i></a></li></ul><div class="page-footer"><div class="top"><ul class="social"><li><a href="https://github.com/reeves7" title="Github" target="_blank"><i class="icon icon-github"></i></a></li><li><a href="i@wangx.me" title="email" target="_blank"><i class="icon icon-email"></i></a></li></ul></div><div class="bottom"><p class="copyright">© 2018 Wangx's blog<br><small>POWER BY <a href="https://hexo.io" target="_blank">HEXO</a></small></p></div></div></div><script>var wrap = document.getElementById('wrap');
-window.onload = function () {
-  wrap.className += ' done';
-}</script></body></html>
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="web developer.">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    归档 |
+    
+    Wangx&#39;s blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article class="articles">
+    
+    <h1 class="page-type-title">归档</h1>
+
+    
+    
+    
+      
+      
+        
+        
+    <div class="archives-wrap">
+      <div class="archive-year-wrap">
+        <a href="/archives/2018" class="archive-year">2018</a>
+      </div>
+      <div class="archives">
+        
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/12/23/vue-deep-and-shallow-copy/" class="archive-article-date">
+  <time datetime="2018-12-23T07:28:07.000Z" itemprop="datePublished">12/23</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/12/23/vue-deep-and-shallow-copy/">关于踩坑的问题</a>
+    </h2>
+  
+
+    </header>
+    
+  </div>
+</article>
+        
+      
+      
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/12/15/about-dual-channel-memory/" class="archive-article-date">
+  <time datetime="2018-12-15T13:40:35.000Z" itemprop="datePublished">12/15</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/12/15/about-dual-channel-memory/">关于安装双通道内存</a>
+    </h2>
+  
+
+    </header>
+    
+  </div>
+</article>
+        
+      
+      
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/12/08/vue-dynamic-components/" class="archive-article-date">
+  <time datetime="2018-12-08T10:43:21.000Z" itemprop="datePublished">12/08</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/12/08/vue-dynamic-components/">Vue动态组件</a>
+    </h2>
+  
+
+    </header>
+    
+  </div>
+</article>
+        
+      
+      
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/12/01/dive-into-webpack-note/" class="archive-article-date">
+  <time datetime="2018-12-01T12:22:38.000Z" itemprop="datePublished">12/01</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/12/01/dive-into-webpack-note/">深入浅出webpack读后感</a>
+    </h2>
+  
+
+    </header>
+    
+  </div>
+</article>
+        
+      
+      
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/11/25/front-end-modular/" class="archive-article-date">
+  <time datetime="2018-11-25T02:40:40.000Z" itemprop="datePublished">11/25</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/11/25/front-end-modular/">前端模块化</a>
+    </h2>
+  
+
+    </header>
+    
+  </div>
+</article>
+        
+      
+      
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/11/11/node-express-http-server/" class="archive-article-date">
+  <time datetime="2018-11-11T12:00:44.000Z" itemprop="datePublished">11/11</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/11/11/node-express-http-server/">node.js+express搭建简单的web服务器</a>
+    </h2>
+  
+
+    </header>
+    
+  </div>
+</article>
+        
+      
+      
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/11/11/generate-project-structure-diagram/" class="archive-article-date">
+  <time datetime="2018-11-11T03:23:25.000Z" itemprop="datePublished">11/11</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/11/11/generate-project-structure-diagram/">快速生成项目结构图-tree命令的使用</a>
+    </h2>
+  
+
+    </header>
+    
+  </div>
+</article>
+        
+      
+      
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/11/04/typescript-generics/" class="archive-article-date">
+  <time datetime="2018-11-04T08:00:26.000Z" itemprop="datePublished">11/04</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/11/04/typescript-generics/">TypeScript泛型</a>
+    </h2>
+  
+
+    </header>
+    
+  </div>
+</article>
+        
+      
+      
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/11/04/css-world-note/" class="archive-article-date">
+  <time datetime="2018-11-04T02:09:15.000Z" itemprop="datePublished">11/04</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/11/04/css-world-note/">css世界读书笔记</a>
+    </h2>
+  
+
+    </header>
+    
+  </div>
+</article>
+        
+      
+      
+        <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2018/10/16/vue-cli3-typescript-project-structure/" class="archive-article-date">
+  <time datetime="2018-10-16T10:11:41.000Z" itemprop="datePublished">10/16</time>
+</a>
+      
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/2018/10/16/vue-cli3-typescript-project-structure/">基于vue-cli3.x和typescript构建前端项目结构设计</a>
+    </h2>
+  
+
+    </header>
+    
+  </div>
+</article>
+        
+        
+      </div>
+    </div>
+    
+  
+  
+    <nav class="page-nav">
+      
+      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/2/">Older posts</a>
+    </nav>
+  
+</article></section>
+  <footer class="footer">
+  
+  <div class="outer">
+    <ul class="list-inline">
+      <li>&copy; 2019 Wangx&#39;s blog</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <li>Theme  <a href="https://zhwangart.github.io">zhwangart</a></li> -->
+      <!--
+      <li><a href="/">wangx</a></li>
+      -->
+    </ul>
+  </div>
+</footer>
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/wangx.png" alt="Wangx&#39;s blog"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">文章</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">相册</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/search.js"></script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>

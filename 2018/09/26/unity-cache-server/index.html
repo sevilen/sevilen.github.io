@@ -1,4 +1,63 @@
-<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="email=no"><meta name="description" content="web developer."><meta name="keywords" content="Vuejs"><title>Unity-Cache-Server - Wangx's blog</title><link rel="stylesheet" href="/css/main_style.min.css"><link rel="icon" href="/favicon.ico"></head><body><input id="navi" type="checkbox"><ul class="main-navication"><li><a href="/"><span>Home</span></a></li><li><a href="https://github.com/reeves7"><span>Github</span></a></li><li><a href="https://www.v2ex.com/"><span>V2EX</span></a></li><li><a href="http://chongzi7.lofter.com/"><span>Chongzi</span></a></li><li><a href="https://isjaakko.github.io/"><span>Jaakko</span></a></li><li><a href="https://zhanl.github.io/"><span>Zhan L</span></a></li><li><a href="https://blog.caojun.xyz/"><span>Cao jun</span></a></li><li><a href="https://blog.return0.top/"><span>Nrehearsal</span></a></li><li><a href="https://blog.ache.fun/"><span>ache</span></a></li></ul><div class="wrapper" id="wrap"><div class="post-header"><label class="navi-button light" for="navi">MENU</label><img class="background" src="/article-bg.jpg"><div class="post-title"><h1 class="title">Unity-Cache-Server</h1><ul class="meta"><li><i class="icon icon-author"></i>wangx</li><li><i class="icon icon-clock"></i>11 Minutes</li><li><i class="icon icon-calendar"></i>2018年9月26日</li></ul></div></div><div class="article-content" style="max-width:800px"><p><em>注：由于没有做过游戏开发，也没有使用过unity，所以有问题的地方欢迎在评论指正</em></p>
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="web developer.">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    Unity-Cache-Server |
+    
+    Wangx&#39;s blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-unity-cache-server" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Unity-Cache-Server
+    </h1>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/09/26/unity-cache-server/" class="article-date">
+  <time datetime="2018-09-26T01:38:21.000Z" itemprop="datePublished">2018-09-26</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/unity/">unity</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <p><em>注：由于没有做过游戏开发，也没有使用过unity，所以有问题的地方欢迎在评论指正</em></p>
 <h2 id="缓存服务器"><a href="#缓存服务器" class="headerlink" title="缓存服务器"></a>缓存服务器</h2><p>&emsp;&emsp;Unity的打包流程中最慢的环节就是贴图的压缩。不同的平台，需要把原始贴图压缩成对应平台的压缩贴图格式。iOS和Android平台对应的格式不同。针对这个问题，Unity官方给出了一个CacheServer的解决方案。CacheServer只是一个文件cache服务器，记录了贴图源文件和转换参数(meta文件)以及转换器版本等信息构成的字符串的md5值作为文件索引。第一个做转换的人，在本地进行压缩后，会把结果传到CacheServer，其他人使用时，就会优先去看有没有人做过同样的工作，如果有就从cache服务器下载资源，没有就会进行压缩，并上传结果到CacheServer。如果源文件、转换参数都完全一样，结果会被缓存。在日常所有贴图都会被压缩过，可以节约压缩贴图的时间，从而减少打包时间。</p>
 <p>&emsp;&emsp;Unity官方在3月发布了Cache Server v6.0.0版本，官方宣称6.0带来了更高的可靠性和性能，以及一系列的新功能。包括新模块化，实现最大的I/O性能，支持高性能的缓存模式等等。</p>
 <p>&emsp;&emsp;Unity用户手册中也有关于Cache Server介绍和使用，但截至9.26日，官网的用户手册还停留在2月份的，没有做更新。关于文件更改请仔细阅读官网手册英文原文说明或下方翻译：</p>
@@ -133,20 +192,128 @@
 <p><img src="https://i.loli.net/2018/09/27/5bac899abcda0.png" alt="server import"></p>
 <p>&emsp;&emsp;等待上传完成，server就缓存了客户端已经有的缓存结果了。其他客户端就可以从cache server导入资源。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>&emsp;&emsp;至此，关于unity-cache-server最新版本v6的使用及配置就差不多了。其中可能有一些地方是可以改进，或者可以详细说明的，但我是个门外汉，对很多unity相关的内容都不太清楚。所以还是欢迎指正，另外在使用时有疑问也可以评论或邮件联系。</p>
-</div><div class="article-meta" style="max-width:800px"><div class="tags"><i class="icon icon-tag"></i><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cacheserver/">cacheserver</a><span class="tag-list-count">2</span></li></ul></div><div class="categories"><i class="icon icon-category"></i><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/unity/">unity</a><span class="category-list-count">2</span></li></ul></div></div><div class="article-comment" style="max-width:800px"><div class="ds-thread" id="disqus_thread" data-thread-key="cjq0x3ji50016b01boqhsq0ev" data-title="Unity-Cache-Server" data-url="https://blog.wangx.com/2018/09/26/unity-cache-server/" site-name="wangxs-blog"></div><script>var siteName = document.getElementById('disqus_thread').getAttribute('site-name');
-var duoshuoQuery = {short_name: siteName};
-(function() {
-  if (document.getElementById('disqus_thread')) {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//' + duoshuoQuery.short_name + '.disqus.com/embed.js';
-    ds.charset = 'UTF-8';
-    console.log(document.getElementsByTagName('head')[0]);
-    console.log(document.getElementsByTagName('body')[0]);
-    (document.getElementsByTagName('html')[0] 
-    || document.getElementsByTagName('body')[0]).appendChild(ds);
-  }
-})();</script></div><ul class="navication"><li class="home"><a href="/"><i class="icon icon-home"></i></a></li><li><a href="/2018/09/28/unity-cache-server-cache-modules/"><i class="icon icon-arror-left"></i></a></li><li><a href="/2018/09/24/the-proptotype-chain-and-inheritance/"><i class="icon icon-arror-right"></i></a></li></ul><div class="page-footer"><div class="top"><ul class="social"><li><a href="https://github.com/reeves7" title="Github" target="_blank"><i class="icon icon-github"></i></a></li><li><a href="i@wangx.me" title="email" target="_blank"><i class="icon icon-email"></i></a></li></ul></div><div class="bottom"><p class="copyright">© 2018 Wangx's blog<br><small>POWER BY <a href="https://hexo.io" target="_blank">HEXO</a></small></p></div></div></div><script>var wrap = document.getElementById('wrap');
-window.onload = function () {
-  wrap.className += ' done';
-}</script></body></html>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.wangx.com/2018/09/26/unity-cache-server/" data-id="cjqm70br5001md91b6spabi45" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cacheserver/">cacheserver</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+    
+  <nav class="article-nav">
+    
+      <a href="/2018/09/28/unity-cache-server-cache-modules/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer posts</strong>
+        <div class="article-nav-title">
+          
+            unity-cache-server-cache-modules
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2018/09/24/the-proptotype-chain-and-inheritance/" class="article-nav-link">
+        <strong class="article-nav-caption">Older posts</strong>
+        <div class="article-nav-title">原型链与继承-JS高级</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+    
+  
+
+</article>
+
+
+
+</section>
+  <footer class="footer">
+  
+  <div class="outer">
+    <ul class="list-inline">
+      <li>&copy; 2019 Wangx&#39;s blog</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <li>Theme  <a href="https://zhwangart.github.io">zhwangart</a></li> -->
+      <!--
+      <li><a href="/">wangx</a></li>
+      -->
+    </ul>
+  </div>
+</footer>
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/wangx.png" alt="Wangx&#39;s blog"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">文章</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">相册</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/search.js"></script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>
