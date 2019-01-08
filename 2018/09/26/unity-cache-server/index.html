@@ -59,8 +59,7 @@
       
         <p><em>注：由于没有做过游戏开发，也没有使用过unity，所以有问题的地方欢迎在评论指正</em></p>
 <h2 id="缓存服务器"><a href="#缓存服务器" class="headerlink" title="缓存服务器"></a>缓存服务器</h2><p>&emsp;&emsp;Unity的打包流程中最慢的环节就是贴图的压缩。不同的平台，需要把原始贴图压缩成对应平台的压缩贴图格式。iOS和Android平台对应的格式不同。针对这个问题，Unity官方给出了一个CacheServer的解决方案。CacheServer只是一个文件cache服务器，记录了贴图源文件和转换参数(meta文件)以及转换器版本等信息构成的字符串的md5值作为文件索引。第一个做转换的人，在本地进行压缩后，会把结果传到CacheServer，其他人使用时，就会优先去看有没有人做过同样的工作，如果有就从cache服务器下载资源，没有就会进行压缩，并上传结果到CacheServer。如果源文件、转换参数都完全一样，结果会被缓存。在日常所有贴图都会被压缩过，可以节约压缩贴图的时间，从而减少打包时间。</p>
-<p>&emsp;&emsp;Unity官方在3月发布了Cache Server v6.0.0版本，官方宣称6.0带来了更高的可靠性和性能，以及一系列的新功能。包括新模块化，实现最大的I/O性能，支持高性能的缓存模式等等。</p>
-<p>&emsp;&emsp;Unity用户手册中也有关于Cache Server介绍和使用，但截至9.26日，官网的用户手册还停留在2月份的，没有做更新。关于文件更改请仔细阅读官网手册英文原文说明或下方翻译：</p>
+<p>&emsp;&emsp;Unity官方在3月发布了Cache Server v6.0.0版本，官方宣称6.0带来了更高的可靠性和性能，以及一系列的新功能。包括新模块化，实现最大的I/O性能，支持高性能的缓存模式等等。<br><a id="more"></a><br>&emsp;&emsp;Unity用户手册中也有关于Cache Server介绍和使用，但截至9.26日，官网的用户手册还停留在2月份的，没有做更新。关于文件更改请仔细阅读官网手册英文原文说明或下方翻译：</p>
 <blockquote>
 <p>关于缓存服务器，Unity具有一个全自动的资源管道。当修改了类似于<code>.psd</code>或<code>.fbx</code>文件的资源后，Unity将检测到更改并自动重新导入更改后的文件。从文件导入的数据之后将由Unity按其内部格式存储。资源管道最重要的部分是“热重载”功能和保证您的所有资源始终同步为所见即所得模式。此功能的实现也是要付出代价的。任何修改的资源必须重新导入。在一个大团队中工作时，获得了最新的管理源代码(Source Control)后，您通常需要等很长一段时间才可将所有其他成员修改或创建的资源重新导入完成。另外，在PC和移动平台之间来回切换工程平台，也将引发重新导入大部分资源的操作。</p>
 <p>在<strong>缓存服务器(Cache Server)</strong>上缓存导入的资源数据可大幅缩短导入资源占用的时间。</p>
@@ -196,7 +195,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/09/26/unity-cache-server/" data-id="cjqnfri5e00184r1byq2udw7r" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/09/26/unity-cache-server/" data-id="cjqnkn0a30028501bq7j1zdtb" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cacheserver/">cacheserver</a></li></ul>
 
@@ -257,7 +256,7 @@
 <nav class="navbar">
   
     <div class="logo">
-      <a href="/"><img src="/images/wangx.png" alt="Wangx&#39;s blog"></a>
+      <a href="/"><img src="/images/logo.png" alt="Wangx&#39;s blog"></a>
     </div>
   
   <ul class="nav nav-main">

@@ -42,7 +42,7 @@
     <div class="video-inner text-center text-white">
       <h1><a href="/">Wangx&#39;s blog</a></h1>
       <p>Whatever is worth doing is worth doing well.</p>
-      <div><img src="/images/wangx.png" class="brand" alt="Wangx&#39;s blog"></div>
+      <div><img src="/images/logo.png" class="brand" alt="Wangx&#39;s blog"></div>
     </div>
     <div class="video-learn-more">
       <a class="anchor" href="#landingpage"><i class="fe fe-mouse"></i></a>
@@ -91,29 +91,14 @@
       
       
         <p>&emsp;&emsp;感觉自己最近好像很少拿原生js写东西了，自己的js水平也还有待提高。上周做原型设计的时候设计了一个图形验证码，感觉这么小一个东西也没必要去找个库，就打算自己造个小轮子来用了。</p>
-<p>&emsp;&emsp;图形验证码的作用是一种人机识别的手段，目的是为了区分正常人和机器人，所以没必要设计的太麻烦(12306之前的验证码简直!!)，所以就采用数字+大小写字母共4个字符进行验证，用canvas进行绘制，如果只是简单这样也太简单了，像接触到的其他网站使用的验证码还有背景色和干扰的线条，基本上这就是实现的思路了。</p>
-<hr>
-<p>&emsp;&emsp;根据实现的思路，随机颜色的方法、生成随机数的方法肯定是需要的。</p>
-<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 生成一个随机数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">function randomNum(<span class="built_in">min</span>, <span class="built_in">max</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> Math.<span class="built_in">floor</span>(Math.<span class="built_in">random</span>() * (<span class="built_in">max</span> - <span class="built_in">min</span>) + <span class="built_in">min</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 生成随机颜色rgb值</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">function randomColor(<span class="built_in">min</span>, <span class="built_in">max</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> r = randomNum(<span class="built_in">min</span>, <span class="built_in">max</span>);</span><br><span class="line">    <span class="keyword">const</span> g = randomNum(<span class="built_in">min</span>, <span class="built_in">max</span>);</span><br><span class="line">    <span class="keyword">const</span> b = randomNum(<span class="built_in">min</span>, <span class="built_in">max</span>);</span><br><span class="line">    <span class="keyword">return</span> `rgb($&#123;r&#125;, $&#123;g&#125;, $&#123;b&#125;)`;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<p>&emsp;&emsp;在html我们只要需要提供一个容器就可以了，调用时传容器id，以及图形验证码的size就可以了。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"verifyContainer"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;获取到容器和size之后，我们得先添加一个canvas，参考了下网上其他验证码的背景色大概都在160-240左右可能这个区间的颜色会偏浅一点。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 向html添加canvas</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">appendCanvas</span>(<span class="params">id, width, height</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> container = <span class="built_in">document</span>.getElementById(id);</span><br><span class="line">    <span class="keyword">const</span> canvas = <span class="built_in">document</span>.createElement(<span class="string">'canvas'</span>);</span><br><span class="line">    canvas.width = width;</span><br><span class="line">    canvas.height = height;</span><br><span class="line">    canvas.style.backgroundColor = randomColor(<span class="number">160</span>, <span class="number">240</span>);</span><br><span class="line">    container.appendChild(canvas);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;然后再定义两个常量及大小写字符数组和数字数组</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> numberArr = <span class="string">"0,1,2,3,4,5,6,7,8,9"</span>.split(<span class="string">','</span>);</span><br><span class="line"><span class="keyword">const</span> characterArr = <span class="string">"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z"</span>.split(<span class="string">','</span>);</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;然后就可以开始绘制验证码了</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 绘制验证码</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">drawCharacter</span>(<span class="params">id, width, height</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> canvas = <span class="built_in">document</span>.getElementById(id).getElementsByTagName(<span class="string">'canvas'</span>)[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">if</span> (canvas.getContext) &#123;</span><br><span class="line">        <span class="keyword">var</span> ctx = canvas.getContext(<span class="string">'2d'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    ctx.textBaseline = <span class="string">'middle'</span>;</span><br><span class="line">    ctx.font = <span class="string">'20px SimHei'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 开始绘制</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt;= <span class="number">4</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">var</span> character = textArr[randomNum(<span class="number">0</span>, textArr.length)];</span><br><span class="line">        <span class="comment">// 随机字体颜色</span></span><br><span class="line">        ctx.fillStyle = randomColor(<span class="number">50</span>, <span class="number">160</span>);</span><br><span class="line">        ctx.shadowBlur = randomNum(<span class="number">-3</span>, <span class="number">3</span>);</span><br><span class="line">        ctx.shadowColor = <span class="string">"rgba(0, 0, 0, 0.3)"</span>;</span><br><span class="line">        <span class="keyword">var</span> x = width / <span class="number">5</span> * i;</span><br><span class="line">        <span class="keyword">var</span> y = height / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">var</span> deg = randomNum(<span class="number">-30</span>, <span class="number">30</span>);</span><br><span class="line">        <span class="comment">// 设置旋转角度和坐标原点</span></span><br><span class="line">        ctx.translate(x, y);</span><br><span class="line">        ctx.rotate(deg * <span class="built_in">Math</span>.PI / <span class="number">180</span>);</span><br><span class="line">        ctx.fillText(character, <span class="number">0</span> , <span class="number">0</span>);</span><br><span class="line">        <span class="comment">// 恢复旋转角度和原点</span></span><br><span class="line">        ctx.rotate(-deg * <span class="built_in">Math</span>.PI / <span class="number">180</span>);</span><br><span class="line">        ctx.translate(-x, -y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;这样验证码就绘制出来了，但是确实太简单了一点，需要在加一点难度，加一些干扰线和干扰点。干扰线的话影响会较大一点，所以要少一点字符数量为宜，干扰点可以多一些，大概在canvas宽度1/5的样子。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 绘制干扰线</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">interferenceLine</span>(<span class="params">ctx, width, height</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">let</span> i= <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">        ctx.strokeStyle = randomColor(<span class="number">40</span>, <span class="number">180</span>);</span><br><span class="line">        ctx.beginPath();</span><br><span class="line">        ctx.moveTo(randomNum(<span class="number">0</span>, width / <span class="number">2</span>), randomNum(<span class="number">0</span>, height / <span class="number">2</span>));</span><br><span class="line">        ctx.lineTo(randomNum(<span class="number">0</span>, width / <span class="number">2</span>), randomNum(<span class="number">0</span>, height / <span class="number">2</span>));</span><br><span class="line">        ctx.stroke();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 绘制干扰点</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">interferenceDot</span>(<span class="params">ctx, width, height</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; width / <span class="number">5</span>; i++) &#123;</span><br><span class="line">        ctx.fillStyle = randomColor(<span class="number">0</span>, <span class="number">255</span>);</span><br><span class="line">        ctx.beginPath();</span><br><span class="line">        ctx.arc(randomNum(<span class="number">0</span>, width), randomNum(<span class="number">0</span>, height), <span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span> * <span class="built_in">Math</span>.PI);</span><br><span class="line">        ctx.fill();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<p>&emsp;&emsp;总的说来实现的比较粗糙，代码也没有去优化，本来还可以添加一些比较人性化的定制功能的，因为忙着到处看房子去了，没来得及弄，打算后面花时间优化一下。</p>
-<p>&emsp;&emsp;代码和在线演示分享在jsfiddle上，<a href="https://jsfiddle.net/5ws1Lcjf/" target="_blank" rel="noopener">check</a>.</p>
-
+<p>&emsp;&emsp;图形验证码的作用是一种人机识别的手段，目的是为了区分正常人和机器人，所以没必要设计的太麻烦(12306之前的验证码简直!!)，所以就采用数字+大小写字母共4个字符进行验证，用canvas进行绘制，如果只是简单这样也太简单了，像接触到的其他网站使用的验证码还有背景色和干扰的线条，基本上这就是实现的思路了。<br>
+        
+          <a class="article-more-link" href="/2018/10/14/javascript-canvas-verify-code/">阅读更多...</a>
+        
       
-    </div>
+    </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/10/14/javascript-canvas-verify-code/" data-id="cjqnfri55000n4r1beto7mr1d" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/10/14/javascript-canvas-verify-code/" data-id="cjqnkn09r001e501b0697cv3o" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/验证码/">验证码</a></li></ul>
 
@@ -163,26 +148,14 @@
       
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&emsp;&emsp;本来想趁国庆写个小工具来自动预约单车，手动确实太麻烦了，时间掌握不好，车就被别人骑走了。做这个小工具最重要的步骤就是抓到摩拜和哈罗的api，选择了charles这款抓包工具，是挺好用的，不够也需要付费。</p>
-<p>&emsp;&emsp;之前定好的计划一点点被打乱，高速一日游这种就不说了t.t，结果用charles抓包才发现好像别人也不傻，api都是加密的，导致小工具就暂时搁置了。那么就先来记录下如何使用charles抓取app的api吧。</p>
-<h2 id="PC设置"><a href="#PC设置" class="headerlink" title="PC设置"></a>PC设置</h2><p>&emsp;&emsp;开始之前得保证你下载并安装了charles，有关如何安装就不赘述了，另外得保证wifi环境下。</p>
-<p><img src="https://i.loli.net/2018/10/07/5bba1be006793.png" alt="proxy设置"></p>
-<p>&emsp;&emsp;Step1: 点击proxy settings进行代理设置，填上代理端口号默认是8888，激活http代理。</p>
-<p><img src="https://i.loli.net/2018/10/07/5bba1be032586.png" alt="proxy mobile"></p>
-<p>&emsp;&emsp;Step2: 因为只需要抓手机APP，所以不需要代理pc，将macOS Proxy勾选去掉。</p>
-<h2 id="手机设置"><a href="#手机设置" class="headerlink" title="手机设置"></a>手机设置</h2><p>&emsp;&emsp;手机连上wifi，选择手动代理，然后填上设置信息。</p>
-<p><img src="https://i.loli.net/2018/10/07/5bba1be0639f0.png" alt="mobile setting"></p>
-<p>&emsp;&emsp;服务器主机名填上自己PC的地址，不知道的可以用ifconfig查看，填上端口保存就可以了。记得抓包完过后，将这里的设置还原，否则无法使用wifi正常上网。</p>
-<p>&emsp;&emsp;保存成功连接wifi的时候，电脑就会弹出是否允许代理，点击allow就可以了。</p>
-<h2 id="抓包"><a href="#抓包" class="headerlink" title="抓包"></a>抓包</h2><p>&emsp;&emsp;电脑和手机都配置好后就可以开始抓包了，使用录制或者直接查看记录都是可以的，看个人选择。</p>
-<p>&emsp;&emsp;使用手机打开摩拜或者哈罗，charles就会出现网络请求的数据了。</p>
-<p><img src="https://i.loli.net/2018/10/07/5bba1be0ef44b.png" alt="api"></p>
-<p>&emsp;&emsp;可以点击你想要查看的网络请求，charles会默认把同一域名下的api归到一起，查看比较方便。可以看到摩拜的api都是加密的，哈罗也是，就看不到具体的api信息了。另外如果觉得网络请求太多的话可以使用过滤功能进行过滤。</p>
-<p>&emsp;&emsp;这差不多就是charles简单的抓取一个手机app的api的过程了，更多有关charles的使用还是推荐<a href="https://blog.devtang.com/2015/11/14/charles-introduction/" target="_blank" rel="noopener">charles从入门到精通</a>.</p>
-
+<p>&emsp;&emsp;之前定好的计划一点点被打乱，高速一日游这种就不说了t.t，结果用charles抓包才发现好像别人也不傻，api都是加密的，导致小工具就暂时搁置了。那么就先来记录下如何使用charles抓取app的api吧。<br>
+        
+          <a class="article-more-link" href="/2018/10/07/use-charles/">阅读更多...</a>
+        
       
-    </div>
+    </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/10/07/use-charles/" data-id="cjqnfri5h001d4r1bn63j85ro" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/10/07/use-charles/" data-id="cjqnkn0a10023501b9g076row" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/charles/">charles</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/抓包/">抓包</a></li></ul>
 
@@ -231,14 +204,14 @@
       
       
       
-        <p>&emsp;&emsp;对于git的接触我也算较晚的，应该是到了大二会有一些团队项目，才开始使用git。也仅仅局限于简单的了解，对于很多原理都不了解，出了问题，就只有找百度。在实验室老师也只推崇svn，当时也是一个接近10人的团队提交代码。大家也都是用的GUI，记得当时三天两头就会出问题。后来因为要找实习就转到git上来了，而且大部分开源项目都发布在github等社区。后来在工作中又出过事故，觉得还是得好好了解下git。在推荐下看了git权威指南这本书。</p>
-<p>&emsp;&emsp;这本书怎么说呢？有亮点也有缺点，这是必然的。先说亮点，文章条理和章节设计非常合理，而且在前言里还推荐了不同人群的阅读重点。根据阅读重点，我基本上第一篇就是简单阅读掠过，第二篇就也粗略的过了一下，相比第一篇投入时间的更多一些，第三篇是作者推荐的重点阅读篇，花的时间较多，但是很多东西接触的不多或者甚至没有接触，所以读起来有些晦涩的感觉。结合作者的例子读起来稍好一些，然后作者讲了一些git背后的原理，对于想知其然，知其所以然还是比较好。然后缺点的话，确实有点太啰嗦了，有点影响阅读，比如花了30多页的篇幅去讲在不同操作系统下git的安装，我觉得是没那么必要的。再有就是从“权威指南”这四个字，我觉得定位不那么合理，我认为的权威指南是类似犀牛书那种的，什么操作、命令之类的忘记了，我可以查权威指南解决问题的。总之就是涵盖的东西确实很广，但是定位不够明确，针对的读者用户群较广，就感觉被捆绑消费了，感觉大多数人可能会抱着如何用好git或者了解如果搭建git、迁移到git这两方面或者更多。另外介绍cvs、svn以及其他版本控制系统，个人觉得没什么必要，要么别人是受够了svn转git对svn已经很了解了，要么是没有接触过svn想直接入门git的，所以介绍了只是徒增阅读时间罢了。</p>
-<p>&emsp;&emsp;再来说我读了之后感觉提升还是蛮大的，至少不会再像之前不知道stash，在一个分支下改了一些东西，要切到另一个分支，自己傻傻的将修改的内容全部还原再切换分支，然后又从头来过，简直被自己蠢哭。然后对git的基本操作了解的更多了，对于解决冲突、分支有了进一步的了解。提升的话可能较之前好得多，但还是有些地方理解的不深刻，对本书有了一定了解之后，感觉有些地方还需要花时间精读，另外在使用git中碰到问题回来查印象肯定也会更深刻一些。</p>
-
+        <p>&emsp;&emsp;对于git的接触我也算较晚的，应该是到了大二会有一些团队项目，才开始使用git。也仅仅局限于简单的了解，对于很多原理都不了解，出了问题，就只有找百度。在实验室老师也只推崇svn，当时也是一个接近10人的团队提交代码。大家也都是用的GUI，记得当时三天两头就会出问题。后来因为要找实习就转到git上来了，而且大部分开源项目都发布在github等社区。后来在工作中又出过事故，觉得还是得好好了解下git。在推荐下看了git权威指南这本书。<br>
+        
+          <a class="article-more-link" href="/2018/10/07/definitity-guide-of-git/">阅读更多...</a>
+        
       
-    </div>
+    </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/10/07/definitity-guide-of-git/" data-id="cjqnfri4v000b4r1bnum6osh4" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/10/07/definitity-guide-of-git/" data-id="cjqnkn09a000a501bzvo3arzn" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
 
@@ -293,138 +266,14 @@
 <li>完全内存（RAM）支持的缓存</li>
 </ul>
 <p>&emsp;&emsp;cache server默认使用cache_fs即文件系统缓存模式，适用于大多数的应用程序。RAM缓存模式提供最佳性能，但Server需要足够的物理RAM用于缓存，通常需要的内存大小至少为项目Library文件夹的2-3倍。</p>
-<p>&emsp;&emsp;两个模式的配置文件信息都在config/defalult.yml中进行配置。</p>
-<h2 id="cache-fs"><a href="#cache-fs" class="headerlink" title="cache_fs"></a>cache_fs</h2><p>&emsp;&emsp;一个简单且高效的文件系统缓存模式。</p>
-<p><strong>用法</strong></p>
-<p><code>--cache-module cache_fs</code></p>
-<p><strong>命令</strong></p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">命令</th>
-<th style="text-align:center">默认值</th>
-<th style="text-align:center">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">cachePath</td>
-<td style="text-align:center"><code>.cache_fs</code></td>
-<td style="text-align:center">缓存路径</td>
-</tr>
-<tr>
-<td style="text-align:center">cleanupOptions.expireTimeSpan</td>
-<td style="text-align:center"><code>P30D</code></td>
-<td style="text-align:center"><a href="https://msdn.microsoft.com/en-us/library/se73z7b9(v=vs.110" target="_blank" rel="noopener">ASP.NET</a>.aspx)或<a href="https://en.wikipedia.org/wiki/ISO_8601#Time_intervals" target="_blank" rel="noopener">IOS 8601</a>格式时间跨度。在此时间范围内没有访问过的缓存文件会被清理。相关次序时间语法的更多信息，请参阅<a href="https://momentjs.com/docs/#/durations/" target="_blank" rel="noopener">Moment.js</a>文档。</td>
-</tr>
-<tr>
-<td style="text-align:center">cleanupOptions.maxCacheSize</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">磁盘缓存的最大size(以字节为单位)。使磁盘利用率低于该阈值，清理脚本会考虑要删除的文件，这些文件是最近最少使用的顺序。将值设置为0来禁用清除功能。</td>
-</tr>
-</tbody>
-</table>
-<p><strong>注意</strong></p>
-<ul>
-<li>cache_fs向后兼容v5.x Cache Server目录</li>
-<li>支持工作线程，使用<code>--workers</code>命令</li>
-<li>运行清理脚本时，<code>expireTimeSpan</code>的值用来确定要删除的文件。如果<code>maxCacheSize</code>指定，则脚本会检查惠存是否超过该值。超过该值脚本将清理最近最少使用的文件，直到缓存不再超过maxCacheSize。</li>
-</ul>
-<h2 id="cache-ram"><a href="#cache-ram" class="headerlink" title="cache_ram"></a>cache_ram</h2><p>&emsp;&emsp;高性能，完全内存的LRU缓存。</p>
-<p><strong>用法</strong></p>
-<p><code>--cache-module cache_ram</code></p>
-<p><strong>命令</strong></p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">命令</th>
-<th style="text-align:center">默认值</th>
-<th style="text-align:center">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">pageSize</td>
-<td style="text-align:center">100000000</td>
-<td style="text-align:center">缓存页面大小(以字节为单位)</td>
-</tr>
-<tr>
-<td style="text-align:center">maxPageCount</td>
-<td style="text-align:center">10</td>
-<td style="text-align:center">在缓存中分配的最大页面数。</td>
-</tr>
-<tr>
-<td style="text-align:center">minFreeBlockSize</td>
-<td style="text-align:center">1024</td>
-<td style="text-align:center">页面内最小分配单元(以字节为单位)。可以给较小的项目指定较低的值。</td>
-</tr>
-<tr>
-<td style="text-align:center">cachePath</td>
-<td style="text-align:center"><code>.cache_ram</code></td>
-<td style="text-align:center">缓存目录的路径，脏内存页面会定期保存到磁盘的此目录下，并在启动时加载。</td>
-</tr>
-<tr>
-<td style="text-align:center">persistence</td>
-<td style="text-align:center">true</td>
-<td style="text-align:center">将页面文件保存和加载到磁盘。如果为false，缓存会在退出时被清理。</td>
-</tr>
-<tr>
-<td style="text-align:center">persistenceOptions.autosave</td>
-<td style="text-align:center">true</td>
-<td style="text-align:center">设置为true时将自动保存更改，false为禁用。</td>
-</tr>
-<tr>
-<td style="text-align:center">persistenceOptions.autosaveInterval</td>
-<td style="text-align:center">10000</td>
-<td style="text-align:center">保存页面更改的频率(以毫秒为单位)</td>
-</tr>
-</tbody>
-</table>
-<p><strong>注意</strong></p>
-<ul>
-<li>不支持工作线程</li>
-</ul>
-<h2 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h2><p>&emsp;&emsp;cache_ram是高性能缓存模式，但是需要内存要大于项目Library文件夹的2-3倍，对于大一点的项目就需要很大的物理内存。而cache_fs在实际测试中，并不逊色于cache_ram模式，当然仅仅是针对我的机器。并且用作server的mac mini还是一块1T的机械硬盘，如果更换上SSD可能会更快一些。所以两种模式，个人更推荐使用cache_fs。</p>
-<p>&emsp;&emsp;作为测试的资源Assets文件夹3.86G，Library文件夹2.65G，机器Server是mac mini，i5、8G内存、1T机械硬盘。客户端是mac mini，i5、16G内存、240GSSD。测试结果仅供参考，因为客户端mini 12年的比较老，跑unity还是有点卡，所以部分记录时间只能用大概范围，因为有时候导入的时候会卡死。</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">比较项目</th>
-<th style="text-align:center">cache_fs</th>
-<th style="text-align:center">cache_ram</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">导入缓存结果(从客户端导本地缓存结果)</td>
-<td style="text-align:center">3min+</td>
-<td style="text-align:center">2min+</td>
-</tr>
-<tr>
-<td style="text-align:center">重新压缩贴图导入server</td>
-<td style="text-align:center">26min+</td>
-<td style="text-align:center">26min+</td>
-</tr>
-<tr>
-<td style="text-align:center">不适用cache server压缩贴图</td>
-<td style="text-align:center">21min+</td>
-<td style="text-align:center">21min+</td>
-</tr>
-<tr>
-<td style="text-align:center">客户端导入server缓存结果</td>
-<td style="text-align:center">117s</td>
-<td style="text-align:center">-</td>
-</tr>
-</tbody>
-</table>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>&emsp;&emsp;测试结果可能会因为机器的缘故略有不同，但是在对比下，cache_fs是server比较好的选择，虽然两种模式都不需要多好的cpu，但是cache_fs模式只需要一块够大的ssd，通常情况240G的SSD已经完全够用了，价格也不贵。但是使用cache_ram在我测试的情况下并没有好多少，首先门槛就要内存至少是project下library大小的2-3倍。</p>
-<p>&emsp;&emsp;综上，使用cache_fs已经能达到很好的效果了。比不适用cache server快了几乎10倍，而且还是在server使用的是机械硬盘的情况，换上ssd应该会更快一点。</p>
-<p>&emsp;&emsp;另外，关于cache的清理、镜像、高可靠性的相关内容，参考<a href="https://github.com/Unity-Technologies/unity-cache-server" target="_blank" rel="noopener">unity-cache-server</a>官方文档。</p>
-
+<p>&emsp;&emsp;两个模式的配置文件信息都在config/defalult.yml中进行配置。<br>
+        
+          <a class="article-more-link" href="/2018/09/28/unity-cache-server-cache-modules/">阅读更多...</a>
+        
       
-    </div>
+    </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/09/28/unity-cache-server-cache-modules/" data-id="cjqnfri5c00144r1bh6zdx43l" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/09/28/unity-cache-server-cache-modules/" data-id="cjqnkn09w001q501bx1tepm8m" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cacheserver/">cacheserver</a></li></ul>
 
@@ -475,144 +324,14 @@
       
         <p><em>注：由于没有做过游戏开发，也没有使用过unity，所以有问题的地方欢迎在评论指正</em></p>
 <h2 id="缓存服务器"><a href="#缓存服务器" class="headerlink" title="缓存服务器"></a>缓存服务器</h2><p>&emsp;&emsp;Unity的打包流程中最慢的环节就是贴图的压缩。不同的平台，需要把原始贴图压缩成对应平台的压缩贴图格式。iOS和Android平台对应的格式不同。针对这个问题，Unity官方给出了一个CacheServer的解决方案。CacheServer只是一个文件cache服务器，记录了贴图源文件和转换参数(meta文件)以及转换器版本等信息构成的字符串的md5值作为文件索引。第一个做转换的人，在本地进行压缩后，会把结果传到CacheServer，其他人使用时，就会优先去看有没有人做过同样的工作，如果有就从cache服务器下载资源，没有就会进行压缩，并上传结果到CacheServer。如果源文件、转换参数都完全一样，结果会被缓存。在日常所有贴图都会被压缩过，可以节约压缩贴图的时间，从而减少打包时间。</p>
-<p>&emsp;&emsp;Unity官方在3月发布了Cache Server v6.0.0版本，官方宣称6.0带来了更高的可靠性和性能，以及一系列的新功能。包括新模块化，实现最大的I/O性能，支持高性能的缓存模式等等。</p>
-<p>&emsp;&emsp;Unity用户手册中也有关于Cache Server介绍和使用，但截至9.26日，官网的用户手册还停留在2月份的，没有做更新。关于文件更改请仔细阅读官网手册英文原文说明或下方翻译：</p>
-<blockquote>
-<p>关于缓存服务器，Unity具有一个全自动的资源管道。当修改了类似于<code>.psd</code>或<code>.fbx</code>文件的资源后，Unity将检测到更改并自动重新导入更改后的文件。从文件导入的数据之后将由Unity按其内部格式存储。资源管道最重要的部分是“热重载”功能和保证您的所有资源始终同步为所见即所得模式。此功能的实现也是要付出代价的。任何修改的资源必须重新导入。在一个大团队中工作时，获得了最新的管理源代码(Source Control)后，您通常需要等很长一段时间才可将所有其他成员修改或创建的资源重新导入完成。另外，在PC和移动平台之间来回切换工程平台，也将引发重新导入大部分资源的操作。</p>
-<p>在<strong>缓存服务器(Cache Server)</strong>上缓存导入的资源数据可大幅缩短导入资源占用的时间。</p>
-<p>缓存每个导入的资源基于：</p>
-<p>&emsp;&emsp;<em>资源文件本身</em></p>
-<p>&emsp;&emsp;<em>导入设置</em></p>
-<p>&emsp;&emsp;<em>资源导入器版本</em></p>
-<p>&emsp;&emsp;<em>当前平台</em></p>
-<p>如果上述四项任意一项发生变化，资源将重新导入，否则，会从缓存服务器(Cache Server)下载更新后的资源。启用偏好设置(Preferences)中的缓存服务器后，您可以共享多个工程的导入资源。</p>
-<p><strong><em>注意：将缓存服务器设置好后，这个过程将是完全自动的，这意味着无需其他工作流程。它只是缩短了导入工程的时间，无需您进行操作。</em></strong></p>
-</blockquote>
-<h2 id="配置要求"><a href="#配置要求" class="headerlink" title="配置要求"></a>配置要求</h2><p>&emsp;&emsp;只考虑将CacheServer搭在本地环境，cache服务器不同于版本控制，其缓存数据可以随时在本地重建，没必要使用远程服务器。如果存在开发团队分布在各地的情况，选择在每个地方配置一台独立缓存服务器比较好。</p>
-<p>&emsp;&emsp;因为CacheServer只相当于一个文件cache服务器，所以配置并不需要太高。但是为了最佳性能，机器必须要有足够的RAM来存储整个导入的工程文件夹。机器最好使用SSD，保证读写速度。另外CacheServer的CPU使用率非常低。最好使用Linux或Mac OS X系统。Windows 文件系统未对资源缓存服务器 (Asset Cache Server) 存储数据的方式进行特别理想的优化，Windows 上的文件锁定问题可引发问题，但 Linux 或 Mac OS X 上不会出现此类问题。</p>
-<h2 id="用户使用"><a href="#用户使用" class="headerlink" title="用户使用"></a>用户使用</h2><p>&emsp;&emsp;Unity Cache Server 用户配置使用非常简单：</p>
-<p>&emsp;&emsp;1. 在编辑器中选择偏好设置(Preferences)</p>
-<p>&emsp;&emsp;2. 选择Cache Server，Mode选择Remote，输入缓存服务器的IP地址即可</p>
-<p><img src="https://i.loli.net/2018/09/26/5bab3ffe7a483.png" alt="cache server本地配置"></p>
-<p>&emsp;&emsp;如果缓存服务器配置正确，不存在网络问题的话，Check Connection之后就会出现如图所示连接成功。如果失败的话，可能是缓存服务器配置问题。</p>
-<h2 id="管理员配置"><a href="#管理员配置" class="headerlink" title="管理员配置"></a>管理员配置</h2><p>&emsp;&emsp;Cache Server升级到v6版本之后只支持npm方式安装，所以机器需要先安装LTS版本(长期支持版本)，目前官方推荐的版本是v8.10.0. 下载地址：<a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">https://nodejs.org/en/download/</a></p>
-<p>&emsp;&emsp;node环境配置好之后，使用npm安装：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install unity-cache-server -g</span><br><span class="line">或</span><br><span class="line">npm install github:Unity-Technologies/unity-cache-server -g</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;安装完成之后，命令行输入下面的指令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unity-cache-server</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2018/09/26/5bab4fe1e0d17.png" alt="cache server location"></p>
-<p>&emsp;&emsp;然后unity-cache-server就启动起来了，可以看到默认的缓存路径位于unity-cache-server安装目录下，我们也可以指定缓存路径和端口，缓存模式等。用法附带常用命令表：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">用法：</span><br><span class="line">unity-cache-server [arguments]</span><br></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">命令</th>
-<th style="text-align:left">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">-V, –version</td>
-<td style="text-align:left">查看缓存服务器的版本号</td>
-</tr>
-<tr>
-<td style="text-align:left">-p, –port</td>
-<td style="text-align:left">缓存服务器监听的端口，默认端口是8126。</td>
-</tr>
-<tr>
-<td style="text-align:left">-c, –chache-module [path]</td>
-<td style="text-align:left">缓存模块路径，默认值是’cache’</td>
-</tr>
-<tr>
-<td style="text-align:left">-P, –cache-path [path]</td>
-<td style="text-align:left">缓存路径</td>
-</tr>
-<tr>
-<td style="text-align:left">-l, –log-level \<n></n></td>
-<td style="text-align:left">日志详细程度，等级0(没有提示) - 5(调试模式)，默认值为3</td>
-</tr>
-<tr>
-<td style="text-align:left">-w, –workers \<n></n></td>
-<td style="text-align:left">要生成的工作线程数，默认值为0。</td>
-</tr>
-<tr>
-<td style="text-align:left">-h, –help</td>
-<td style="text-align:left">显示使用帮助&emsp;</td>
-</tr>
-</tbody>
-</table>
-<p><strong>配置文件</strong></p>
-<p>&emsp;&emsp;配置文件位于unity-cache-server安装目录下config/default.yml，配置系统基于node-config模块，关于如何管理特定环境的配置文件的其他信息，可以参阅node-config配置文档。</p>
-<p>&emsp;&emsp;默认情况，run <code>unity-cache-server</code>使用的是内置的配置文件，当然我们可以修改内置的配置文件。另外也可以将配置信息写入新文件，使用–NODE_CONFIG_DIR命令使用该配置文件。</p>
-<p><strong>配置文件常用命令</strong></p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">命令</th>
-<th style="text-align:center">默认值</th>
-<th style="text-align:center">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">Cache.options.processor.putWhitelist</td>
-<td style="text-align:center">[]</td>
-<td style="text-align:center">允许上传更改的IP地址数组，类型为字符串</td>
-</tr>
-<tr>
-<td style="text-align:center">Server.options.allowIPv6</td>
-<td style="text-align:center">false</td>
-<td style="text-align:center">在IPv4和IPv6上监听客户端连接</td>
-</tr>
-</tbody>
-</table>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// cd到unity-cache-server安装目录,如果不清楚安装位置,可以先运行 unity-cache-server,查看path</span><br><span class="line">cd /Users/wangx/.nvm/versions/node/v8.11.3/lib/node_modules/unity-cache-server/</span><br><span class="line">vi config/default.yml</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2018/09/27/5bac39daebbd4.png" alt="default.yml"></p>
-<p>&emsp;&emsp;常用只需要修改这两个配置，因为放在本地网络环境，可以不需要修改allowIpv6，只修改putWhitelist即可，注意yml语法，以及putWhitelist值为字符串值，这个是一定要注意的，不然会导致cache server启动成功却不能使用缓存服务。建议修改完之后做一下YAML语法检测，<a href="http://www.yamllint.com/" target="_blank" rel="noopener">YAML在线检测网址</a>。</p>
-<p>&emsp;&emsp;至此，server的配置就基本完成了。然后在启动server，测试是否成功。端口可以使用默认端口，但最好指定一个cache结果缓存目录，方便查看和清理。本文先使用cache_fs，高性能文件系统缓存模式，下一篇文章将对比说明cache_ram模式。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 我这里使用的mac OS X作为server，缓存目录放在用户目录下 unity-cache/</span><br><span class="line">unity-cache-server -P /Users/wangx/unity-cache/</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;注意unity-cache-server命令区分大小写，-p和-P代表的命令不一样。</p>
-<p><img src="https://i.loli.net/2018/09/27/5bac4ba3a101c.png" alt="unity-cache-server -P"></p>
-<h2 id="测试使用"><a href="#测试使用" class="headerlink" title="测试使用"></a>测试使用</h2><p>&emsp;&emsp;客户端配置参考上文的用户使用，第一遍导入时，就会压缩一次贴图，并将结果缓存到cache-server。因此第一次压缩贴图的时间并不会缩短。第一次压缩完成后server上指定的缓存目录下就会有缓存结果。</p>
-<p><img src="https://i.loli.net/2018/09/27/5bac4d10c16cf.png" alt="缓存结果"></p>
-<p><img src="https://i.loli.net/2018/09/27/5bac4d10ceba0.png" alt="缓存结果"></p>
-<p>&emsp;&emsp;然后我们再次切换到相同平台的时候，速度会加快很多倍。当然仅限于相同平台，如果不同平台，本机又可以提交修改，然后缓存结果就会被体会，再次切相同平台同样会重新压缩贴图。如前文中的Unity哪些更改会导致资源重新导入。例如：</p>
-<blockquote>
-<p>游戏项目是android平台的，但是unity初次导入项目会默认在PC平台，所以压缩贴图的时候会压缩成PC支持的格式。切到Adroid平台的时候会重新压缩一遍贴图，就会重新导入。所以建议putWhitelist在第一次导入的时候只填写第一个上传项目压缩贴图的IP地址，待所有人都切到相同平台的时候，再加入能提交更改的IP。</p>
-</blockquote>
-<blockquote>
-<p>还有另外一种比较好的方式：</p>
-<p>&emsp;&emsp;在Server上缓存的是Android平台的缓存结果，导入项目如果能直接是在Android平台就会直接下载缓存结果，避免因平台的切换导致部分资源被重新导入。有关如何通过命令行启动Unity并完成平台的切换，请百度或google，“unity如何直接在打开时完成开发平台的切换”。当启动Unity就处于Android平台，就会直接下载Cache Server的缓存结果。</p>
-</blockquote>
-<p>&emsp;&emsp;结果缓存成功，再次切平台的就会从cache server下载缓存，整个过程基本能在1-2分钟内完成，速度提升很多倍。在server的log中可以看到发送缓存记录：</p>
-<p><img src="https://i.loli.net/2018/09/27/5bac52a1d7b30.png" alt="download from cache server"></p>
-<p><img src="https://i.loli.net/2018/09/27/5bac5291133f3.png" alt="log"></p>
-<h2 id="现有项目导入"><a href="#现有项目导入" class="headerlink" title="现有项目导入"></a>现有项目导入</h2><p>&emsp;&emsp;上面的导入缓存配置较为简单，但是如果是已有Unity项目又不想重新做一次导入，可以使用Unity官方提供的这种方式进行导入。前提是进行导入的客户端IP地址需要包含在白名单中，并且项目要具有Library文件夹。</p>
-<blockquote>
-<ol>
-<li><p>将安装目录下Unity文件夹的<code>CacheServerTransactionImporter.cs</code>脚本添加到Unity项目下。对于这部分的工作我不是太清楚，具体如何设置，请参考unity-cache-server官方的说明。<a href="https://github.com/Unity-Technologies/unity-cache-server" target="_blank" rel="noopener">https://github.com/Unity-Technologies/unity-cache-server</a>, Unity project Library Importer.</p>
-</li>
-<li><p>添加成功之后，等待刷新一下，Unity的菜单栏就会出现Cache Server Utilities选项，然后选择导出，Export Transactions.选择导出json文件的路径，保存。</p>
-</li>
-<li><p>在导出结果的客户端执行下面的命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">    unity-cache-server-import &lt;path to json file&gt; [server:port]</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-</blockquote>
-<blockquote>
-<p>   <em>注：这一步需要导入客户端的地址在配置文件的putWhitelist中，否则会导致写入失败。</em></p>
-<p>   如果配置没有问题的话就会看到server log会有资源文件的上传记录，此阶段可以将log-level 设置为4，就能看到上传记录。</p>
-</blockquote>
-<p><img src="https://i.loli.net/2018/09/27/5bac898fbf382.png" alt="unity menu"></p>
-<p><img src="https://i.loli.net/2018/09/27/5bac898f72602.png" alt="import shell"></p>
-<p><img src="https://i.loli.net/2018/09/27/5bac899abcda0.png" alt="server import"></p>
-<p>&emsp;&emsp;等待上传完成，server就缓存了客户端已经有的缓存结果了。其他客户端就可以从cache server导入资源。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>&emsp;&emsp;至此，关于unity-cache-server最新版本v6的使用及配置就差不多了。其中可能有一些地方是可以改进，或者可以详细说明的，但我是个门外汉，对很多unity相关的内容都不太清楚。所以还是欢迎指正，另外在使用时有疑问也可以评论或邮件联系。</p>
-
+<p>&emsp;&emsp;Unity官方在3月发布了Cache Server v6.0.0版本，官方宣称6.0带来了更高的可靠性和性能，以及一系列的新功能。包括新模块化，实现最大的I/O性能，支持高性能的缓存模式等等。<br>
+        
+          <a class="article-more-link" href="/2018/09/26/unity-cache-server/">阅读更多...</a>
+        
       
-    </div>
+    </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/09/26/unity-cache-server/" data-id="cjqnfri5e00184r1byq2udw7r" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/09/26/unity-cache-server/" data-id="cjqnkn0a30028501bq7j1zdtb" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cacheserver/">cacheserver</a></li></ul>
 
@@ -660,7 +379,7 @@
 <nav class="navbar">
   
     <div class="logo">
-      <a href="/"><img src="/images/wangx.png" alt="Wangx&#39;s blog"></a>
+      <a href="/"><img src="/images/logo.png" alt="Wangx&#39;s blog"></a>
     </div>
   
   <ul class="nav nav-main">

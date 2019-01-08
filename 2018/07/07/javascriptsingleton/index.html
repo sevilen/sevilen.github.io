@@ -59,7 +59,7 @@
       
         <p>JavaScript单例模式  </p>
 <hr>
-<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><p>&emsp;&emsp;单例模式时一种较为简单的设计模式，传统的单例模式是指保证一个类只有一个实例，并提供一个访问它的全局访问点。  </p>
+<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><p>&emsp;&emsp;单例模式时一种较为简单的设计模式，传统的单例模式是指保证一个类只有一个实例，并提供一个访问它的全局访问点。<br><a id="more"></a></p>
 <h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>&emsp;&emsp;实现的思路是定义一个变量标志是否已经创建过实例，如果已经有实例，则返回该实例对象，否则创建一个实例并返回。用一个创建登录框的例子来说明单例模式在JavaScript中如何实现：  </p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> loginHtml = <span class="string">"账号：&lt;input type=\"text\" /&gt;&lt;br/&gt;密码：&lt;input type=\"password\" /&gt;"</span>;</span><br><span class="line"><span class="keyword">var</span> createLoginDiv = <span class="function"><span class="keyword">function</span>(<span class="params">html</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.html = html;</span><br><span class="line">  <span class="keyword">this</span>.init();</span><br><span class="line">&#125;;</span><br><span class="line">createLoginDiv.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> div = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>);</span><br><span class="line">  div.innerHTML = <span class="keyword">this</span>.html;</span><br><span class="line">  <span class="built_in">document</span>.body.appendChild(div);</span><br><span class="line">&#125;;</span><br><span class="line">createLoginDiv.getInstance = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> instance = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">html</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (instance === <span class="literal">null</span>) &#123;</span><br><span class="line">      instance = <span class="keyword">new</span> createLoginDiv(html);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> instance;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="keyword">var</span> div1 = createLoginDiv.getInstance(loginHtml);</span><br><span class="line"><span class="keyword">var</span> div2 = createLoginDiv.getInstance(<span class="string">"账号密码"</span>);</span><br><span class="line"><span class="built_in">console</span>.log(div1 === div2); <span class="comment">// true 并且页面只有一个登录框，为第一次创建的。</span></span><br></pre></td></tr></table></figure>
 <p>&emsp;&emsp;这样实现的单例模式耦合度较低，init只负责创建登录框对象，对于返回现有对象还是创建新对象交给getInstance去做，代码也很清晰。通过这样的方式我们想要在页面上只想要一个登录框时可以得到保证，只有一个登录框，不会重复创建，节约性能。</p>
@@ -83,7 +83,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/07/07/javascriptsingleton/" data-id="cjqnfri50000h4r1be24d3hcy" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/07/07/javascriptsingleton/" data-id="cjqnkn09p001b501b4vrj3rib" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/singleton/">singleton</a></li></ul>
 
@@ -144,7 +144,7 @@
 <nav class="navbar">
   
     <div class="logo">
-      <a href="/"><img src="/images/wangx.png" alt="Wangx&#39;s blog"></a>
+      <a href="/"><img src="/images/logo.png" alt="Wangx&#39;s blog"></a>
     </div>
   
   <ul class="nav nav-main">

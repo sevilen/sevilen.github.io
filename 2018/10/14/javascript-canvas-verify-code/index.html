@@ -58,7 +58,7 @@
       
       
         <p>&emsp;&emsp;感觉自己最近好像很少拿原生js写东西了，自己的js水平也还有待提高。上周做原型设计的时候设计了一个图形验证码，感觉这么小一个东西也没必要去找个库，就打算自己造个小轮子来用了。</p>
-<p>&emsp;&emsp;图形验证码的作用是一种人机识别的手段，目的是为了区分正常人和机器人，所以没必要设计的太麻烦(12306之前的验证码简直!!)，所以就采用数字+大小写字母共4个字符进行验证，用canvas进行绘制，如果只是简单这样也太简单了，像接触到的其他网站使用的验证码还有背景色和干扰的线条，基本上这就是实现的思路了。</p>
+<p>&emsp;&emsp;图形验证码的作用是一种人机识别的手段，目的是为了区分正常人和机器人，所以没必要设计的太麻烦(12306之前的验证码简直!!)，所以就采用数字+大小写字母共4个字符进行验证，用canvas进行绘制，如果只是简单这样也太简单了，像接触到的其他网站使用的验证码还有背景色和干扰的线条，基本上这就是实现的思路了。<br><a id="more"></a></p>
 <hr>
 <p>&emsp;&emsp;根据实现的思路，随机颜色的方法、生成随机数的方法肯定是需要的。</p>
 <figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 生成一个随机数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">function randomNum(<span class="built_in">min</span>, <span class="built_in">max</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> Math.<span class="built_in">floor</span>(Math.<span class="built_in">random</span>() * (<span class="built_in">max</span> - <span class="built_in">min</span>) + <span class="built_in">min</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 生成随机颜色rgb值</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">function randomColor(<span class="built_in">min</span>, <span class="built_in">max</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> r = randomNum(<span class="built_in">min</span>, <span class="built_in">max</span>);</span><br><span class="line">    <span class="keyword">const</span> g = randomNum(<span class="built_in">min</span>, <span class="built_in">max</span>);</span><br><span class="line">    <span class="keyword">const</span> b = randomNum(<span class="built_in">min</span>, <span class="built_in">max</span>);</span><br><span class="line">    <span class="keyword">return</span> `rgb($&#123;r&#125;, $&#123;g&#125;, $&#123;b&#125;)`;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -80,7 +80,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/10/14/javascript-canvas-verify-code/" data-id="cjqnfri55000n4r1beto7mr1d" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/10/14/javascript-canvas-verify-code/" data-id="cjqnkn09r001e501b0697cv3o" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/验证码/">验证码</a></li></ul>
 
@@ -141,7 +141,7 @@
 <nav class="navbar">
   
     <div class="logo">
-      <a href="/"><img src="/images/wangx.png" alt="Wangx&#39;s blog"></a>
+      <a href="/"><img src="/images/logo.png" alt="Wangx&#39;s blog"></a>
     </div>
   
   <ul class="nav nav-main">
