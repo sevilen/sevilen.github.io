@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>hexo博客自定义域名添加https</title>
+      <link href="/2018/12/31/hexo-enable-https/"/>
+      <url>/2018/12/31/hexo-enable-https/</url>
+      
+        <content type="html"><![CDATA[<p>&emsp;&emsp;不知从去年什么时候起，各大网站都上了https。7月底从wordpress转到hexo，静态博客速度确实很快，秒杀wordpress，也不用操心维护，只专注于写作。期间换过一个主题两个主题，都是基于Vue的，简单的配置了https，没有发现任何问题，最近新换了一个主题发现仅有首页是https，文章和其他页都是http，花了点时间解决，分享一下。</p><a id="more"></a><h4 id="HTTP和HTTPS"><a href="#HTTP和HTTPS" class="headerlink" title="HTTP和HTTPS"></a>HTTP和HTTPS</h4><blockquote><p>HTTP：互联网上应用最为广泛的一种网络协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本地浏览器的传输协议，它可以使浏览器更加高效，使网络传输减少。</p><p>HTTPS：以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> 网络 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> https </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>踩坑的问题</title>
       <link href="/2018/12/23/vue-deep-and-shallow-copy/"/>
       <url>/2018/12/23/vue-deep-and-shallow-copy/</url>

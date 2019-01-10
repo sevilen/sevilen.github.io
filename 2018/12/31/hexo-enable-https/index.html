@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>
-    Vue实例生命周期 |
+    hexo博客自定义域名添加https |
     
     Wangx&#39;s blog</title>
   
@@ -25,7 +25,7 @@
 <body>
 <main class="content">
   <section class="outer">
-  <article id="post-vuelifecyle" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <article id="post-hexo-enable-https" class="article article-type-post" itemscope="" itemprop="blogPost">
 
   <div class="article-inner">
     
@@ -33,7 +33,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Vue实例生命周期
+      hexo博客自定义域名添加https
     </h1>
   
 
@@ -42,12 +42,12 @@
 
     
       <div class="article-meta">
-        <a href="/2018/07/07/vuelifecyle/" class="article-date">
-  <time datetime="2018-07-06T16:56:17.000Z" itemprop="datePublished">2018-07-07</time>
+        <a href="/2018/12/31/hexo-enable-https/" class="article-date">
+  <time datetime="2018-12-31T11:36:10.000Z" itemprop="datePublished">2018-12-31</time>
 </a>
         
   <div class="article-category">
-    <a class="article-category-link" href="/categories/vue/">vue</a>
+    <a class="article-category-link" href="/categories/网络/">网络</a>
   </div>
 
       </div>
@@ -57,59 +57,19 @@
       
       
       
-        <h4 id="Vue实例生命周期"><a href="#Vue实例生命周期" class="headerlink" title="Vue实例生命周期"></a>Vue实例生命周期</h4><p>&emsp;&emsp;先来上一张vue官网的生命周期图：  </p>
-<p><img src="https://i.loli.net/2018/09/08/5b9380089a9dc.png" alt="生命周期"></p>
+        <p>&emsp;&emsp;不知从去年什么时候起，各大网站都上了https。7月底从wordpress转到hexo，静态博客速度确实很快，秒杀wordpress，也不用操心维护，只专注于写作。期间换过一个主题两个主题，都是基于Vue的，简单的配置了https，没有发现任何问题，最近新换了一个主题发现仅有首页是https，文章和其他页都是http，花了点时间解决，分享一下。</p>
 <a id="more"></a>
-<p>一个vue实例在创建的时候会调用上面的钩子函数，vue的生命周期钩子函数有：  </p>
-<ul>
-<li><p>beforeCreate</p>
-</li>
-<li><p>created</p>
-</li>
-<li><p>beforeMount</p>
-</li>
-<li><p>mounted</p>
-</li>
-<li><p>beforeUpdate</p>
-</li>
-<li><p>updated</p>
-</li>
-<li><p>beforeDestroy</p>
-</li>
-<li><p>destroyed</p>
-</li>
-</ul>
-<p>&emsp;&emsp;下面来一一讲解vue的生命周期钩子函数：  </p>
-<p><strong>beforeCreate：</strong></p>
-<p>&emsp;&emsp;vue实例创建前，el、data、methods都还未生成。  </p>
-<p><strong>created：</strong></p>
-<p>&emsp;&emsp;vue实例创建完成，这一阶段进行<strong>事件初始化，同时观测数据</strong>。注意：此时el还是读不到。  </p>
-<p>&emsp;&emsp;这个阶段如果创建实例的时候没有填写el属性的话，将不会往下执行，直到调用$mount(el)，时才会继续向下执行。如上图所示。  </p>
-<p>&emsp;另外在实例中如果有template属性，将会把template编译成render函数，如果没有将会把外部的html作为模板编译。</p>
-<p><strong>beforeMount：</strong></p>
-<p>&emsp;&emsp;挂载前，这一阶段$el属性已经添加进来，但是html中还是{ { data }}进行占位，还没有将数据进行挂载，以虚拟dom的形式存在。</p>
-<p><strong>mounted：</strong></p>
-<p>&emsp;&emsp;挂载成功，虚拟dom被替换成真是dom，数据也已经进行挂载。  </p>
-<p><strong>beforeUpdate：</strong></p>
-<p>&emsp;&emsp;监听到数据变化，view并没有重新渲染。  </p>
-<p><strong>updated：</strong></p>
-<p>&emsp;&emsp;data中数据已经改变，触发重新渲染。</p>
-<p><strong>beforeDestory：</strong></p>
-<p>&emsp;&emsp;vue实例仍然存在并且可以使用，解除事件监听和数据绑定等。  </p>
-<p><strong>destoryed：</strong></p>
-<p>&emsp;&emsp;vue实例已经销毁。</p>
-<h2 id="Vue生命周期总结"><a href="#Vue生命周期总结" class="headerlink" title="Vue生命周期总结"></a>Vue生命周期总结</h2><p><strong>beforecreate</strong>: 可以在这加loading事件 </p>
-<p><strong>created</strong> ：在这结束loading，还做一些初始化，实现函数自执行 </p>
-<p><strong>mounted</strong>： 在这发起后端请求，拿回数据，配合路由钩子做一些事情 </p>
-<p><strong>beforeDestory</strong>： 你确认删除XX吗？ </p>
-<p><strong>destoryed</strong> ：当前组件已被删除，清空相关内容</p>
+<h4 id="HTTP和HTTPS"><a href="#HTTP和HTTPS" class="headerlink" title="HTTP和HTTPS"></a>HTTP和HTTPS</h4><blockquote>
+<p>HTTP：互联网上应用最为广泛的一种网络协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本地浏览器的传输协议，它可以使浏览器更加高效，使网络传输减少。</p>
+<p>HTTPS：以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。</p>
+</blockquote>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/07/07/vuelifecyle/" data-id="cjqp4kjyb0022xu1b0bxdlaq4" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/12/31/hexo-enable-https/" data-id="cjqp4kjxp000mxu1b8uetk9fx" class="article-share-link">分享</a>
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/生命周期/">生命周期</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/https/">https</a></li></ul>
 
     </footer>
 
@@ -119,19 +79,10 @@
     
   <nav class="article-nav">
     
-      <a href="/2018/07/27/cssimagecentre/" class="article-nav-link">
-        <strong class="article-nav-caption">前一页</strong>
-        <div class="article-nav-title">
-          
-            CSS图片居中
-          
-        </div>
-      </a>
     
-    
-      <a href="/2018/07/07/javascriptsingleton/" class="article-nav-link">
+      <a href="/2018/12/23/vue-deep-and-shallow-copy/" class="article-nav-link">
         <strong class="article-nav-caption">后一页</strong>
-        <div class="article-nav-title">JavaScript-单例模式</div>
+        <div class="article-nav-title">踩坑的问题</div>
       </a>
     
   </nav>

@@ -58,6 +58,64 @@
 
     
       
+        <article id="post-unity-cache-server" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2018/09/26/unity-cache-server/">Unity-Cache-Server</a>
+    </h2>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/09/26/unity-cache-server/" class="article-date">
+  <time datetime="2018-09-26T01:38:21.000Z" itemprop="datePublished">2018-09-26</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/unity/">unity</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <p><em>注：由于没有做过游戏开发，也没有使用过unity，所以有问题的地方欢迎在评论指正</em></p>
+<h2 id="缓存服务器"><a href="#缓存服务器" class="headerlink" title="缓存服务器"></a>缓存服务器</h2><p>&emsp;&emsp;Unity的打包流程中最慢的环节就是贴图的压缩。不同的平台，需要把原始贴图压缩成对应平台的压缩贴图格式。iOS和Android平台对应的格式不同。针对这个问题，Unity官方给出了一个CacheServer的解决方案。CacheServer只是一个文件cache服务器，记录了贴图源文件和转换参数(meta文件)以及转换器版本等信息构成的字符串的md5值作为文件索引。第一个做转换的人，在本地进行压缩后，会把结果传到CacheServer，其他人使用时，就会优先去看有没有人做过同样的工作，如果有就从cache服务器下载资源，没有就会进行压缩，并上传结果到CacheServer。如果源文件、转换参数都完全一样，结果会被缓存。在日常所有贴图都会被压缩过，可以节约压缩贴图的时间，从而减少打包时间。</p>
+<p>&emsp;&emsp;Unity官方在3月发布了Cache Server v6.0.0版本，官方宣称6.0带来了更高的可靠性和性能，以及一系列的新功能。包括新模块化，实现最大的I/O性能，支持高性能的缓存模式等等。<br>
+        
+          <a class="article-more-link" href="/2018/09/26/unity-cache-server/">阅读更多...</a>
+        
+      
+    </p></div>
+    <footer class="article-footer">
+      <a data-url="http://blog.wangx.me/2018/09/26/unity-cache-server/" data-id="cjqp4kjy1001dxu1bnarx9tjk" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cacheserver/">cacheserver</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+
+
+
+      
         <article id="post-the-proptotype-chain-and-inheritance" class="article article-type-post" itemscope="" itemprop="blogPost">
 
   <div class="article-inner">
@@ -98,7 +156,7 @@
       
     </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/09/24/the-proptotype-chain-and-inheritance/" data-id="cjqovi4m90011951bsj01gxpu" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/09/24/the-proptotype-chain-and-inheritance/" data-id="cjqp4kjxz0016xu1bmdea7qvk" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原型链/">原型链</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/继承/">继承</a></li></ul>
 
@@ -154,7 +212,7 @@
       
     </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/09/16/npmpackage/" data-id="cjqovi4m80010951bgcia3pxy" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/09/16/npmpackage/" data-id="cjqp4kjxw000yxu1bkktqiie5" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li></ul>
 
@@ -212,7 +270,7 @@
       
     </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/09/09/vueslot/" data-id="cjqovi4mr0022951b731otw30" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/09/09/vueslot/" data-id="cjqp4kjyd0027xu1bd51vhfjt" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/slot/">slot</a></li></ul>
 
@@ -270,68 +328,9 @@
       
     </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/09/02/vue-sigleway-flow/" data-id="cjqovi4mi001k951b6mgeslex" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/09/02/vue-sigleway-flow/" data-id="cjqp4kjy6001pxu1bmaqlk3rk" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/component/">component</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/单向流动/">单向流动</a></li></ul>
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-</article>
-
-
-
-      
-        <article id="post-vuedoublesidedbind" class="article article-type-post" itemscope="" itemprop="blogPost">
-
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title" href="/2018/08/26/vuedoublesidedbind/">双向绑定</a>
-    </h2>
-  
-
-      </header>
-    
-
-    
-      <div class="article-meta">
-        <a href="/2018/08/26/vuedoublesidedbind/" class="article-date">
-  <time datetime="2018-08-26T02:24:55.000Z" itemprop="datePublished">2018-08-26</time>
-</a>
-        
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/vue/">vue</a>
-  </div>
-
-      </div>
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-      
-        <h4 id="双向绑定"><a href="#双向绑定" class="headerlink" title="双向绑定"></a>双向绑定</h4><p>&emsp;&emsp;数据的双向绑定可以说是MVVM框架的核心思想，MVVM框架包括三个部分，Model、View和ViewModel，分别指数据、视图、ViewModel可以说是前二者的连接者，二者通过它实现数据的双向绑定。以Vue为例，先看下Vue官网数据绑定的示意图：</p>
-<p><img src="https://i.loli.net/2018/08/26/5b827f69c1a85.png" alt="数据绑定"></p>
-<p>&emsp;&emsp;<em>这张图想表达的是，对象a下的属性b定义了getter、setter对属性进行劫持，当属性值改变时就会notify通知watch对象，而watch对象则会notify到view更新。反之，在视图改变数据时，也会触发订阅者watch，更新数据到data中。这样的model能实时响应view上的数据变化，view实时响应model的数据变化，这样的一个过程就叫数据的双向绑定。</em></p>
-<p>&emsp;&emsp;Vue是通过ES5中Object.defineProperty()这个方法来实现getter、setter对数据进行劫持，所以要运行Vue的运行环境需支持ES5。<br>
-        
-          <a class="article-more-link" href="/2018/08/26/vuedoublesidedbind/">阅读更多...</a>
-        
-      
-    </p></div>
-    <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/08/26/vuedoublesidedbind/" data-id="cjqovi4mq0021951byw2wz1t9" class="article-share-link">分享</a>
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/双向绑定/">双向绑定</a></li></ul>
 
     </footer>
 
@@ -351,7 +350,7 @@
   
     <nav class="page-nav">
       
-      <a class="extend prev" rel="prev" href="/page/3/">前一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/">后一页</a>
+      <a class="extend prev" rel="prev" href="/page/3/">前一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/">后一页</a>
     </nav>
   
 </section>
