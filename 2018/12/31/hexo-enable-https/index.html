@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>
-    hexo博客自定义域名添加https |
+    hexo博客自定义域名添加HTTPS |
     
     Wangx&#39;s blog</title>
   
@@ -33,7 +33,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      hexo博客自定义域名添加https
+      hexo博客自定义域名添加HTTPS
     </h1>
   
 
@@ -63,11 +63,37 @@
 <p>HTTP：互联网上应用最为广泛的一种网络协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本地浏览器的传输协议，它可以使浏览器更加高效，使网络传输减少。</p>
 <p>HTTPS：以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。</p>
 </blockquote>
+<p><strong>HTTP和HTTPS主要区别：</strong></p>
+<blockquote>
+<ol>
+<li>https协议需要到ca申请证书，一般免费证书较少，因而需要一定费用。</li>
+<li>http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议。</li>
+<li>http和https使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</li>
+<li>http的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比http协议安全。</li>
+</ol>
+</blockquote>
+<p><strong>为什么要使用HTTPS</strong></p>
+<p>&emsp;&emsp;HTTPS的主要作用有两点：一是保证数据安全，二是确认网站的真实性。现在使用http，chrome会提示不安全，而https则会带一把小绿锁。所以我的博客添加https的作用就是为自己加一个小绿锁:)。</p>
+<h4 id="hexo博客两种添加HTTPS的方式"><a href="#hexo博客两种添加HTTPS的方式" class="headerlink" title="hexo博客两种添加HTTPS的方式"></a>hexo博客两种添加HTTPS的方式</h4><p><strong>Github强制HTTPS</strong></p>
+<p><img src="https://i.loli.net/2019/01/10/5c3756e423ac6.png" alt="https.png"></p>
+<p>&emsp;&emsp;直接在Github pages的配置中勾选Enforce HTTPS选项即可开启HTTPS，虽然也能解决小绿锁的问题，但是却不能用到免费的CDN加速，对于使用Vue/React开发的主题，首屏加载可能较慢。所以采用第二种方案较好。</p>
+<p><strong>CloudFlare</strong></p>
+<p>&emsp;&emsp;注册cloudflare和如何绑定自己的域名就不赘诉了。首先，在DNS添加一条CNAME记录，指向github提供的pages地址。记得使用cloudflare就不要开启github的强制https，否则可能会导致你的博客访问不了。</p>
+<p><img src="https://i.loli.net/2019/01/10/5c375a5080bb2.png" alt="dns.png"></p>
+<p>&emsp;&emsp;然后在Crypto中选择创建一个证书，根据自己需要填写。</p>
+<p><img src="https://i.loli.net/2019/01/10/5c375add948a1.png" alt="ssl.png"></p>
+<p>&emsp;&emsp;创建完成后，再添加一下Page Rules，用户可以免费创建3个Page Rules。</p>
+<p>&emsp;&emsp;第一个让匹配的URL都强制走HTTPS，记得尽量使用通配符<code>*</code>尽可能多的匹配到会用到的URL。我就是因为前面一直用的SPA，一直没发现自己只配了主页。直到最近换了主题才发现。</p>
+<p><img src="https://i.loli.net/2019/01/10/5c375d21e9669.png" alt="pagerules1.png"></p>
+<p>&emsp;&emsp;第二个，可以让CloudFlare的CDN中缓存你的静态也页面。一定程度上能提高访问速度。</p>
+<p><img src="https://i.loli.net/2019/01/10/5c375d21ee0ec.png" alt="pagerules2.png"></p>
+<p>&emsp;&emsp;配置完成后，可能要等一会儿才能生效。</p>
+<h4 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h4><p>&emsp;&emsp;其实这两种开启https的方式使用的CA证书都不是你自己的，都是两个提供商的。不过也有方式可以实现个人网站的证书，一是cloudflare的证书可以升级，5$一个月对于个人用户还是比较贵了。另外，可以使用<strong>Let’s Encrypt</strong>通配符证书。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/12/31/hexo-enable-https/" data-id="cjqq6xjyw000ie21bkymuicqd" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/12/31/hexo-enable-https/" data-id="cjqq7s8r5000cxj1bawgcwvbc" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/https/">https</a></li></ul>
 
@@ -148,7 +174,7 @@
       </li>
     
       <li class="nav-item">
-        <a class="nav-item-link" href="/archives">文章</a>
+        <a class="nav-item-link" href="/archives">归档</a>
       </li>
     
       <li class="nav-item">
