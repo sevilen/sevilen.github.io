@@ -80,7 +80,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/about/index.html" data-id="cjqp4kjz7005cxu1b9t75qgm7" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/about/index.html" data-id="cjqq6xjyh0001e21b4ipnp65b" class="article-share-link">分享</a>
       
     </footer>
 
@@ -90,6 +90,27 @@
     
 
   
+
+  
+    
+  <div class="gitalk" id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'd79784dfde36edbc8fcc',
+        clientSecret: '91687571ef07659960c1b0a6c55bf1c882ceebdc',
+        repo: 'blog-comment',
+        owner: 'sevilen',
+        admin: ['sevilen'],
+        // id: location.pathname,      // Ensure uniqueness and length less than 50
+        id: md5(location.pathname),
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+  gitalk.render('gitalk-container')
+  </script>
 
   
 
