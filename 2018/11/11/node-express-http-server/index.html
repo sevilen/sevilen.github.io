@@ -13,6 +13,15 @@
     
     Wangx&#39;s blog</title>
   
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
     <link rel="shortcut icon" href="/favicon.ico">
   
   <link rel="stylesheet" href="/css/style.css">
@@ -72,31 +81,144 @@
 </blockquote>
 <p>&emsp;&emsp;另外看到了一条关于node的应用场景的回答，比较赞同，找不到链接了。大概是说node的适合 io 密集型的应用，能发挥出很好的性能，而 cpu 密集型的应用可能性能就不是最佳选择。估计这就是unity官方选择nodejs来写cacheserver的原因吧。</p>
 <h4 id="一个简单的web服务器"><a href="#一个简单的web服务器" class="headerlink" title="一个简单的web服务器"></a>一个简单的web服务器</h4><p>&emsp;&emsp;这里用了nodejs的第三方库express，express也有自己的脚手架。新建一个文件夹<code>http-server</code>，cd到该目录下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">touch app.js # 新建app.js文件</span><br><span class="line"><span class="meta">#</span><span class="bash"> 然后一顿回车，使用默认就ok，不过author可以填上自己的名字。</span></span><br><span class="line">package name: (http-server)</span><br><span class="line">version: (1.0.0)</span><br><span class="line">description:</span><br><span class="line">entry point: (app.js)</span><br><span class="line">test command:</span><br><span class="line">git repository:</span><br><span class="line">keywords:</span><br><span class="line">author: wangx</span><br><span class="line">license: (ISC)</span><br><span class="line">About to write to /Users/wangx/work/nodejs/http-server/package.json:</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  "name": "http-server",</span><br><span class="line">  "version": "1.0.0",</span><br><span class="line">  "description": "",</span><br><span class="line">  "main": "app.js",</span><br><span class="line">  "scripts": &#123;</span><br><span class="line">    "test": "echo \"Error: no test specified\" &amp;&amp; exit 1"</span><br><span class="line">  &#125;,</span><br><span class="line">  "author": "wangx",</span><br><span class="line">  "license": "ISC"</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 初始化</span></span><br><span class="line">npm init</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装express</span></span><br><span class="line">npm install express --save</span><br></pre></td></tr></table></figure>
+<pre><code class="shell">touch app.js # 新建app.js文件
+# 然后一顿回车，使用默认就ok，不过author可以填上自己的名字。
+package name: (http-server)
+version: (1.0.0)
+description:
+entry point: (app.js)
+test command:
+git repository:
+keywords:
+author: wangx
+license: (ISC)
+About to write to /Users/wangx/work/nodejs/http-server/package.json:
+
+{
+  &quot;name&quot;: &quot;http-server&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;description&quot;: &quot;&quot;,
+  &quot;main&quot;: &quot;app.js&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
+  },
+  &quot;author&quot;: &quot;wangx&quot;,
+  &quot;license&quot;: &quot;ISC&quot;
+}
+# 初始化
+npm init
+# 安装express
+npm install express --save
+</code></pre>
 <p>&emsp;&emsp;然后就可以在app.js写相关逻辑：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * http服务器</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">// 引入express</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//  创建express服务器</span></span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"></span><br><span class="line"><span class="comment">// get请求</span></span><br><span class="line">app.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">request, response</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// console.log(request)</span></span><br><span class="line">    response.send(<span class="string">'get请求成功'</span>)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// post请求</span></span><br><span class="line">app.post(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">request, response</span>) </span>&#123;</span><br><span class="line">    response.send(<span class="string">'post请求成功'</span>)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 绑定监听端口</span></span><br><span class="line">app.listen(<span class="number">9001</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'server启动成功'</span>)</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">/**
+ * http服务器
+ */
+// 引入express
+const express = require(&#39;express&#39;);
+
+//  创建express服务器
+const app = express();
+
+// get请求
+app.get(&#39;/&#39;, function (request, response) {
+    // console.log(request)
+    response.send(&#39;get请求成功&#39;)
+});
+
+// post请求
+app.post(&#39;/&#39;, function (request, response) {
+    response.send(&#39;post请求成功&#39;)
+});
+
+// 绑定监听端口
+app.listen(9001);
+console.log(&#39;server启动成功&#39;)
+</code></pre>
 <p>&emsp;&emsp;try it，浏览器中输入<code>localhost:9001</code>就可以看到get请求成功了。简单的http服务是这样了。如果简单的写一个页面测试的话会有跨域问题：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">app.all(<span class="string">'*'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res, next</span>) </span>&#123;</span><br><span class="line">    res.header(<span class="string">"Access-Control-Allow-Origin"</span>, <span class="string">"*"</span>); </span><br><span class="line">    res.header(<span class="string">"Access-Control-Allow-Headers"</span>, <span class="string">"Content-Type,Content-Length, Authorization, Accept,X-Requested-With"</span>);</span><br><span class="line">    res.header(<span class="string">"Access-Control-Allow-Methods"</span>,<span class="string">"PUT,POST,GET,DELETE,OPTIONS"</span>);</span><br><span class="line">    res.header(<span class="string">"X-Powered-By"</span>,<span class="string">' 3.2.1'</span>)</span><br><span class="line">    res.header(<span class="string">"Content-Type"</span>, <span class="string">"application/json;charset=utf-8"</span>);</span><br><span class="line">    next();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">app.all(&#39;*&#39;, function(req, res, next) {
+    res.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;); 
+    res.header(&quot;Access-Control-Allow-Headers&quot;, &quot;Content-Type,Content-Length, Authorization, Accept,X-Requested-With&quot;);
+    res.header(&quot;Access-Control-Allow-Methods&quot;,&quot;PUT,POST,GET,DELETE,OPTIONS&quot;);
+    res.header(&quot;X-Powered-By&quot;,&#39; 3.2.1&#39;)
+    res.header(&quot;Content-Type&quot;, &quot;application/json;charset=utf-8&quot;);
+    next();
+});
+</code></pre>
 <blockquote>
 <p>Access-Control-Allow-Origin：允许的域，*为任意的域都可以访问</p>
 <p>Access-Control-Allow-Headers：允许的header类型</p>
 <p>Access-Control-Allow-Methods：允许的请求方法</p>
 </blockquote>
 <p>&emsp;&emsp;路由：针对不同的路由有不同的处理方式</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">app.get(<span class="string">'/home'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">request, response, next</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'获取数据'</span>);</span><br><span class="line">    next();</span><br><span class="line">&#125;, <span class="function"><span class="keyword">function</span> (<span class="params">request, response</span>) </span>&#123;</span><br><span class="line">    response.send(<span class="string">'get请求成功'</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">app.get(&#39;/home&#39;, function (request, response, next) {
+    console.log(&#39;获取数据&#39;);
+    next();
+}, function (request, response) {
+    response.send(&#39;get请求成功&#39;)
+});
+</code></pre>
 <p>&emsp;&emsp;get请求参数：request.query会把请求参数包装成字典对象，可通过点运算符获取请求参数</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">app.get(<span class="string">'/home'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">request, response, next</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(request.query.name);</span><br><span class="line">    next();</span><br><span class="line">&#125;, <span class="function"><span class="keyword">function</span> (<span class="params">request, response</span>) </span>&#123;</span><br><span class="line">    response.send(<span class="string">`<span class="subst">$&#123;request.query.name&#125;</span>请求成功`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">localhost:<span class="number">9001</span>/home?name=wangx <span class="comment">// wangx  wangx请求成功</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">app.get(&#39;/home&#39;, function (request, response, next) {
+    console.log(request.query.name);
+    next();
+}, function (request, response) {
+    response.send(`${request.query.name}请求成功`);
+});
+
+localhost:9001/home?name=wangx // wangx  wangx请求成功
+</code></pre>
 <p>&emsp;&emsp;中间件：发送一个请求给服务器的时候，会被中间件拦截，先由中间件处理，每个中间件都有一个回调函数作为参数，拦截到参数，就会自动执行回调函数。<em>有中间件，会先执行中间件的回调函数，然后才会调用get或者post的回调函数，也就是当监听到请求，先执行中间件，才会到get、post请求。</em></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 中间件</span></span><br><span class="line"><span class="comment">// 截取请求、拦截回调</span></span><br><span class="line">server.use(<span class="string">'/home'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">request, response, next</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'中间件'</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(request.query.name)</span><br><span class="line">    next()</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">// 中间件
+// 截取请求、拦截回调
+server.use(&#39;/home&#39;, function (request, response, next) {
+    console.log(&#39;中间件&#39;)
+    console.log(request.query.name)
+    next()
+});
+</code></pre>
 <p>&emsp;&emsp;post请求参数：nodejs需要使用body-parse解析post请求参数，采用中间件解析post请求参数。完整代码：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 引入express</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="comment">// 引入 body-parse</span></span><br><span class="line"><span class="keyword">const</span> bodyParse = <span class="built_in">require</span>(<span class="string">'body-parse'</span>);</span><br><span class="line"><span class="comment">//  创建express服务器</span></span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"><span class="comment">// 解析器</span></span><br><span class="line"><span class="keyword">const</span> urlencoded = bodyParse.urlencoded(&#123; <span class="attr">extends</span>:<span class="literal">true</span> &#125;);</span><br><span class="line"><span class="comment">// 中间件</span></span><br><span class="line"><span class="keyword">const</span> jsonParse = bodyParse.json();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过中间件处理，解析请求参数，存放在request.body中</span></span><br><span class="line">server.use(<span class="string">'./home'</span>, jsonParse);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 处理请求参数</span></span><br><span class="line">app.post(<span class="string">'./home'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">request, response</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(request.body);</span><br><span class="line">    response.send(request.body);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 解决跨域</span></span><br><span class="line">app.all(<span class="string">'*'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res, next</span>) </span>&#123;</span><br><span class="line">    res.header(<span class="string">"Access-Control-Allow-Origin"</span>, <span class="string">"*"</span>);</span><br><span class="line">    res.header(<span class="string">"Access-Control-Allow-Headers"</span>, <span class="string">"Content-Type,Content-Length, Authorization, Accept,X-Requested-With"</span>);</span><br><span class="line">    res.header(<span class="string">"Access-Control-Allow-Methods"</span>,<span class="string">"PUT,POST,GET,DELETE,OPTIONS"</span>);</span><br><span class="line">    res.header(<span class="string">"X-Powered-By"</span>,<span class="string">' 3.2.1'</span>)</span><br><span class="line">    res.header(<span class="string">"Content-Type"</span>, <span class="string">"application/json;charset=utf-8"</span>);</span><br><span class="line">    next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 绑定监听端口</span></span><br><span class="line">app.listen(<span class="number">9001</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'server启动成功'</span>)</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">// 引入express
+const express = require(&#39;express&#39;);
+// 引入 body-parse
+const bodyParse = require(&#39;body-parse&#39;);
+//  创建express服务器
+const app = express();
+// 解析器
+const urlencoded = bodyParse.urlencoded({ extends:true });
+// 中间件
+const jsonParse = bodyParse.json();
+
+// 通过中间件处理，解析请求参数，存放在request.body中
+server.use(&#39;./home&#39;, jsonParse);
+
+// 处理请求参数
+app.post(&#39;./home&#39;, function (request, response) {
+    console.log(request.body);
+    response.send(request.body);
+});
+
+// 解决跨域
+app.all(&#39;*&#39;, function(req, res, next) {
+    res.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;);
+    res.header(&quot;Access-Control-Allow-Headers&quot;, &quot;Content-Type,Content-Length, Authorization, Accept,X-Requested-With&quot;);
+    res.header(&quot;Access-Control-Allow-Methods&quot;,&quot;PUT,POST,GET,DELETE,OPTIONS&quot;);
+    res.header(&quot;X-Powered-By&quot;,&#39; 3.2.1&#39;)
+    res.header(&quot;Content-Type&quot;, &quot;application/json;charset=utf-8&quot;);
+    next();
+});
+
+// 绑定监听端口
+app.listen(9001);
+console.log(&#39;server启动成功&#39;)
+</code></pre>
 <p>&emsp;&emsp;仅作为一个demo，关于node服务器的开发与设计，应该参考一下github上成熟的nodejs项目。</p>
 <p>&emsp;&emsp;<a href="https://github.com/bailicangdu/node-elm" target="_blank" rel="noopener">基于nodejs+mongodb构建的饿了么后台系统</a>，这是一个比较好参考的项目，前后端分离，内容比较完整，可以作为学习参考。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/11/11/node-express-http-server/" data-id="cjr0djdq300135h1b4xp5vd6i" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/11/11/node-express-http-server/" data-id="cjrbwj8iv0017f81b3m6wj001" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/express/">express</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/http-server/">http_server</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
 

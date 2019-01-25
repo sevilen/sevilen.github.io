@@ -13,6 +13,15 @@
     
     Wangx&#39;s blog</title>
   
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
     <link rel="shortcut icon" href="/favicon.ico">
   
   <link rel="stylesheet" href="/css/style.css">
@@ -80,12 +89,18 @@
 <p>&emsp;&emsp;如果缓存服务器配置正确，不存在网络问题的话，Check Connection之后就会出现如图所示连接成功。如果失败的话，可能是缓存服务器配置问题。</p>
 <h2 id="管理员配置"><a href="#管理员配置" class="headerlink" title="管理员配置"></a>管理员配置</h2><p>&emsp;&emsp;Cache Server升级到v6版本之后只支持npm方式安装，所以机器需要先安装LTS版本(长期支持版本)，目前官方推荐的版本是v8.10.0. 下载地址：<a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">https://nodejs.org/en/download/</a></p>
 <p>&emsp;&emsp;node环境配置好之后，使用npm安装：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install unity-cache-server -g</span><br><span class="line">或</span><br><span class="line">npm install github:Unity-Technologies/unity-cache-server -g</span><br></pre></td></tr></table></figure>
+<pre><code class="shell">npm install unity-cache-server -g
+或
+npm install github:Unity-Technologies/unity-cache-server -g
+</code></pre>
 <p>&emsp;&emsp;安装完成之后，命令行输入下面的指令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unity-cache-server</span><br></pre></td></tr></table></figure>
+<pre><code class="shell">unity-cache-server
+</code></pre>
 <p><img src="https://i.loli.net/2018/09/26/5bab4fe1e0d17.png" alt="cache server location"></p>
 <p>&emsp;&emsp;然后unity-cache-server就启动起来了，可以看到默认的缓存路径位于unity-cache-server安装目录下，我们也可以指定缓存路径和端口，缓存模式等。用法附带常用命令表：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">用法：</span><br><span class="line">unity-cache-server [arguments]</span><br></pre></td></tr></table></figure>
+<pre><code class="shell">用法：
+unity-cache-server [arguments]
+</code></pre>
 <table>
 <thead>
 <tr>
@@ -149,11 +164,16 @@
 </tr>
 </tbody>
 </table>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// cd到unity-cache-server安装目录,如果不清楚安装位置,可以先运行 unity-cache-server,查看path</span><br><span class="line">cd /Users/wangx/.nvm/versions/node/v8.11.3/lib/node_modules/unity-cache-server/</span><br><span class="line">vi config/default.yml</span><br></pre></td></tr></table></figure>
+<pre><code class="shell">// cd到unity-cache-server安装目录,如果不清楚安装位置,可以先运行 unity-cache-server,查看path
+cd /Users/wangx/.nvm/versions/node/v8.11.3/lib/node_modules/unity-cache-server/
+vi config/default.yml
+</code></pre>
 <p><img src="https://i.loli.net/2018/09/27/5bac39daebbd4.png" alt="default.yml"></p>
 <p>&emsp;&emsp;常用只需要修改这两个配置，因为放在本地网络环境，可以不需要修改allowIpv6，只修改putWhitelist即可，注意yml语法，以及putWhitelist值为字符串值，这个是一定要注意的，不然会导致cache server启动成功却不能使用缓存服务。建议修改完之后做一下YAML语法检测，<a href="http://www.yamllint.com/" target="_blank" rel="noopener">YAML在线检测网址</a>。</p>
 <p>&emsp;&emsp;至此，server的配置就基本完成了。然后在启动server，测试是否成功。端口可以使用默认端口，但最好指定一个cache结果缓存目录，方便查看和清理。本文先使用cache_fs，高性能文件系统缓存模式，下一篇文章将对比说明cache_ram模式。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 我这里使用的mac OS X作为server，缓存目录放在用户目录下 unity-cache/</span><br><span class="line">unity-cache-server -P /Users/wangx/unity-cache/</span><br></pre></td></tr></table></figure>
+<pre><code class="shell">// 我这里使用的mac OS X作为server，缓存目录放在用户目录下 unity-cache/
+unity-cache-server -P /Users/wangx/unity-cache/
+</code></pre>
 <p>&emsp;&emsp;注意unity-cache-server命令区分大小写，-p和-P代表的命令不一样。</p>
 <p><img src="https://i.loli.net/2018/09/27/5bac4ba3a101c.png" alt="unity-cache-server -P"></p>
 <h2 id="测试使用"><a href="#测试使用" class="headerlink" title="测试使用"></a>测试使用</h2><p>&emsp;&emsp;客户端配置参考上文的用户使用，第一遍导入时，就会压缩一次贴图，并将结果缓存到cache-server。因此第一次压缩贴图的时间并不会缩短。第一次压缩完成后server上指定的缓存目录下就会有缓存结果。</p>
@@ -178,13 +198,12 @@
 <li><p>添加成功之后，等待刷新一下，Unity的菜单栏就会出现Cache Server Utilities选项，然后选择导出，Export Transactions.选择导出json文件的路径，保存。</p>
 </li>
 <li><p>在导出结果的客户端执行下面的命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">    unity-cache-server-import &lt;path to json file&gt; [server:port]</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
+<pre><code class="shell">unity-cache-server-import &lt;path to json file&gt; [server:port]
+</code></pre>
+<p><em>注：这一步需要导入客户端的地址在配置文件的putWhitelist中，否则会导致写入失败。</em></p>
+<p>如果配置没有问题的话就会看到server log会有资源文件的上传记录，此阶段可以将log-level 设置为4，就能看到上传记录。</p>
 </li>
 </ol>
-</blockquote>
-<blockquote>
-<p>   <em>注：这一步需要导入客户端的地址在配置文件的putWhitelist中，否则会导致写入失败。</em></p>
-<p>   如果配置没有问题的话就会看到server log会有资源文件的上传记录，此阶段可以将log-level 设置为4，就能看到上传记录。</p>
 </blockquote>
 <p><img src="https://i.loli.net/2018/09/27/5bac898fbf382.png" alt="unity menu"></p>
 <p><img src="https://i.loli.net/2018/09/27/5bac898f72602.png" alt="import shell"></p>
@@ -195,7 +214,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/09/26/unity-cache-server/" data-id="cjr0djdq9001l5h1bv51qy16h" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/09/26/unity-cache-server/" data-id="cjrbwj8j6001vf81bxn6kbtc9" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cacheserver/">cacheserver</a></li></ul>
 

@@ -12,6 +12,15 @@
     
     Wangx&#39;s blog</title>
   
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
     <link rel="shortcut icon" href="/favicon.ico">
   
   <link rel="stylesheet" href="/css/style.css">
@@ -98,7 +107,7 @@
       
     </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/08/05/vueconponentscommunity/" data-id="cjr0djdqh00235h1b6sm3vlnh" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/08/05/vueconponentscommunity/" data-id="cjrbwj8jb0029f81b2fl0kpsk" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VUE/">VUE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/组件/">组件</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/通信/">通信</a></li></ul>
 
@@ -154,7 +163,7 @@
       
     </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/07/27/cssimagecentre/" data-id="cjr0djdpo00085h1b0m5ggihz" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/07/27/cssimagecentre/" data-id="cjrbwj8ie0007f81btcqhg4tr" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li></ul>
 
@@ -211,7 +220,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/07/07/vuelifecyle/" data-id="cjr0djdqk002a5h1b68pms4mt" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/07/07/vuelifecyle/" data-id="cjrbwj8ja0025f81bfephnxqk" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/生命周期/">生命周期</a></li></ul>
 
@@ -269,7 +278,7 @@
       
     </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/07/07/javascriptsingleton/" data-id="cjr0djdq0000y5h1b7q9apevp" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/07/07/javascriptsingleton/" data-id="cjrbwj8iu0013f81bcqiss1w5" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/singleton/">singleton</a></li></ul>
 
@@ -319,14 +328,27 @@
       
       
         <p><strong>在做javascript练习题或者面试的时候，总会遇到下面这样的题目：</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> <span class="built_in">console</span>.log(<span class="string">"1"</span>);</span><br><span class="line"></span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"2"</span>);</span><br><span class="line">  &#125;,<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"3"</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"4"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 控制台输出1 4 3 2</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript"> console.log(&quot;1&quot;);
+
+  setTimeout(()=&gt;{
+    console.log(&quot;2&quot;);
+  },0);
+
+  Promise.resolve().then(()=&gt;{
+    console.log(&quot;3&quot;);
+  });
+
+  console.log(&quot;4&quot;);
+
+  // 控制台输出1 4 3 2
+</code></pre>
         
           <a class="article-more-link" href="/2018/05/27/eventloop/">阅读更多...</a>
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/05/27/eventloop/" data-id="cjr0djdps000g5h1bjjjic6sh" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/05/27/eventloop/" data-id="cjrbwj8ii000df81blt5u5n8e" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/eventloop/">eventloop</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/事件循环/">事件循环</a></li></ul>
 

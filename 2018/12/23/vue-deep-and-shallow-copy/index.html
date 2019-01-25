@@ -13,6 +13,15 @@
     
     Wangx&#39;s blog</title>
   
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
     <link rel="shortcut icon" href="/favicon.ico">
   
   <link rel="stylesheet" href="/css/style.css">
@@ -57,7 +66,33 @@
       
       
       
-        <p>&emsp;&emsp;这周在完成一个功能之后，回过头去看自己的代码竟然发现自己有点看不懂了，也才完成一周不到的时间。看不懂的原因也很简单，父组件有一个对象数组，传递给其中一个子组件，然后会对组件中的对象修改，而修改的操作是这个子组件的兄弟组件去完成的，修改完成之后会将修改后的结果返回给父组件，然而子组件中的数据也相应的修改了，不明白其原因。想了一会儿才关联到可能是跟浅拷贝有关。<br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// 父组件</span><br><span class="line">&lt;template lang=&quot;html&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;parent&quot;&gt;</span><br><span class="line">        &lt;eldest-son :arr=&quot;arr&quot;&gt;&lt;/eldest-son&gt;</span><br><span class="line">        &lt;younger-son :arrItem=&quot;arrItem&quot; @data-changed=&quot;dataChanged&quot;&gt;&lt;/younger-son&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script lang=&quot;ts&quot;&gt;</span><br><span class="line">	public arr: Person[] = [</span><br><span class="line">        &#123;</span><br><span class="line">            name: &apos;bob&apos;,</span><br><span class="line">            age: 18,</span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            name: &apos;jack&apos;,</span><br><span class="line">            age: 14,</span><br><span class="line">        &#125;,</span><br><span class="line">    ];</span><br><span class="line">    public arrItem: Person = arr[0];</span><br><span class="line">    </span><br><span class="line">    public dataChanged(newPerson: Person): void &#123;</span><br><span class="line">		this.arrItem = newPerson;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+        <p>&emsp;&emsp;这周在完成一个功能之后，回过头去看自己的代码竟然发现自己有点看不懂了，也才完成一周不到的时间。看不懂的原因也很简单，父组件有一个对象数组，传递给其中一个子组件，然后会对组件中的对象修改，而修改的操作是这个子组件的兄弟组件去完成的，修改完成之后会将修改后的结果返回给父组件，然而子组件中的数据也相应的修改了，不明白其原因。想了一会儿才关联到可能是跟浅拷贝有关。<br><a id="more"></a></p>
+<pre><code class="vue">// 父组件
+&lt;template lang=&quot;html&quot;&gt;
+    &lt;div class=&quot;parent&quot;&gt;
+        &lt;eldest-son :arr=&quot;arr&quot;&gt;&lt;/eldest-son&gt;
+        &lt;younger-son :arrItem=&quot;arrItem&quot; @data-changed=&quot;dataChanged&quot;&gt;&lt;/younger-son&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+&lt;script lang=&quot;ts&quot;&gt;
+    public arr: Person[] = [
+        {
+            name: &#39;bob&#39;,
+            age: 18,
+        }, {
+            name: &#39;jack&#39;,
+            age: 14,
+        },
+    ];
+    public arrItem: Person = arr[0];
+
+    public dataChanged(newPerson: Person): void {
+        this.arrItem = newPerson;
+    }
+
+&lt;/script&gt;
+
+</code></pre>
 <p>&emsp;&emsp;问题差不多就是这样，更恰好的是当时的功能正好是这样的需求，就是要修改<code>eldest-son</code>中的数据。写完之后去看觉得通过数据渲染的框架，对待数据会严谨很多，第一时间并没有往浅拷贝上去想这个问题，看了一会儿之后发现是对数组进行操作的，才联想到浅拷贝。</p>
 <p>&emsp;&emsp;在JavaScript中，深、浅拷贝问题只针对复杂对象，array和object。关于深浅拷贝之前已经看过一些文章了，也是一个很简单的问题，就不再赘诉深浅拷贝的原理和实现了，有很多优秀的文章。而恰好我这里的需求就是要通过浅拷贝这种方式实现，不然在子组件中修改后的数据还要通过父组件中转一下。</p>
 <p>&emsp;&emsp;通过这个小问题，再次让我意识到注释的重要性，即使是自己一个人开发项目。有时候解决问题的想法可能是在一瞬间得到的灵感，写完之后虽然觉得实现的简单，如果不加上注释，后面再看代码的时候可能很难想到，就要花更多的时间去读。所以，还是得写一篇文章来警示下自己，有些东西对于自己再简单，尽可能的在实现功能后加上注释，方便别人也方便自己阅读。</p>
@@ -67,7 +102,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/12/23/vue-deep-and-shallow-copy/" data-id="cjr0djdqe001v5h1bzes52vh0" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/12/23/vue-deep-and-shallow-copy/" data-id="cjrbwj8j3001pf81bndp28ejg" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/踩坑/">踩坑</a></li></ul>
 

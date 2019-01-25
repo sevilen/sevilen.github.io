@@ -13,6 +13,15 @@
     
     Wangx&#39;s blog</title>
   
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
     <link rel="shortcut icon" href="/favicon.ico">
   
   <link rel="stylesheet" href="/css/style.css">
@@ -92,20 +101,79 @@
 </ol>
 </blockquote>
 <p>&emsp;&emsp;下面就提供几种居中的方法：</p>
-<h4 id="1-使用定位：position-absolute-设置left、top、margin-left、margin-top属性。"><a href="#1-使用定位：position-absolute-设置left、top、margin-left、margin-top属性。" class="headerlink" title="1.使用定位：position:absolute;设置left、top、margin-left、margin-top属性。"></a>1.使用定位：position:absolute;设置left、top、margin-left、margin-top属性。</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">margin-top</span>: -<span class="number">50px</span>;</span><br><span class="line">    <span class="attribute">margin-left</span>: -<span class="number">50px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="1-使用定位：position-absolute-设置left、top、margin-left、margin-top属性。"><a href="#1-使用定位：position-absolute-设置left、top、margin-left、margin-top属性。" class="headerlink" title="1.使用定位：position:absolute;设置left、top、margin-left、margin-top属性。"></a>1.使用定位：position:absolute;设置left、top、margin-left、margin-top属性。</h4><pre><code class="css">.content{
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+}
+</code></pre>
 <p>&emsp;&emsp;这种方法好处是浏览器基本都能兼容，不足的地方就是需要我们固定宽高。</p>
-<h4 id="2-使用position-absolute-设置top、bottom、right、left为0，margin-auto"><a href="#2-使用position-absolute-设置top、bottom、right、left为0，margin-auto" class="headerlink" title="2.使用position: absolute;设置top、bottom、right、left为0，margin:auto;"></a>2.使用position: absolute;设置top、bottom、right、left为0，margin:auto;</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">right</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">margin</span>: auto;</span><br><span class="line">    <span class="attribute">background-color</span>: blue;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="3-使用display-table-cell属性使内容垂直居中。"><a href="#3-使用display-table-cell属性使内容垂直居中。" class="headerlink" title="3.使用display:table-cell属性使内容垂直居中。"></a>3.使用display:table-cell属性使内容垂直居中。</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content</span> &#123;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">      <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">      <span class="attribute">display</span>: table-cell;</span><br><span class="line">      <span class="attribute">vertical-align</span>: middle;</span><br><span class="line">      <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="4-使用css3的display-webkit-box属性，在设置-webkit-box-pack-center-webkit-box-align-center"><a href="#4-使用css3的display-webkit-box属性，在设置-webkit-box-pack-center-webkit-box-align-center" class="headerlink" title="4.使用css3的display:-webkit-box属性，在设置-webkit-box-pack:center/-webkit-box-align:center;"></a>4.使用css3的display:-webkit-box属性，在设置-webkit-box-pack:center/-webkit-box-align:center;</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content</span> &#123;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">      <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">      <span class="attribute">display</span>: -webkit-box;</span><br><span class="line">      <span class="attribute">-webkit-box-pack</span>: center;</span><br><span class="line">      <span class="attribute">-webkit-box-align</span>: center;</span><br><span class="line">      <span class="attribute">background-color</span>: blue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="5-使用css3的新属性transform-translate-x-y-属性。"><a href="#5-使用css3的新属性transform-translate-x-y-属性。" class="headerlink" title="5.使用css3的新属性transform:translate(x,y)属性。"></a>5.使用css3的新属性transform:translate(x,y)属性。</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content</span> &#123;</span><br><span class="line">      <span class="attribute">position</span>: absolute;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">      <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">      <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">      <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">      <span class="attribute">transform</span>: <span class="built_in">translate</span>(-50%,-50%);</span><br><span class="line">      <span class="attribute">-webkit-transform</span>: <span class="built_in">translate</span>(-50%,-50%);</span><br><span class="line">      <span class="attribute">-moz-transform</span>:  <span class="built_in">translate</span>(-50%,-50%);</span><br><span class="line">      <span class="attribute">-ms-transform</span>: <span class="built_in">translate</span>(-50%,-50%);</span><br><span class="line">      <span class="attribute">background-color</span>: blue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<pre><code>这种方法不需要设置固定宽高，移动端使用较多，移动端css3兼容的额比较好。
-</code></pre><h4 id="6-flex弹性布局。"><a href="#6-flex弹性布局。" class="headerlink" title="6.flex弹性布局。"></a>6.flex弹性布局。</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">      <span class="attribute">display</span>: flex;</span><br><span class="line">      <span class="attribute">justify-content</span>: center; </span><br><span class="line">      <span class="attribute">align-items</span>: center;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">      <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">      <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.content</span> &#123;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">      <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">      <span class="attribute">background-color</span>: blue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-使用position-absolute-设置top、bottom、right、left为0，margin-auto"><a href="#2-使用position-absolute-设置top、bottom、right、left为0，margin-auto" class="headerlink" title="2.使用position: absolute;设置top、bottom、right、left为0，margin:auto;"></a>2.使用position: absolute;设置top、bottom、right、left为0，margin:auto;</h4><pre><code class="css">.content {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    background-color: blue;    
+}
+</code></pre>
+<h4 id="3-使用display-table-cell属性使内容垂直居中。"><a href="#3-使用display-table-cell属性使内容垂直居中。" class="headerlink" title="3.使用display:table-cell属性使内容垂直居中。"></a>3.使用display:table-cell属性使内容垂直居中。</h4><pre><code class="css">.content {
+      width: 100px;
+      height: 100px;
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+}
+</code></pre>
+<h4 id="4-使用css3的display-webkit-box属性，在设置-webkit-box-pack-center-webkit-box-align-center"><a href="#4-使用css3的display-webkit-box属性，在设置-webkit-box-pack-center-webkit-box-align-center" class="headerlink" title="4.使用css3的display:-webkit-box属性，在设置-webkit-box-pack:center/-webkit-box-align:center;"></a>4.使用css3的display:-webkit-box属性，在设置-webkit-box-pack:center/-webkit-box-align:center;</h4><pre><code class="css">.content {
+      width: 100px;
+      height: 100px;
+      display: -webkit-box;
+      -webkit-box-pack: center;
+      -webkit-box-align: center;
+      background-color: blue;
+}
+</code></pre>
+<h4 id="5-使用css3的新属性transform-translate-x-y-属性。"><a href="#5-使用css3的新属性transform-translate-x-y-属性。" class="headerlink" title="5.使用css3的新属性transform:translate(x,y)属性。"></a>5.使用css3的新属性transform:translate(x,y)属性。</h4><pre><code>.content {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      -webkit-transform: translate(-50%,-50%);
+      -moz-transform:  translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+      background-color: blue;
+}
+</code></pre><pre><code>这种方法不需要设置固定宽高，移动端使用较多，移动端css3兼容的额比较好。
+</code></pre><h4 id="6-flex弹性布局。"><a href="#6-flex弹性布局。" class="headerlink" title="6.flex弹性布局。"></a>6.flex弹性布局。</h4><pre><code class="css">.container {
+      display: flex;
+      justify-content: center; 
+      align-items: center;
+      width: 300px;
+      height: 300px;
+      background-color: red;
+}
+.content {
+      width: 100px;
+      height: 100px;
+      background-color: blue;
+}
+</code></pre>
 <p>&emsp;&emsp;兼容性不是太好，ie10以下都挂掉了，而且webkit内核的浏览器必须设置为display: -webkit-flex;</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/05/07/csscenter/" data-id="cjr0djdpl00065h1b4cwyvau0" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/05/07/csscenter/" data-id="cjrbwj8i90002f81byjo3wfys" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/居中/">居中</a></li></ul>
 

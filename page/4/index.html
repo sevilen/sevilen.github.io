@@ -12,6 +12,15 @@
     
     Wangx&#39;s blog</title>
   
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
     <link rel="shortcut icon" href="/favicon.ico">
   
   <link rel="stylesheet" href="/css/style.css">
@@ -103,7 +112,7 @@
       
     </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/09/28/unity-cache-server-cache-modules/" data-id="cjr0djdq7001f5h1bf4cie0u9" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/09/28/unity-cache-server-cache-modules/" data-id="cjrbwj8j1001jf81bulm4s3eg" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cacheserver/">cacheserver</a></li></ul>
 
@@ -161,7 +170,7 @@
       
     </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/09/26/unity-cache-server/" data-id="cjr0djdq9001l5h1bv51qy16h" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/09/26/unity-cache-server/" data-id="cjrbwj8j6001vf81bxn6kbtc9" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cacheserver/">cacheserver</a></li></ul>
 
@@ -218,7 +227,7 @@
       
     </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/09/24/the-proptotype-chain-and-inheritance/" data-id="cjr0djdq500195h1blyu6mnuh" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/09/24/the-proptotype-chain-and-inheritance/" data-id="cjrbwj8iw0018f81bz1btmqpw" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原型链/">原型链</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/继承/">继承</a></li></ul>
 
@@ -274,7 +283,7 @@
       
     </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/09/16/npmpackage/" data-id="cjr0djdq400185h1b496j2337" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/09/16/npmpackage/" data-id="cjrbwj8it0011f81brjl2kloq" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li></ul>
 
@@ -324,7 +333,16 @@
       
       
         <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>&emsp;&emsp;插槽是组件的一部分，当时做项目的时候使用到了插槽，并不是很懂，vue官网也没有说明的很清楚，只是说vue实现了一套内容分发的api，\<slot>元素承载分发内容的出口。也就是说插槽是用来分发内容的。那就举个栗子说明一下：</slot></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// app</span><br><span class="line"><span class="tag">&lt;<span class="name">component-a</span>&gt;</span></span><br><span class="line">   这是插槽内容</span><br><span class="line"><span class="tag">&lt;/<span class="name">component-a</span>&gt;</span></span><br><span class="line"></span><br><span class="line">// component-a html</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">	hello，word！</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="html">// app
+&lt;component-a&gt;
+   这是插槽内容
+&lt;/component-a&gt;
+
+// component-a html
+&lt;div&gt;
+    hello，word！
+&lt;/div&gt;
+</code></pre>
 <p>&emsp;&emsp;上面app中放了一个component-a组件，组件的内容是下面的，这样在浏览器中渲染出来的结果是什么呢？结果是只会渲染出组件中的内容。app中组件标签里的内容被抛弃了。我们在组件中加一下slot，会发现之前写在组件内的内容出来了，这就是插槽的作用，可以分发内容。意思就是如果不使用插槽，在组件标签内写的任何内容都是不会生效的。<br>
         
           <a class="article-more-link" href="/2018/09/09/vueslot/">阅读更多...</a>
@@ -332,7 +350,7 @@
       
     </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/09/09/vueslot/" data-id="cjr0djdqk002c5h1b77ecdqja" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/09/09/vueslot/" data-id="cjrbwj8jc002bf81bxiomuzx8" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/slot/">slot</a></li></ul>
 

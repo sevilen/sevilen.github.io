@@ -12,6 +12,15 @@
     
     Wangx&#39;s blog</title>
   
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
     <link rel="shortcut icon" href="/favicon.ico">
   
   <link rel="stylesheet" href="/css/style.css">
@@ -97,7 +106,7 @@
       
     </em></p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/12/01/dive-into-webpack-note/" data-id="cjr0djdpq000c5h1bhrhjebwo" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/12/01/dive-into-webpack-note/" data-id="cjrbwj8il000if81b9r0a63rh" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
 
@@ -154,7 +163,7 @@
       
     </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/11/25/front-end-modular/" data-id="cjr0djdpt000i5h1b1dtr9u1v" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/11/25/front-end-modular/" data-id="cjrbwj8ik000hf81becrggdof" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/模块化/">模块化</a></li></ul>
 
@@ -212,7 +221,7 @@
       
     </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/11/11/node-express-http-server/" data-id="cjr0djdq300135h1b4xp5vd6i" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/11/11/node-express-http-server/" data-id="cjrbwj8iv0017f81b3m6wj001" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/express/">express</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/http-server/">http_server</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
 
@@ -261,7 +270,24 @@
       
       
       
-        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── app.js               # 入口文件</span><br><span class="line">├── bin					 # 可执行文件</span><br><span class="line">│   └── www</span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json         # 项目信息及模块依赖</span><br><span class="line">├── public				 # 存放image、css、js等静态资源</span><br><span class="line">│   ├── images</span><br><span class="line">│   ├── javascripts</span><br><span class="line">│   └── stylesheets</span><br><span class="line">│       └── style.css</span><br><span class="line">├── routes				 # 路由文件</span><br><span class="line">│   ├── index.js</span><br><span class="line">│   └── users.js</span><br><span class="line">└── views				 # 视图/模版文件</span><br><span class="line">    ├── error.ejs</span><br><span class="line">    └── index.ejs</span><br></pre></td></tr></table></figure>
+        <pre><code class="shell">.
+├── app.js               # 入口文件
+├── bin                     # 可执行文件
+│   └── www
+├── package-lock.json
+├── package.json         # 项目信息及模块依赖
+├── public                 # 存放image、css、js等静态资源
+│   ├── images
+│   ├── javascripts
+│   └── stylesheets
+│       └── style.css
+├── routes                 # 路由文件
+│   ├── index.js
+│   └── users.js
+└── views                 # 视图/模版文件
+    ├── error.ejs
+    └── index.ejs
+</code></pre>
 <p>&emsp;&emsp;上面这种树形项目结构图在前端项目介绍中非常常见，之前都以为是通过生成器生成或是手敲的，今天才发现linux下使用tree命令就可以直接生成上面的项目结构图。mark一下。<br>
         
           <a class="article-more-link" href="/2018/11/11/generate-project-structure-diagram/">阅读更多...</a>
@@ -269,7 +295,7 @@
       
     </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/11/11/generate-project-structure-diagram/" data-id="cjr0djdpx000p5h1bgyh6k597" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/11/11/generate-project-structure-diagram/" data-id="cjrbwj8in000mf81b82gg62wg" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tree/">tree</a></li></ul>
 
@@ -327,7 +353,7 @@
       
     </p></div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/11/04/typescript-generics/" data-id="cjr0djdq8001j5h1bssgi4wi8" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/11/04/typescript-generics/" data-id="cjrbwj8iy001cf81bsggtaf8c" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Generics/">Generics</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TypeScript/">TypeScript</a></li></ul>
 

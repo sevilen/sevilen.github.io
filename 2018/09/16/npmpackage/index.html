@@ -13,6 +13,15 @@
     
     Wangx&#39;s blog</title>
   
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
     <link rel="shortcut icon" href="/favicon.ico">
   
   <link rel="stylesheet" href="/css/style.css">
@@ -62,31 +71,53 @@
 <p>&emsp;&emsp;2.安装nodejs</p>
 <p>&emsp;&emsp;3.安装git</p>
 <p>&emsp;&emsp;安装过程就不贴了，都很简单，安装教程也很多。</p>
-<h2 id="创建npm包"><a href="#创建npm包" class="headerlink" title="创建npm包"></a>创建npm包</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── bin           <span class="comment">//命令配置</span></span><br><span class="line">├── README<span class="selector-class">.md</span>     <span class="comment">//说明文档</span></span><br><span class="line">├── index<span class="selector-class">.js</span>      <span class="comment">//主入口</span></span><br><span class="line">├── src           <span class="comment">//功能文件</span></span><br><span class="line">├── package<span class="selector-class">.json</span>  <span class="comment">//包信息</span></span><br><span class="line">└── test          <span class="comment">//测试用例</span></span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;大致的目录结构如上，我们在src下新建一个resize.js，然后写上代码：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Resize = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> sizeName = [<span class="string">'B'</span>, <span class="string">'K'</span>, <span class="string">'M'</span>, <span class="string">'G'</span>, <span class="string">'T'</span>];</span><br><span class="line">    <span class="keyword">if</span> (bytes) &#123;</span><br><span class="line">        <span class="keyword">const</span> e = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.log(bytes) / <span class="built_in">Math</span>.log(<span class="number">1024</span>));</span><br><span class="line">        <span class="keyword">return</span> (bytes / <span class="built_in">Math</span>.pow(<span class="number">1024</span>, <span class="built_in">Math</span>.floor(e))).toFixed(<span class="number">2</span>) + <span class="string">' '</span> + sizeName[e];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Resize;</span><br></pre></td></tr></table></figure>
+<h2 id="创建npm包"><a href="#创建npm包" class="headerlink" title="创建npm包"></a>创建npm包</h2><pre><code>.
+├── bin           //命令配置
+├── README.md     //说明文档
+├── index.js      //主入口
+├── src           //功能文件
+├── package.json  //包信息
+└── test          //测试用例
+</code></pre><p>&emsp;&emsp;大致的目录结构如上，我们在src下新建一个resize.js，然后写上代码：</p>
+<pre><code class="javascript">const Resize = function() {
+    const sizeName = [&#39;B&#39;, &#39;K&#39;, &#39;M&#39;, &#39;G&#39;, &#39;T&#39;];
+    if (bytes) {
+        const e = Math.floor(Math.log(bytes) / Math.log(1024));
+        return (bytes / Math.pow(1024, Math.floor(e))).toFixed(2) + &#39; &#39; + sizeName[e];
+    } else {
+        return &#39;&#39;;
+    }
+}
+
+export default Resize;
+</code></pre>
 <p>&emsp;&emsp;然后再在index.js中引用它</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> reSize = <span class="built_in">require</span>(<span class="string">'./src/resize.js'</span>);</span><br><span class="line">reSize(<span class="number">18995</span>);</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">let reSize = require(&#39;./src/resize.js&#39;);
+reSize(18995);
+</code></pre>
 <p>&emsp;&emsp;然后cd到该文件目录下，使用npm init 创建一个package.json。</p>
 <p><img src="https://i.loli.net/2018/09/17/5b9eed3b8bdf1.png" alt="package.json"></p>
 <h2 id="发布npm包"><a href="#发布npm包" class="headerlink" title="发布npm包"></a>发布npm包</h2><p>&emsp;&emsp;用已经注册好的npm账号添加该项目</p>
-<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">npm</span> adduser</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;根据提示输入账号密码邮箱即可，然后发布。</p>
-<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">npm</span> publish</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;使用该命令发布该npm包，发布完成后，进入npm个人中心就可以看到自己发布的npm包了。发布时出错可能是注册完npm账号未验证，如果遇到该问题，验证下邮箱重新发布即可。</p>
+<pre><code>npm adduser
+</code></pre><p>&emsp;&emsp;根据提示输入账号密码邮箱即可，然后发布。</p>
+<pre><code>npm publish
+</code></pre><p>&emsp;&emsp;使用该命令发布该npm包，发布完成后，进入npm个人中心就可以看到自己发布的npm包了。发布时出错可能是注册完npm账号未验证，如果遇到该问题，验证下邮箱重新发布即可。</p>
 <p><img src="https://i.loli.net/2018/09/17/5b9eed3b99f63.png" alt="publish"></p>
 <p><img src="https://i.loli.net/2018/09/17/5b9eed3b9fc5b.png" alt="npm"></p>
 <h2 id="获取npm包"><a href="#获取npm包" class="headerlink" title="获取npm包"></a>获取npm包</h2><p>&emsp;&emsp;下面的就很熟悉了，在创建好的目录下，使用npm install <package-name>即可，我们获取一下刚刚创建好的包。</package-name></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="keyword">install</span> <span class="keyword">file</span>-<span class="keyword">resize</span></span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;测试一下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> reSize <span class="keyword">from</span> <span class="string">'file-resize'</span>;</span><br><span class="line"></span><br><span class="line">reSize(<span class="number">188567</span>); <span class="comment">// 184.14 K</span></span><br></pre></td></tr></table></figure>
+<pre><code>npm install file-resize
+</code></pre><p>&emsp;&emsp;测试一下：</p>
+<pre><code class="javascript">import reSize from &#39;file-resize&#39;;
+
+reSize(188567); // 184.14 K
+</code></pre>
 <h2 id="更新npm包"><a href="#更新npm包" class="headerlink" title="更新npm包"></a>更新npm包</h2><p>&emsp;&emsp;更新和发布一样，都是使用npm publish，但更新必须修改version，否则会报错。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>&emsp;&emsp;学习了一下npm包的创建发布与更新，可以在以后写一些属于自己的npm包。只是简单的学习了一下，并没有系统的去做npm包的开发，npm包开发还包含单元测试等等。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/09/16/npmpackage/" data-id="cjr0djdq400185h1b496j2337" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/09/16/npmpackage/" data-id="cjrbwj8it0011f81brjl2kloq" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li></ul>
 

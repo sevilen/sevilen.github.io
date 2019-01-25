@@ -13,6 +13,15 @@
     
     Wangx&#39;s blog</title>
   
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
     <link rel="shortcut icon" href="/favicon.ico">
   
   <link rel="stylesheet" href="/css/style.css">
@@ -65,7 +74,8 @@
 </blockquote>
 <p>&emsp;&emsp;如果试图引用对象(instance)的某个属性，首先会在对象内部有没有这个属性，找不到时才会在该对象的原型(prototype)里去寻找这个属性。</p>
 <p>&emsp;&emsp;让一个实例的原型对象指向另一个类型的实例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">thisConstructor.prototype = otherInstance</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">    thisConstructor.prototype = otherInstance
+</code></pre>
 <p>&emsp;&emsp;我们如果要引用thisConstructor构造的实例thisInstance的属性name，</p>
 <blockquote>
 <ol>
@@ -80,7 +90,20 @@
 </ol>
 </blockquote>
 <p>&emsp;&emsp;这样一个查找的过程，就像链条一样，就称作原型链，prototype充当着链接的作用。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一个简单的例子</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Animal</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="keyword">this</span>.name = <span class="string">'animal'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Tiger</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="keyword">this</span>.age = <span class="string">'tiger'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Tiger.prototype = <span class="keyword">new</span> Animal();</span><br><span class="line"><span class="keyword">const</span> instance = <span class="keyword">new</span> Tiger();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(instance.name);<span class="comment">// animal</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">// 一个简单的例子
+function Animal() {
+   this.name = &#39;animal&#39;;
+}
+
+function Tiger() {
+   this.age = &#39;tiger&#39;;
+}
+
+Tiger.prototype = new Animal();
+const instance = new Tiger();
+
+console.log(instance.name);// animal
+</code></pre>
 <p>&emsp;&emsp;了解了原型链，上面的的结果就很明显了，Tiger没有name属性，向上查找到Animal具有name属性，输出。</p>
 <p>&emsp;&emsp;如何判断原型和实例的继承呢？一般使用instanceof或isPrototypeOf：</p>
 <blockquote>
@@ -113,36 +136,115 @@
 <p>&emsp;&emsp;针对原型链的不足，也有解决方案。</p>
 <p><strong>经典继承</strong></p>
 <p>&emsp;&emsp;为解决原型链中的这两个问题，开始我们使用一种<strong>借用构造函数</strong>(constructor stealing)的技术。其基本思想是在子类型的构造函数内部调用父类的构造函数。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Father</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.childrens = [<span class="string">'tom'</span>, <span class="string">'bob'</span>, <span class="string">'jack'</span>,<span class="string">'lucy'</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Son</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 继承了Father，且向父类传递参数</span></span><br><span class="line">    Father.call(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> instance = <span class="keyword">new</span> Son();</span><br><span class="line">instance.childrens.push(<span class="string">'reeves'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(instance.childrens); <span class="comment">// ['tom', 'bob', 'jack','lucy', 'reeves']</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> otherInstance = <span class="keyword">new</span> Son();</span><br><span class="line"><span class="built_in">console</span>.log(otherInstance.childrens); </span><br><span class="line"><span class="comment">// ['tom', 'bob', 'jack','lucy']; 证明引用类型值是独立的</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">function Father() {
+    this.childrens = [&#39;tom&#39;, &#39;bob&#39;, &#39;jack&#39;,&#39;lucy&#39;];
+}
+function Son() {
+    // 继承了Father，且向父类传递参数
+    Father.call(this);
+}
+const instance = new Son();
+instance.childrens.push(&#39;reeves&#39;);
+console.log(instance.childrens); // [&#39;tom&#39;, &#39;bob&#39;, &#39;jack&#39;,&#39;lucy&#39;, &#39;reeves&#39;]
+
+const otherInstance = new Son();
+console.log(otherInstance.childrens); 
+// [&#39;tom&#39;, &#39;bob&#39;, &#39;jack&#39;,&#39;lucy&#39;]; 证明引用类型值是独立的
+</code></pre>
 <p>&emsp;&emsp;这种方式保证原型链中引用类型值独立，同时子类型创建时可以向父类型传递参数。但是如果仅用借用构造函数，将会存在方法都在构造函数中定义，函数服用也就不能使用了。而且父类(Father)中定义的方法对子类(Son)而言也是不可见的。所以很少会单独使用这种技术。</p>
 <p><strong>组合继承</strong></p>
 <p>&emsp;&emsp;也叫做伪经典继承，意思是将原型链和借用构造函数的技术组合。其思路是使用原型链实现对原型属性和方法的继承，通过借用构造函数来实现对实例属性的继承。这样既通过在原型上定义方法实现函数服用，又能保证每个实例都又自己的属性。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Father</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.childrens = [<span class="string">"tom"</span>,<span class="string">"bob"</span>,<span class="string">"jack"</span>,<span class="string">"lucy"</span>];</span><br><span class="line">&#125;</span><br><span class="line">Father.prototype.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Son</span>(<span class="params">name, age</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//继承实例属性，第一次调用Father()</span></span><br><span class="line">    Father.call(<span class="keyword">this</span>, name);</span><br><span class="line">    <span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//继承父类方法,第二次调用Father()</span></span><br><span class="line">Son.prototype = <span class="keyword">new</span> Father();</span><br><span class="line">Son.prototype.sayAge = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.age);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> instance1 = <span class="keyword">new</span> Son(<span class="string">"reeves"</span>, <span class="number">18</span>);</span><br><span class="line">instance1.childrens.push(<span class="string">"reeves"</span>);</span><br><span class="line"><span class="built_in">console</span>.log(instance1.childrens); <span class="comment">// "tom,bob,jack,black,reeves"</span></span><br><span class="line">instance1.sayName(); <span class="comment">// reeves</span></span><br><span class="line">instance1.sayAge(); <span class="comment">// 18</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> instance1 = <span class="keyword">new</span> Son(<span class="string">"alex"</span>,<span class="number">19</span>);</span><br><span class="line"><span class="built_in">console</span>.log(instance1.childrens); <span class="comment">// "tom,bob,jack,lucy"</span></span><br><span class="line">instance1.sayName(); <span class="comment">// alex</span></span><br><span class="line">instance1.sayAge(); <span class="comment">// 19</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">function Father(name){
+    this.name = name;
+    this.childrens = [&quot;tom&quot;,&quot;bob&quot;,&quot;jack&quot;,&quot;lucy&quot;];
+}
+Father.prototype.sayName = function(){
+    console.log(this.name);
+}
+function Son(name, age){
+    //继承实例属性，第一次调用Father()
+    Father.call(this, name);
+    this.age = age;
+}
+//继承父类方法,第二次调用Father()
+Son.prototype = new Father();
+Son.prototype.sayAge = function(){
+    console.log(this.age);
+}
+var instance1 = new Son(&quot;reeves&quot;, 18);
+instance1.childrens.push(&quot;reeves&quot;);
+console.log(instance1.childrens); // &quot;tom,bob,jack,black,reeves&quot;
+instance1.sayName(); // reeves
+instance1.sayAge(); // 18
+
+var instance1 = new Son(&quot;alex&quot;,19);
+console.log(instance1.childrens); // &quot;tom,bob,jack,lucy&quot;
+instance1.sayName(); // alex
+instance1.sayAge(); // 19
+</code></pre>
 <p>&emsp;&emsp;组合继承避免了原型链和经典继承的缺陷，组合了二者的有点，是js中最常用的继承模式，它支持instanceof和isPropertyOf()识别实例是否为组合继承创建的对象。另外，组合继承实际上调用了两次父类构造函数，造成了不必要的消耗。</p>
 <p><strong>原型继承</strong></p>
 <p>&emsp;&emsp;这个方法是由著名的大师Douglas Crockford与2006年提出的，他的想法是借助原型可以基于已有的对象创建新对象，同时不必因此创建自定义类型。其思路是在object()函数内部，先用一个临时的构造函数，再将传入的对象作为这个构造函数的原型，最后返回了这个临时的新实例。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">object</span>(<span class="params">o</span>)</span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">	F.prototype = o;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> F();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">function object(o){
+    function F(){}
+    F.prototype = o;
+    return new F();
+}
+</code></pre>
 <p>&emsp;&emsp;实际上来说，object()对传入的对象进行了一次浅拷贝。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">	friends : [<span class="string">"Van"</span>,<span class="string">"Louis"</span>,<span class="string">"Nick"</span>]</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> anotherPerson = object(person);</span><br><span class="line">anotherPerson.friends.push(<span class="string">"Rob"</span>);</span><br><span class="line"><span class="keyword">var</span> yetAnotherPerson = object(person);</span><br><span class="line">yetAnotherPerson.friends.push(<span class="string">"Style"</span>);</span><br><span class="line"><span class="built_in">console</span>.log(person.friends);<span class="comment">//"Van,Louis,Nick,Rob,Style"</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">var person = {
+    friends : [&quot;Van&quot;,&quot;Louis&quot;,&quot;Nick&quot;]
+};
+var anotherPerson = object(person);
+anotherPerson.friends.push(&quot;Rob&quot;);
+var yetAnotherPerson = object(person);
+yetAnotherPerson.friends.push(&quot;Style&quot;);
+console.log(person.friends);//&quot;Van,Louis,Nick,Rob,Style&quot;
+</code></pre>
 <p>&emsp;&emsp;可以作为另一个对象基础的是person对象，于是我们把它传入到object()函数中，然后该函数就会返回一个新对象。这个新对象将person作为原型，因此它的原型中就包含引用类型值属性。 这意味着person。friends不仅属于person所有，而且也会被anotherPerson以及yetAnotherPerson共享。</p>
 <p>&emsp;&emsp;ES5中，新增了Object.create()方法规范了原型继承。Object.create()接受两个参数：</p>
 <ul>
 <li>一个用作新对象原型的对象</li>
 <li>(可选)一个为新对象定义额外属性的对象</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">	friends : [<span class="string">"Van"</span>,<span class="string">"Louis"</span>,<span class="string">"Nick"</span>]</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> anotherPerson = <span class="built_in">Object</span>.create(person);</span><br><span class="line">anotherPerson.friends.push(<span class="string">"Rob"</span>);</span><br><span class="line"><span class="keyword">var</span> yetAnotherPerson = <span class="built_in">Object</span>.create(person);</span><br><span class="line">yetAnotherPerson.friends.push(<span class="string">"Style"</span>);</span><br><span class="line"><span class="built_in">console</span>.log(person.friends);<span class="comment">//"Van,Louis,Nick,Rob,Style"</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">var person = {
+    friends : [&quot;Van&quot;,&quot;Louis&quot;,&quot;Nick&quot;]
+};
+var anotherPerson = Object.create(person);
+anotherPerson.friends.push(&quot;Rob&quot;);
+var yetAnotherPerson = Object.create(person);
+yetAnotherPerson.friends.push(&quot;Style&quot;);
+console.log(person.friends);//&quot;Van,Louis,Nick,Rob,Style&quot;
+</code></pre>
 <p>&emsp;&emsp;<strong>object.create()</strong> 只有一个参数时功能与上述object方法相同，它的第二个参数与Object.defineProperties()方法的第二个参数格式相同：每个属性都是通过自己的描述符定义的.以这种方式指定的任何属性都会覆盖原型对象上的同名属性。例如：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">	name : <span class="string">"Van"</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> anotherPerson = <span class="built_in">Object</span>.create(person, &#123;</span><br><span class="line">	name : &#123;</span><br><span class="line">		value : <span class="string">"Louis"</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(anotherPerson.name);<span class="comment">//"Louis"</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">var person = {
+    name : &quot;Van&quot;
+};
+var anotherPerson = Object.create(person, {
+    name : {
+        value : &quot;Louis&quot;
+    }
+});
+console.log(anotherPerson.name);//&quot;Louis&quot;
+</code></pre>
 <p>&emsp;&emsp;支持Object.create()的浏览器IE9+, Firefox 4+, Safari 5+, Opera 12+ 和 Chrome。需要注意的是，<strong>原型式继承中，包含引用类型值的属性始终都会共享相应的值，就像使用原型模式一样。</strong></p>
 <h2 id="寄生继承"><a href="#寄生继承" class="headerlink" title="寄生继承"></a>寄生继承</h2><blockquote>
 <p>寄生继承思路和构造函数、工厂模式类似，创建一个仅用来封装继承过程的函数，该函数在内部以某种方式来增强对象，最后再像真的是它做了所有工作一样返回对象。</p>
 </blockquote>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createAnother</span><span class="params">(oriObject)</span></span>&#123;</span><br><span class="line">	<span class="comment">// 通过调用object函数创建一个新对象</span></span><br><span class="line">	<span class="keyword">var</span> another = object(oriObject);</span><br><span class="line">	<span class="comment">// 通过某种方式增强对象</span></span><br><span class="line">	another.sayHi = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span><br><span class="line">		alert(<span class="string">"hi"</span>);</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="keyword">return</span> another;<span class="comment">//返回这个对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<pre><code>function createAnother(oriObject){
+    // 通过调用object函数创建一个新对象
+    var another = object(oriObject);
+    // 通过某种方式增强对象
+    another.sayHi = function(){
+        alert(&quot;hi&quot;);
+    };
+    return another;//返回这个对象
+}
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/09/24/the-proptotype-chain-and-inheritance/" data-id="cjr0djdq500195h1blyu6mnuh" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/09/24/the-proptotype-chain-and-inheritance/" data-id="cjrbwj8iw0018f81bz1btmqpw" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原型链/">原型链</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/继承/">继承</a></li></ul>
 

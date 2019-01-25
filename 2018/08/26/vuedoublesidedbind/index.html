@@ -13,6 +13,15 @@
     
     Wangx&#39;s blog</title>
   
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
     <link rel="shortcut icon" href="/favicon.ico">
   
   <link rel="stylesheet" href="/css/style.css">
@@ -65,14 +74,38 @@
 <p>&emsp;&emsp;<em>数据描述符是一个拥有一个可写或不可写值的属性</em></p>
 <p>&emsp;&emsp;<em>存取描述符是由一对getter-setter函数功能来描述的属性</em></p>
 <p>&emsp;&emsp;描述符只能是以上两种之一，不可能同时拥有这两种。描述符属性包括：configurable(可配置性，这又为true时才能设置)、Writable(是否可写)、Enumerable(是否可枚举)、get(给属性提供getter)、setter(给属性提供setter)。看下这个例子：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = &#123; <span class="attr">name</span>: <span class="string">'vue'</span> &#125;;</span><br><span class="line"><span class="comment">// 数据描述符</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(obj,<span class="string">"age"</span>, &#123;</span><br><span class="line">    value: <span class="number">11</span>,</span><br><span class="line">    writable: <span class="literal">true</span>,</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    configurable: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 数据存取符</span></span><br><span class="line"><span class="keyword">let</span> objValue = &#123; <span class="attr">name</span>: <span class="string">'data'</span> &#125;;</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(objValue, <span class="string">"age"</span>, &#123;</span><br><span class="line">    get: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'getter'</span>);</span><br><span class="line">        <span class="keyword">return</span> objValue;</span><br><span class="line">    &#125;,</span><br><span class="line">    set: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'setter'</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    configurable: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br><span class="line">objValue.age = <span class="number">18</span>; <span class="comment">// setter</span></span><br><span class="line"><span class="built_in">console</span>.log(objValue.age); <span class="comment">// getter</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript"> let obj = { name: &#39;vue&#39; };
+ // 数据描述符
+ Object.defineProperty(obj,&quot;age&quot;, {
+     value: 11,
+     writable: true,
+     enumerable: true,
+     configurable: true
+ });
+
+ // 数据存取符
+ let objValue = { name: &#39;data&#39; };
+ Object.defineProperty(objValue, &quot;age&quot;, {
+     get: () =&gt; {
+         console.log(&#39;getter&#39;);
+         return objValue;
+     },
+     set: () =&gt; {
+         console.log(&#39;setter&#39;);
+     },
+     enumerable: true,
+     configurable: true
+ });
+ objValue.age = 18; // setter
+ console.log(objValue.age); // getter
+</code></pre>
 <p>&emsp;&emsp;前面已经提到了，数据描述符和存取描述符二者只能有一，虽然上诉几种属性二者均有，但是实际上writable不能和get、set同时存在。这就是Object.defineProperty方法的用法。</p>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>&emsp;&emsp;Vue通过Object.defineProperty()方法实现对数据的劫持，给每个实例数据添加了getter、setter，仅仅是这样还不能够实现数据的双向绑定。要实现双向绑定还需要对属性的get、set进行监听，还需要实现notify。也就是需要实现订阅器存放订阅者watcher，它可以将view和model数据联系起来，数据变化触发update更新视图。这就是数据双向绑定的大概思路。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.wangx.me/2018/08/26/vuedoublesidedbind/" data-id="cjr0djdqi00255h1b8qefwmf5" class="article-share-link">分享</a>
+      <a data-url="http://blog.wangx.me/2018/08/26/vuedoublesidedbind/" data-id="cjrbwj8j8001yf81bd6ej1676" class="article-share-link">分享</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/双向绑定/">双向绑定</a></li></ul>
 
