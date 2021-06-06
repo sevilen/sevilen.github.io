@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="web developer.">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    深入浅出webpack读后感 |
+    
+    Wangx&#39;s blog</title>
+  
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-dive-into-webpack-note" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      深入浅出webpack读后感
+    </h1>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/12/01/dive-into-webpack-note/" class="article-date">
+  <time datetime="2018-12-01T12:22:38.000Z" itemprop="datePublished">2018-12-01</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/webpack/">webpack</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <p>&emsp;&emsp;《深入浅出webpack》这本书是我在5.6月份的时候买的，现在想来真是太傻<em>了。这么说吧看了下这本书的印刷版次是2018年1月，作者在序中写到写书的时候是v3.8.1，书印刷出版之后，2月份v4.0就正式发布了。自从有了这次教训我发誓再也不会买这类工具书了，或者说前端相关的书也少买了，因为更新速度实在太快了，不过像《JavaScript语言精粹》、《CSS揭秘》这些书还是蛮推荐购买支持一下的，至少读起来不会过时。<br><a id="more"></a><br>&emsp;&emsp;《深入浅出webpack》这本书是我在5.6月份的时候买的，现在想来真是太傻</em>了。这么说吧看了下这本书的印刷版次是2018年1月，作者在序中写到写书的时候是v3.8.1，书印刷出版之后，2月份v4.0就正式发布了。自从有了这次教训我发誓再也不会买这类工具书了，或者说前端相关的书也少买了，因为更新速度实在太快了，不过像《JavaScript语言精粹》、《CSS揭秘》这些书还是蛮推荐购买支持一下的，至少读起来不会过时。</p>
+<p>&emsp;&emsp;先回到书中，这本书作为入门webpack翻阅一下还是有一定的好处，毕竟作者将其踩过的坑告诉了你，让你避免踩同样的坑。第一章入门就大概讲了一下前端的发展和使用的技术，然后简单的提了webpack的核心loader、plugin，做了一个简单的入门的教程。第二章花了很大的篇幅介绍了webpack的entry、output、loader、plugin等具体配置，最后给出了一个总结性的配置。第三章实战就给出了一些实际的应用比如使用ES6、TypeScript、Vue框架、加载图片以及SourceMap等。在第四章优化给出了一些优化的相关内容，第五章最后给出了一些原理，如编写loader、plugin等。</p>
+<p>&emsp;&emsp;最后来总结下这本书，整体的结构设计还可以，但第二章介绍了大量的配置我觉得不太合理，东西太多了，说不定看着看着就放弃了。然后还介绍了如何应用，还介绍了如何编写loader和plugin，我觉得都是比较实在的，符合工具书的实用性。</p>
+<p>&emsp;&emsp;然后再来吐槽一下，首先作者后来把书开源了，但是第一章过后，一翻页就会弹出modal无法翻页页没法关闭，上面写着大大的几个字请购买本书纸质版，我觉得这样的方式和开源思想是有悖的。另外就是书的定价79，一本工具书是否太贵了些，就一《javascript设计模式与实践》这本书来说，写的还可以，评价也很高，书还厚的多，纸张质量也好一些，都能良心的定价59，一本工具书怎么能卖这个价的，还好我买的时候京东有优惠。另外书中那些使用实例我觉得还是以博客的方式呈现要好的多。</p>
+<p>&emsp;&emsp;对于我来说确实让我对webpack的了解更多了一些，不会像刚开始上手vue cli的时候那么手足无措了，很多东西都不知道怎么弄。另外书中还有几处是因为webpack版本的问题的错误，导致运行处问题，希望其他的读者发现配置跑着有问题,检查一两次配置之后，去搜搜是不是相关用法的版本问题可能会少走弯路。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.wangx.me/2018/12/01/dive-into-webpack-note/" data-id="ckplal415000ivd2gy3jfwwyu" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+    
+  <nav class="article-nav">
+    
+      <a href="/2018/12/08/vue-dynamic-components/" class="article-nav-link">
+        <strong class="article-nav-caption">前一页</strong>
+        <div class="article-nav-title">
+          
+            Vue动态组件
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2018/11/25/front-end-modular/" class="article-nav-link">
+        <strong class="article-nav-caption">后一页</strong>
+        <div class="article-nav-title">前端模块化</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+    
+  <div class="gitalk" id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'd79784dfde36edbc8fcc',
+        clientSecret: '91687571ef07659960c1b0a6c55bf1c882ceebdc',
+        repo: 'blog-comment',
+        owner: 'sevilen',
+        admin: ['sevilen'],
+        // id: location.pathname,      // Ensure uniqueness and length less than 50
+        id: md5(location.pathname),
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+    gitalk.render('gitalk-container')
+  </script>
+
+  
+
+</article>
+
+
+
+</section>
+  <footer class="footer">
+  
+  <div class="outer">
+    <ul class="list-inline">
+      <li>&copy; 2021 Wangx&#39;s blog</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Github  <a href="https://github.com/sevilen">sevilen</a></li>
+      <!--
+      <li><a href="/">wangx</a></li>
+      -->
+    </ul>
+  </div>
+</footer>
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/logo.png" alt="Wangx&#39;s blog"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">归档</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">相册</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/search.js"></script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="web developer.">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    【转载】深入理解JavaScript事件循环(Eventloop)和microtask |
+    
+    Wangx&#39;s blog</title>
+  
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-eventloop" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【转载】深入理解JavaScript事件循环(Eventloop)和microtask
+    </h1>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/05/27/eventloop/" class="article-date">
+  <time datetime="2018-05-27T06:10:37.000Z" itemprop="datePublished">2018-05-27</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <p><strong>在做javascript练习题或者面试的时候，总会遇到下面这样的题目：</strong></p>
+<pre><code class="javascript"> console.log(&quot;1&quot;);
+
+  setTimeout(()=&gt;{
+    console.log(&quot;2&quot;);
+  },0);
+
+  Promise.resolve().then(()=&gt;{
+    console.log(&quot;3&quot;);
+  });
+
+  console.log(&quot;4&quot;);
+
+  // 控制台输出1 4 3 2
+</code></pre>
+<a id="more"></a>
+<p>&emsp;&emsp;想知道为什么是这样的结果，就必须理解javascript的eventloop机制，推荐这位博主DongXu的两篇文章，这里就不转载全文了，推荐大家去他的博客看，还有生动的demo，很容易懂。</p>
+<blockquote>
+<p><a href="http://www.cnblogs.com/dong-xu/p/7000163.html" target="_blank" rel="noopener">深入理解 JavaScript 事件循环（一）— event loop</a> </p>
+<p><a href="http://www.cnblogs.com/dong-xu/p/7000139.html" target="_blank" rel="noopener">[译]深入理解 JavaScript 事件循环（二）— task and microtask</a></p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.wangx.me/2018/05/27/eventloop/" data-id="ckplal417000mvd2g05ojl5q8" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/eventloop/">eventloop</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/事件循环/">事件循环</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+    
+  <nav class="article-nav">
+    
+      <a href="/2018/07/07/javascriptsingleton/" class="article-nav-link">
+        <strong class="article-nav-caption">前一页</strong>
+        <div class="article-nav-title">
+          
+            JavaScript-单例模式
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2018/05/10/htmlyuyihua/" class="article-nav-link">
+        <strong class="article-nav-caption">后一页</strong>
+        <div class="article-nav-title">HTML语义化&amp;HTML5</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+    
+  <div class="gitalk" id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'd79784dfde36edbc8fcc',
+        clientSecret: '91687571ef07659960c1b0a6c55bf1c882ceebdc',
+        repo: 'blog-comment',
+        owner: 'sevilen',
+        admin: ['sevilen'],
+        // id: location.pathname,      // Ensure uniqueness and length less than 50
+        id: md5(location.pathname),
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+    gitalk.render('gitalk-container')
+  </script>
+
+  
+
+</article>
+
+
+
+</section>
+  <footer class="footer">
+  
+  <div class="outer">
+    <ul class="list-inline">
+      <li>&copy; 2021 Wangx&#39;s blog</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Github  <a href="https://github.com/sevilen">sevilen</a></li>
+      <!--
+      <li><a href="/">wangx</a></li>
+      -->
+    </ul>
+  </div>
+</footer>
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/logo.png" alt="Wangx&#39;s blog"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">归档</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">相册</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/search.js"></script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>

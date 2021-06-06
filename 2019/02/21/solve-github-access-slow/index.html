@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="web developer.">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    解决github访问慢 |
+    
+    Wangx&#39;s blog</title>
+  
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-solve-github-access-slow" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      解决github访问慢
+    </h1>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2019/02/21/solve-github-access-slow/" class="article-date">
+  <time datetime="2019-02-21T08:45:15.000Z" itemprop="datePublished">2019-02-21</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/网络/">网络</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <p>&emsp;&emsp;github在日常开发中会经常使用到，但其服务器部署在国外，我们访问会有较大的延迟（曾经还被墙），有时候即使用代理访问速度同样较慢，严重时甚至无法拉代码。我们可以通过修改<code>host</code>的方式一定程度上的解决该问题。<br><a id="more"></a></p>
+<p>&emsp;&emsp;首先尝试<code>ping</code>以下<code>github.com</code>，如果你的延迟在300ms左右是较为正常的。但大部分人可能会存在<code>ping</code>不通的情况。</p>
+<pre><code class="shell">$ ping github.com
+PING github.com (13.250.177.223): 56 data bytes
+Request timeout for icmp_seq 0
+Request timeout for icmp_seq 1
+Request timeout for icmp_seq 2
+Request timeout for icmp_seq 3
+Request timeout for icmp_seq 4
+--- github.com ping statistics ---
+6 packets transmitted, 0 packets received, 100.0% packet loss
+</code></pre>
+<p>&emsp;&emsp;经查询该ip位于新加坡，国内访问<code>github.com</code>大部分会走新加坡和上海两个地区。我尝试<code>ping</code>这两个地区的ip发现都<code>ping</code>不通。</p>
+<p>&emsp;&emsp;通过<a href="http://tool.chinaz.com/dns" target="_blank" rel="noopener">站长之家DNS查询工具</a>，可以查询<code>github.com</code>的服务器地址。在国内查询仅能查询到三个地区：新加坡、上海、美国。</p>
+<p>&emsp;&emsp;查询到对应的ip之后，在<code>host</code>文件中添加一条记录即可。ip地址可以选择自己线路最优的，推荐<code>192.30.253.112</code>和<code>192.30.253.113</code>这两个ip段，速度不算最快但经测试是最稳定的。</p>
+<p>&emsp;&emsp;修改<code>host</code>以mac为例：</p>
+<pre><code class="shell">// 1.
+sudo vim /etc/hosts
+// 输入密码后继续，按i键入
+// 添加一条记录
+192.30.253.112 github.com
+// 按ESC，键入:wq!
+</code></pre>
+<p>&emsp;&emsp;通过浏览器访问github.com，速度虽达不到秒开，但较之前，在可以接受的范围之内。此时尝试<code>ping`</code>github.com<code>会发现，能</code>ping`通，延迟300ms+，且丢包率较低。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.wangx.me/2019/02/21/solve-github-access-slow/" data-id="ckplal41x0029vd2gwno5ywzh" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络/">网络</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+    
+  <nav class="article-nav">
+    
+      <a href="/2019/12/17/solve-download-electron-release-slow/" class="article-nav-link">
+        <strong class="article-nav-caption">前一页</strong>
+        <div class="article-nav-title">
+          
+            解决下载electron缓慢
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2019/01/27/item2-user-command-line-proxy/" class="article-nav-link">
+        <strong class="article-nav-caption">后一页</strong>
+        <div class="article-nav-title">iTerm2下使用命令行代理</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+    
+  <div class="gitalk" id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'd79784dfde36edbc8fcc',
+        clientSecret: '91687571ef07659960c1b0a6c55bf1c882ceebdc',
+        repo: 'blog-comment',
+        owner: 'sevilen',
+        admin: ['sevilen'],
+        // id: location.pathname,      // Ensure uniqueness and length less than 50
+        id: md5(location.pathname),
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+    gitalk.render('gitalk-container')
+  </script>
+
+  
+
+</article>
+
+
+
+</section>
+  <footer class="footer">
+  
+  <div class="outer">
+    <ul class="list-inline">
+      <li>&copy; 2021 Wangx&#39;s blog</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Github  <a href="https://github.com/sevilen">sevilen</a></li>
+      <!--
+      <li><a href="/">wangx</a></li>
+      -->
+    </ul>
+  </div>
+</footer>
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/logo.png" alt="Wangx&#39;s blog"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">归档</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">相册</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/search.js"></script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>

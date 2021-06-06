@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="web developer.">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    解决下载electron缓慢 |
+    
+    Wangx&#39;s blog</title>
+  
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-solve-download-electron-release-slow" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      解决下载electron缓慢
+    </h1>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2019/12/17/solve-download-electron-release-slow/" class="article-date">
+  <time datetime="2019-12-17T08:57:14.000Z" itemprop="datePublished">2019-12-17</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/electron/">electron</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <p>&emsp;&emsp;由于近期在做electron开发，我发现如果需要切换或下载electron版本时会非常慢，有时候甚至会停滞无法下载。之前在medium上看到过类似文章，在国外也存在下载非常缓慢的情况，只有5k/s。因为electron的release都是发布在github上的，我们下载release也是从github上下载的。<br><a id="more"></a></p>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><p>&emsp;&emsp;如果你访问github足够快，可以考虑手动下载release到<code>&lt;USER_HOME&gt;/.electron</code>目录下。<br>&emsp;&emsp;基本上国内的开发者都会使用taobao源下载npm包，当然electron也不例外，淘宝镜像也有对应的electron的release。但我发现使用<code>npm install</code>or<code>yarn install</code>时仍然是从github下载。所以我们需要用到<code>electron-download</code>来下载。</p>
+<pre><code class="shell">yarn add -g electron-download
+or
+npm install -g electron-download
+</code></pre>
+<pre><code class="shell">electron-download --mirror=https://npm.taobao.org/mirrors/electron/ --version=5.0.12 --platform=darwin --arch=x64
+</code></pre>
+<p>&emsp;&emsp;version、platform、arch等参数参考<code>electron-download</code>的说明。<br>&emsp;&emsp;下载之后需要删除<code>node_modules/electron</code>然后重新<code>npm install</code>或<code>yarn install</code>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.wangx.me/2019/12/17/solve-download-electron-release-slow/" data-id="ckplal41o001pvd2gxlmxlisl" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/electron/">electron</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+    
+  <nav class="article-nav">
+    
+      <a href="/2020/10/15/how-to-notarize-your-electron-app/" class="article-nav-link">
+        <strong class="article-nav-caption">前一页</strong>
+        <div class="article-nav-title">
+          
+            如何公证(notarize)你的Electron应用
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2019/02/21/solve-github-access-slow/" class="article-nav-link">
+        <strong class="article-nav-caption">后一页</strong>
+        <div class="article-nav-title">解决github访问慢</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+    
+  <div class="gitalk" id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'd79784dfde36edbc8fcc',
+        clientSecret: '91687571ef07659960c1b0a6c55bf1c882ceebdc',
+        repo: 'blog-comment',
+        owner: 'sevilen',
+        admin: ['sevilen'],
+        // id: location.pathname,      // Ensure uniqueness and length less than 50
+        id: md5(location.pathname),
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+    gitalk.render('gitalk-container')
+  </script>
+
+  
+
+</article>
+
+
+
+</section>
+  <footer class="footer">
+  
+  <div class="outer">
+    <ul class="list-inline">
+      <li>&copy; 2021 Wangx&#39;s blog</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Github  <a href="https://github.com/sevilen">sevilen</a></li>
+      <!--
+      <li><a href="/">wangx</a></li>
+      -->
+    </ul>
+  </div>
+</footer>
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/logo.png" alt="Wangx&#39;s blog"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">归档</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">相册</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/search.js"></script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>

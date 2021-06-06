@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="web developer.">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    Vue slot(插槽) |
+    
+    Wangx&#39;s blog</title>
+  
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-vueslot" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Vue slot(插槽)
+    </h1>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/09/09/vueslot/" class="article-date">
+  <time datetime="2018-09-09T02:51:57.000Z" itemprop="datePublished">2018-09-09</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/vue/">vue</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>&emsp;&emsp;插槽是组件的一部分，当时做项目的时候使用到了插槽，并不是很懂，vue官网也没有说明的很清楚，只是说vue实现了一套内容分发的api，\<slot>元素承载分发内容的出口。也就是说插槽是用来分发内容的。那就举个栗子说明一下：</slot></p>
+<pre><code class="html">// app
+&lt;component-a&gt;
+   这是插槽内容
+&lt;/component-a&gt;
+
+// component-a html
+&lt;div&gt;
+    hello，word！
+&lt;/div&gt;
+</code></pre>
+<p>&emsp;&emsp;上面app中放了一个component-a组件，组件的内容是下面的，这样在浏览器中渲染出来的结果是什么呢？结果是只会渲染出组件中的内容。app中组件标签里的内容被抛弃了。我们在组件中加一下slot，会发现之前写在组件内的内容出来了，这就是插槽的作用，可以分发内容。意思就是如果不使用插槽，在组件标签内写的任何内容都是不会生效的。<br><a id="more"></a></p>
+<pre><code class="vue">&lt;body&gt;
+    &lt;div id=&quot;app&quot;&gt;
+        &lt;component-a&gt;
+            这是插槽内容
+         &lt;/component-a&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+    &lt;script&gt;
+        Vue.component(&#39;component-a&#39;,{
+            template: `
+            &lt;div&gt;hello,word!&lt;slot&gt;&lt;/slot&gt;&lt;/div&gt;
+            `
+        });
+
+        const app = new Vue({
+            el: &#39;#app&#39;,
+            data() {
+                return {};
+            }
+        });
+    &lt;/script&gt;
+</code></pre>
+<p>&emsp;&emsp;这个插槽也叫单个插槽。</p>
+<h4 id="具名插槽"><a href="#具名插槽" class="headerlink" title="具名插槽"></a>具名插槽</h4><p>&emsp;&emsp;具名插槽就是具有名字的插槽，在组件中给插槽取上名字，然后再组件标签内slot属性填上名字，它就会跟组件内的name一一对应。那么没有名字的就是默认插槽了。</p>
+<pre><code class="vue">&lt;style&gt;
+        .border {
+            border: 1px solid #e7494b;
+        }s
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;app&quot;&gt;
+        &lt;component-a&gt;
+            &lt;div&gt;
+                默认插槽的内容
+            &lt;/div&gt;
+            &lt;template slot=&quot;slota&quot;&gt;
+                插槽a的内容
+            &lt;/template&gt;
+            &lt;template slot=&quot;slotb&quot;&gt;
+                插槽b的内容
+            &lt;/template&gt;
+         &lt;/component-a&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+    &lt;script&gt;
+        Vue.component(&#39;component-a&#39;,{
+            template: `
+            &lt;div&gt;
+              &lt;h2&gt;具名插槽&lt;/h2&gt;
+              &lt;slot&gt;&lt;/slot&gt;
+              &lt;div class=&quot;border&quot;&gt;&lt;/div&gt;
+              &lt;slot name=&quot;slota&quot;&gt;&lt;/slot&gt;
+              &lt;div class=&quot;border&quot;&gt;&lt;/div&gt;
+              &lt;slot name=&quot;slotb&quot;&gt;&lt;/slot&gt;
+            &lt;/div&gt;
+            `
+        });
+
+        const app = new Vue({
+            el: &#39;#app&#39;,
+            data() {
+                return {};
+            }
+        });
+    &lt;/script&gt;
+</code></pre>
+<h4 id="作用域插槽"><a href="#作用域插槽" class="headerlink" title="作用域插槽"></a>作用域插槽</h4><p>&emsp;&emsp;其实上面两种插槽都很简单，一个就是默认插槽不进行命名，具名插槽就是给个名字，然后标签内的内容就会和组件中的名字一一对应，分发内容。</p>
+<p>&emsp;&emsp;作用域插槽就是可以把组件标签内的数据在组件元素中使用，我也不知道这样解释合不合理，先看个简单的例子把。</p>
+<pre><code class="vue">&lt;body&gt;
+    &lt;div id=&quot;app&quot;&gt;
+        &lt;component-a&gt;
+            &lt;template slot-scope=&quot;name&quot;&gt;
+                {{ name }}
+            &lt;/template&gt;
+        &lt;/component-a&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+    &lt;script&gt;
+        Vue.component(&#39;component-a&#39;,{
+            template: `
+            &lt;div&gt;
+                &lt;slot say=&quot;hello&quot;&gt;&lt;/slot&gt;
+            &lt;/div&gt;
+            `
+        });
+
+        const app = new Vue({
+            el: &#39;#app&#39;,
+            data() {
+                return {
+                };
+            }
+        });
+    &lt;/script&gt;
+</code></pre>
+<p>&emsp;&emsp;在slot元素上定义一个属性，然后在template添加slot-scope，我们将结果放在标签内展示出来，会看到一个slot属性和值的键值对，这就是作用域插槽。</p>
+<p>&emsp;&emsp;再来看看这个例子：</p>
+<pre><code class="vue">&lt;body&gt;
+    &lt;div id=&quot;app&quot;&gt;
+        &lt;component-a :lists=&quot;list&quot;&gt;
+            &lt;template slot-scope=&quot;name&quot;&gt;
+                {{ name }}
+            &lt;/template&gt;
+        &lt;/component-a&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+    &lt;script&gt;
+        Vue.component(&#39;component-a&#39;,{
+            props: [&#39;lists&#39;],
+            template: `
+            &lt;div&gt;
+               &lt;ol&gt;
+                 &lt;li v-for=&quot;item in lists&quot;&gt;
+                    &lt;slot :data=&quot;item&quot;&gt;&lt;/slot&gt;
+                 &lt;/li&gt;
+               &lt;/ol&gt;
+            &lt;/div&gt;
+            `
+        });
+
+        const app = new Vue({
+            el: &#39;#app&#39;,
+            data() {
+                return {
+                    list: [
+                        { no: 1, name: &#39;张三&#39; },
+                        { no: 2, name: &#39;李四&#39; },
+                        { no: 3, name: &#39;王五&#39; },
+                        { no: 4, name: &#39;陈六&#39; },
+                        { no: 5, name: &#39;吴七&#39; }
+                    ]
+                };
+            }
+        });
+    &lt;/script&gt;
+</code></pre>
+<p>&emsp;&emsp;如果你用过elementui，就会觉得很熟悉，table就是这样的。</p>
+<p>&emsp;&emsp;作用域插槽还是比较好用的，这篇文章也只是简单的介绍了插槽的使用和给了一些例子来方便说明。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.wangx.me/2018/09/09/vueslot/" data-id="ckplal425002vvd2gls8fa4ke" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/slot/">slot</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+    
+  <nav class="article-nav">
+    
+      <a href="/2018/09/16/npmpackage/" class="article-nav-link">
+        <strong class="article-nav-caption">前一页</strong>
+        <div class="article-nav-title">
+          
+            npm包开发
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2018/09/02/vue-sigleway-flow/" class="article-nav-link">
+        <strong class="article-nav-caption">后一页</strong>
+        <div class="article-nav-title">Vue数据单向流动</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+    
+  <div class="gitalk" id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'd79784dfde36edbc8fcc',
+        clientSecret: '91687571ef07659960c1b0a6c55bf1c882ceebdc',
+        repo: 'blog-comment',
+        owner: 'sevilen',
+        admin: ['sevilen'],
+        // id: location.pathname,      // Ensure uniqueness and length less than 50
+        id: md5(location.pathname),
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+    gitalk.render('gitalk-container')
+  </script>
+
+  
+
+</article>
+
+
+
+</section>
+  <footer class="footer">
+  
+  <div class="outer">
+    <ul class="list-inline">
+      <li>&copy; 2021 Wangx&#39;s blog</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Github  <a href="https://github.com/sevilen">sevilen</a></li>
+      <!--
+      <li><a href="/">wangx</a></li>
+      -->
+    </ul>
+  </div>
+</footer>
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/logo.png" alt="Wangx&#39;s blog"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">归档</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">相册</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/search.js"></script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="web developer.">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    如何公证(notarize)你的Electron应用 |
+    
+    Wangx&#39;s blog</title>
+  
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-how-to-notarize-your-electron-app" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      如何公证(notarize)你的Electron应用
+    </h1>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2020/10/15/how-to-notarize-your-electron-app/" class="article-date">
+  <time datetime="2020-10-15T15:47:33.000Z" itemprop="datePublished">2020-10-15</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/electron/">electron</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <p>为什么打包后的<code>Electron</code>应用在<code>macOS</code>上会提示无法打开，版本更新之后，接到了部分用户的反馈，提示无法安装我们的<code>App</code>，情况如下：<br><img src="https://i.loli.net/2021/06/06/CdjJLRGEc62qQft.png" alt="未公证"></p>
+<a id="more"></a>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>从<code>macOS 10.14.5</code>版本开始，所有<code>macOS</code>程序不仅需要签名，还需要经过苹果公证，当然上架AppStore的应用苹果会进行审核和公证，但那些不上架市场的应用也需要向苹果公证你的应用，才能正常使用，否则<code>GateKeeper</code>会阻止用户打开应用。</p>
+<h3 id="如何公证Electron-App"><a href="#如何公证Electron-App" class="headerlink" title="如何公证Electron App"></a>如何公证Electron App</h3><p>我这里使用的是<a href="mailto:`electron-builder@22.9.1" target="_blank" rel="noopener">`electron-builder@22.9.1</a><code></code><a href="mailto:electron@9.4.1" target="_blank" rel="noopener">electron@9.4.1</a><code>，另外进行苹果公证还需要一个必要的前置条件，那就是需要有</code>Apple Developer ID`也就是苹果开发者账号。已有开发者账号请继续往下看。</p>
+<h4 id="1-构建应用开启强化运行时"><a href="#1-构建应用开启强化运行时" class="headerlink" title="1. 构建应用开启强化运行时"></a>1. 构建应用开启强化运行时</h4><p>苹果在添加公证时，要让你的<code>App</code>有一个强化的运行时，不懂什么意思？其实就是默认给你的应用更少的权限。<br>Electron启用强化运行时，在你的构建配置下，添加<code>&quot;hardenedRuntime&quot;: true</code>  </p>
+<pre><code class="json">&quot;build&quot;: {
+  &quot;mac&quot;: {
+    &quot;hardenedRuntime&quot;: true
+  }
+}
+</code></pre>
+<p>开启该选项时，需要申请一定的权限，macOS下申请权限可使用<code>plist</code>文件，我们项目的该文件参考如下，可直接复制该文件使用，如果你有其他权限需要申请，可在其中添加。</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
+&lt;plist version=&quot;1.0&quot;&gt;
+  &lt;dict&gt;
+    &lt;key&gt;com.apple.security.cs.allow-jit&lt;/key&gt;
+    &lt;true/&gt;
+    &lt;key&gt;com.apple.security.cs.allow-unsigned-executable-memory&lt;/key&gt;
+    &lt;true/&gt;
+    &lt;key&gt;com.apple.security.cs.allow-dyld-environment-variables&lt;/key&gt;
+    &lt;key&gt;com.apple.security.cs.disable-library-validation&lt;/key&gt;
+    &lt;true/&gt;
+  &lt;/dict&gt;
+&lt;/plist&gt;
+</code></pre>
+<p>主要申请的权限为第二条，<a href="https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_security_cs_allow-unsigned-executable-memory" target="_blank" rel="noopener">允许未签名的可执行内存授权</a></p>
+<p>使用<code>plist</code>，修改上面的强化运行时构建代码：</p>
+<pre><code class="json">&quot;mac&quot;: {
+  &quot;entitlements&quot;: &quot;scripts/entitlements.mac.plist&quot;,
+  &quot;entitlementsInherit&quot;: &quot;scripts/entitlements.mac.plist&quot;
+}
+</code></pre>
+<h4 id="2-苹果开发者账号及完整性检验"><a href="#2-苹果开发者账号及完整性检验" class="headerlink" title="2. 苹果开发者账号及完整性检验"></a>2. 苹果开发者账号及完整性检验</h4><p>需要公证你的应用，必须要有有效的开发者账号才能进行公证。有关开发者账号的申请，证书的创建、导出、删除请自行搜索解决。</p>
+<p><code>electron-builder</code>使用的签名工具<code>electron-osx-sign</code>会验证签名是否成功，在macOS10.14.5之前，签名应用会返回<code>true</code>，而该版本及该版本之后将会返回<code>false</code>，因为虽然应用签名了，但它没有进行公证。所以，我们最好时禁用这个完整性检查，可添加<code>&quot;gatekeeperAssess&quot;: false</code>到mac构建下，及完整的mac构建配置至少需要以下内容：</p>
+<pre><code class="json">&quot;mac&quot;: {
+  &quot;hardenedRuntime&quot;: true,
+  &quot;gatekeeperAssess&quot;: false,
+  &quot;entitlements&quot;: &quot;scripts/entitlements.mac.plist&quot;,
+  &quot;entitlementsInherit&quot;: &quot;scripts/entitlements.mac.plist&quot;
+}
+</code></pre>
+<p>另外，如果你需要导出<code>dmg</code>的macOS安装包，并且你的<code>electron-builder</code>版本小于<code>20.43.0</code>，你则需要添加额外的配置：</p>
+<pre><code>&quot;dmg&quot;: {
+  &quot;sign&quot;: false
+}
+</code></pre><p>因为<code>Gatekeeper</code>会对你的程序所以签名内容进行完整性校验，实际上对<code>dmg</code>进行签名和公证仍会出现上诉错误，应该是苹果的bug或有其他原因。所以我们最好使用未签名、未工作的dmg，因为安装程序后，<code>Gatekeeper</code>检验的应用内容，发现经过公证，同样可以通过检查并且使用。</p>
+<h4 id="3-对你的应用进行公证"><a href="#3-对你的应用进行公证" class="headerlink" title="3. 对你的应用进行公证"></a>3. 对你的应用进行公证</h4><p>Electron官方提供了人一个npm包<code>electron-notarize</code>用来对electron程序进行公证，所以我们需要安装一下这个依赖：</p>
+<pre><code class="shell">yarn add electron-notarize --dev
+// or
+npm install electron-notarize --save-dev
+</code></pre>
+<p>我们需要在应用签名后，打包dmg镜像之前对应用进行公证，<code>electron-builder</code>提供了一个hooks <a href="https://www.electron.build/configuration/configuration#aftersign" target="_blank" rel="noopener">afterSign</a>，该钩子将在签名完成后执行指定的函数或脚本。我们在根目录下新建<code>scripts</code>目录，并且新建<code>notarize.js</code>文件：</p>
+<pre><code class="shell">mdkir scripts
+cd scripts
+touch notarize.js
+</code></pre>
+<p>代码如下：</p>
+<pre><code>const fs = require(&#39;fs&#39;)
+const electronNotarize = require(&#39;electron-notarize&#39;)
+
+module.exports = async (params) =&gt; {
+        // params由afterSign传入，可参考上面的链接
+    const { electronPlatformName, appOutDir } = params
+    // 打包非mac平台无需公证
+    if (electronPlatformName !== &#39;darwin&#39;) {
+        return;
+    }
+
+    const appName = params.packager.appInfo.productFilename;
+    const appPath = `${appOutDir}/${appName}.app`
+
+    if (!fs.existsSync(appPath)) {
+        throw new Error(`Cannot find application at: ${appPath}`);
+    }
+
+    console.log(`start to notarize application `)
+    try {
+        await electronNotarize.notarize({
+            appBundleId: &#39;your app bundle Id&#39;,
+            appPath: appPath,
+            appleId: `your apple ID`,
+            appleIdPassword: `your apple id password`
+        })
+    } catch (error) {
+        console.log(error)
+    }
+    console.log(`notarize app : ${appName} Done.`)
+}
+</code></pre><p><code>appleId</code>和<code>appleIdPassword</code>较为敏感，建议不要使用明文，可考虑使用<code>.env</code>或环境变量等方式注入。<code>appleIdPassword</code>建议不要使用常规密码，可生成一个特定的密钥用来公证，<a href="https://appleid.apple.com/" target="_blank" rel="noopener">生成特定程序密钥</a>。</p>
+<p>应用签名后，会自动运行该脚本，最后打包生成<code>dmg</code>镜像，就可以正常安装并通过<code>GateKeeper</code>的检测了。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>该上传到公证过程时间可能较长，熟悉iOS开发者应该比较清楚，国内上传安装包到苹果，可能需要比较长的时间，安心等待即可。不过我尝试过全局科学上网甚至无法上传，使用wifi也会长时间处于等待，并且这个过程看不到进度。我亲试使用手机热点上传会比较快，接受不了长时间等待可以尝试手机热点上传。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.wangx.me/2020/10/15/how-to-notarize-your-electron-app/" data-id="ckplal41f0012vd2ginjv2ykc" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/electron/">electron</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+    
+  <nav class="article-nav">
+    
+    
+      <a href="/2019/12/17/solve-download-electron-release-slow/" class="article-nav-link">
+        <strong class="article-nav-caption">后一页</strong>
+        <div class="article-nav-title">解决下载electron缓慢</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+    
+  <div class="gitalk" id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'd79784dfde36edbc8fcc',
+        clientSecret: '91687571ef07659960c1b0a6c55bf1c882ceebdc',
+        repo: 'blog-comment',
+        owner: 'sevilen',
+        admin: ['sevilen'],
+        // id: location.pathname,      // Ensure uniqueness and length less than 50
+        id: md5(location.pathname),
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+    gitalk.render('gitalk-container')
+  </script>
+
+  
+
+</article>
+
+
+
+</section>
+  <footer class="footer">
+  
+  <div class="outer">
+    <ul class="list-inline">
+      <li>&copy; 2021 Wangx&#39;s blog</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Github  <a href="https://github.com/sevilen">sevilen</a></li>
+      <!--
+      <li><a href="/">wangx</a></li>
+      -->
+    </ul>
+  </div>
+</footer>
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/logo.png" alt="Wangx&#39;s blog"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">归档</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">相册</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/search.js"></script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>

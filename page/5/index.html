@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="web developer.">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    
+    Wangx&#39;s blog</title>
+  
+    <!-- highlight.js monokai-sublime theme css -->
+    <link href="https://cdn.bootcss.com/highlight.js/9.13.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <!-- highlight js -->
+    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="jumbotron">
+  <div class="video">
+    
+      <div class="video-frame">
+        <img src="/images/ocean/overlay-hero.png" alt="Decorative image frame">
+      </div>
+    
+    <div class="video-media">
+      <video playsinline="" autoplay loop muted data-autoplay="" poster="/images/ocean/ocean.png" x5-video-player-type="h5">
+        <source src="/images/ocean/ocean.mp4" type="video/mp4">
+        <source src="/images/ocean/ocean.ogv" type="video/ogg">
+        <source src="/images/ocean/ocean.webm" type="video/webm">
+        <p>Your user agent does not support the HTML5 Video element.</p>
+      </video>
+      <div class="video-overlay"></div>
+    </div>
+    <div class="video-inner text-center text-white">
+      <h1><a href="/">Wangx&#39;s blog</a></h1>
+      <p>Whatever is worth doing is worth doing well.</p>
+      <div><img src="/images/logo.png" class="brand" alt="Wangx&#39;s blog"></div>
+    </div>
+    <div class="video-learn-more">
+      <a class="anchor" href="#landingpage"><i class="fe fe-mouse"></i></a>
+    </div>
+  </div>
+</section>
+
+<div id="landingpage">
+  <section class="outer">
+  <article class="articles">
+    
+    <h1 class="page-type-title"></h1>
+
+    
+      
+        <article id="post-unity-cache-server-cache-modules" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2018/09/28/unity-cache-server-cache-modules/">unity-cache-server-cache-modules</a>
+    </h2>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/09/28/unity-cache-server-cache-modules/" class="article-date">
+  <time datetime="2018-09-28T02:43:06.000Z" itemprop="datePublished">2018-09-28</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/unity/">unity</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <h2 id="Cache-Modules"><a href="#Cache-Modules" class="headerlink" title="Cache Modules"></a>Cache Modules</h2><p>&emsp;&emsp;Unity-cache-server v6的缓存服务器支持两种缓存机制：</p>
+<ul>
+<li>cache_fs，基于文件系统的缓存</li>
+<li>完全内存（RAM）支持的缓存</li>
+</ul>
+<p>&emsp;&emsp;cache server默认使用cache_fs即文件系统缓存模式，适用于大多数的应用程序。RAM缓存模式提供最佳性能，但Server需要足够的物理RAM用于缓存，通常需要的内存大小至少为项目Library文件夹的2-3倍。</p>
+<p>&emsp;&emsp;两个模式的配置文件信息都在config/defalult.yml中进行配置。<br>
+        
+          <a class="article-more-link" href="/2018/09/28/unity-cache-server-cache-modules/">阅读更多...</a>
+        
+      
+    </p></div>
+    <footer class="article-footer">
+      <a data-url="http://blog.wangx.me/2018/09/28/unity-cache-server-cache-modules/" data-id="ckplal41r001tvd2gm6vp1jyx" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cacheserver/">cacheserver</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+
+
+
+      
+        <article id="post-unity-cache-server" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2018/09/26/unity-cache-server/">Unity-Cache-Server</a>
+    </h2>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/09/26/unity-cache-server/" class="article-date">
+  <time datetime="2018-09-26T01:38:21.000Z" itemprop="datePublished">2018-09-26</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/unity/">unity</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <p><em>注：由于没有做过游戏开发，也没有使用过unity，所以有问题的地方欢迎在评论指正</em></p>
+<h2 id="缓存服务器"><a href="#缓存服务器" class="headerlink" title="缓存服务器"></a>缓存服务器</h2><p>&emsp;&emsp;Unity的打包流程中最慢的环节就是贴图的压缩。不同的平台，需要把原始贴图压缩成对应平台的压缩贴图格式。iOS和Android平台对应的格式不同。针对这个问题，Unity官方给出了一个CacheServer的解决方案。CacheServer只是一个文件cache服务器，记录了贴图源文件和转换参数(meta文件)以及转换器版本等信息构成的字符串的md5值作为文件索引。第一个做转换的人，在本地进行压缩后，会把结果传到CacheServer，其他人使用时，就会优先去看有没有人做过同样的工作，如果有就从cache服务器下载资源，没有就会进行压缩，并上传结果到CacheServer。如果源文件、转换参数都完全一样，结果会被缓存。在日常所有贴图都会被压缩过，可以节约压缩贴图的时间，从而减少打包时间。</p>
+<p>&emsp;&emsp;Unity官方在3月发布了Cache Server v6.0.0版本，官方宣称6.0带来了更高的可靠性和性能，以及一系列的新功能。包括新模块化，实现最大的I/O性能，支持高性能的缓存模式等等。<br>
+        
+          <a class="article-more-link" href="/2018/09/26/unity-cache-server/">阅读更多...</a>
+        
+      
+    </p></div>
+    <footer class="article-footer">
+      <a data-url="http://blog.wangx.me/2018/09/26/unity-cache-server/" data-id="ckplal41v0024vd2g12jfb14b" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cacheserver/">cacheserver</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+
+
+
+      
+        <article id="post-the-proptotype-chain-and-inheritance" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2018/09/24/the-proptotype-chain-and-inheritance/">原型链与继承-JS高级</a>
+    </h2>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/09/24/the-proptotype-chain-and-inheritance/" class="article-date">
+  <time datetime="2018-09-24T04:42:15.000Z" itemprop="datePublished">2018-09-24</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&emsp;&emsp;初学javascript的时候对原型链和继承就一知半解，上半年复习的时候感觉十分良好，直到最近又被问道的时候，还是讲不清楚。自己就又看了一遍JS高级程序设计，力求有更深的理解，彻底搞懂。</p>
+<p>&emsp;&emsp;继承是OO语言中的一个最为人津津乐道的概念。许多OO语言都支持两种继承方式：接口继承和 实现继承。接口继承只继承方法签名，而实现继承则继承实际的方法。由于js中方法没有签名，在ECMAScript中无法实现接口继承。ECMAScript只支持实现继承，而且其 实现继承主要是依靠原型链来实现的。本段摘自JS高级程序设计。<br>
+        
+          <a class="article-more-link" href="/2018/09/24/the-proptotype-chain-and-inheritance/">阅读更多...</a>
+        
+      
+    </p></div>
+    <footer class="article-footer">
+      <a data-url="http://blog.wangx.me/2018/09/24/the-proptotype-chain-and-inheritance/" data-id="ckplal41s001yvd2gt13ku5wd" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原型链/">原型链</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/继承/">继承</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+
+
+
+      
+        <article id="post-npmpackage" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2018/09/16/npmpackage/">npm包开发</a>
+    </h2>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/09/16/npmpackage/" class="article-date">
+  <time datetime="2018-09-16T09:42:51.000Z" itemprop="datePublished">2018-09-16</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/npm/">npm</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&emsp;&emsp;之前做项目的时候遇到了一个npm包在typescript程序中无法使用的问题，添加了@types也无法作用。打算自己学习一下npm包的开发。简单的记录一下npm包开发的过程。<br>
+        
+          <a class="article-more-link" href="/2018/09/16/npmpackage/">阅读更多...</a>
+        
+      
+    </p></div>
+    <footer class="article-footer">
+      <a data-url="http://blog.wangx.me/2018/09/16/npmpackage/" data-id="ckplal41n001lvd2gh2wa61dz" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+
+
+
+      
+        <article id="post-vueslot" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2018/09/09/vueslot/">Vue slot(插槽)</a>
+    </h2>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2018/09/09/vueslot/" class="article-date">
+  <time datetime="2018-09-09T02:51:57.000Z" itemprop="datePublished">2018-09-09</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/vue/">vue</a>
+  </div>
+
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>&emsp;&emsp;插槽是组件的一部分，当时做项目的时候使用到了插槽，并不是很懂，vue官网也没有说明的很清楚，只是说vue实现了一套内容分发的api，\<slot>元素承载分发内容的出口。也就是说插槽是用来分发内容的。那就举个栗子说明一下：</slot></p>
+<pre><code class="html">// app
+&lt;component-a&gt;
+   这是插槽内容
+&lt;/component-a&gt;
+
+// component-a html
+&lt;div&gt;
+    hello，word！
+&lt;/div&gt;
+</code></pre>
+<p>&emsp;&emsp;上面app中放了一个component-a组件，组件的内容是下面的，这样在浏览器中渲染出来的结果是什么呢？结果是只会渲染出组件中的内容。app中组件标签里的内容被抛弃了。我们在组件中加一下slot，会发现之前写在组件内的内容出来了，这就是插槽的作用，可以分发内容。意思就是如果不使用插槽，在组件标签内写的任何内容都是不会生效的。<br>
+        
+          <a class="article-more-link" href="/2018/09/09/vueslot/">阅读更多...</a>
+        
+      
+    </p></div>
+    <footer class="article-footer">
+      <a data-url="http://blog.wangx.me/2018/09/09/vueslot/" data-id="ckplal425002vvd2gls8fa4ke" class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/slot/">slot</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+
+
+
+      
+  </article>
+  
+  
+    <nav class="page-nav">
+      
+      <a class="extend prev" rel="prev" href="/page/4/">前一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/">后一页</a>
+    </nav>
+  
+</section>
+</div>
+
+  <footer class="footer">
+  
+  <div class="outer">
+    <ul class="list-inline">
+      <li>&copy; 2021 Wangx&#39;s blog</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Github  <a href="https://github.com/sevilen">sevilen</a></li>
+      <!--
+      <li><a href="/">wangx</a></li>
+      -->
+    </ul>
+  </div>
+</footer>
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/logo.png" alt="Wangx&#39;s blog"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">归档</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">相册</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/search.js"></script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>
